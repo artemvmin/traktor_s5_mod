@@ -1,4 +1,5 @@
 # Traktor2 S5 Mod
+Compatible with Traktor version 2.11.0 23
 
 ## Sik new features:
 - Deck waveform updated to contain six colors to distinguish highs, mids, and lows
@@ -17,6 +18,6 @@
 1. Download or clone the repository
 2. Navigate to `Applications/Native Instruments/Traktor 2`
 3. Right click on Traktor and select `Show Package Contents`
-4. Copy the qml folder to `Contents/Resources` and replace all files
+4. Copy the qml folder to `Contents/Resources` and select merge (combine two folders, preserving all newer items)
 5. Restart Traktor
 
