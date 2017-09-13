@@ -5,7 +5,7 @@ Compatible with Traktor version 2.11.0 23
 - Deck waveform updated to contain six colors to distinguish highs, mids, and lows
 - Left deck knob skips through song (by the loop size) when in deck view
 - Deck header shows actual key (respecting key changes), as well as tempo bend
-- Global tempo, deck tempo and key knobs now default to coarse adjustment when shift is not held
+- Global and deck tempo knobs now default to coarse adjustment when shift is not held
 - Browser SortBy reduced to three variables: artist, bpm, and key
 - Hold back in deck view to reset key
 

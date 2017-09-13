@@ -1566,8 +1566,8 @@ Module
           enabled: focusedDeckId == 1
 
           Wire { from: "%surface%.back";   to: "decks.1.tempo.reset" }
-          // Wire { from: "%surface%.browse"; to: "decks.1.tempo.fine";   enabled: module.shift } 
-          Wire { from: "%surface%.browse"; to: "decks.1.tempo.coarse" }
+          Wire { from: "%surface%.browse"; to: "decks.1.tempo.coarse"; enabled: !module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.1.tempo.fine";   enabled:  module.shift }
         }
 
         // Deck B
@@ -1576,7 +1576,8 @@ Module
           enabled: focusedDeckId == 2
 
           Wire { from: "%surface%.back";   to: "decks.2.tempo.reset" }
-          Wire { from: "%surface%.browse"; to: "decks.2.tempo.coarse" }
+          Wire { from: "%surface%.browse"; to: "decks.2.tempo.coarse"; enabled: !module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.2.tempo.fine";   enabled:  module.shift }
         }
 
         // Deck C
@@ -1585,7 +1586,8 @@ Module
           enabled: focusedDeckId == 3
 
           Wire { from: "%surface%.back";   to: "decks.3.tempo.reset" }
-          Wire { from: "%surface%.browse"; to: "decks.3.tempo.coarse" }
+          Wire { from: "%surface%.browse"; to: "decks.3.tempo.coarse"; enabled: !module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.3.tempo.fine";   enabled:  module.shift }
         }
 
         // Deck D
@@ -1594,7 +1596,8 @@ Module
           enabled: focusedDeckId == 4
 
           Wire { from: "%surface%.back";   to: "decks.4.tempo.reset" }
-          Wire { from: "%surface%.browse"; to: "decks.4.tempo.coarse" }
+          Wire { from: "%surface%.browse"; to: "decks.4.tempo.coarse"; enabled: !module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.4.tempo.fine";   enabled:  module.shift }
         }
       }
 
@@ -1612,8 +1615,8 @@ Module
           enabled: focusedDeckId == 1
 
           Wire { from: "%surface%.back";    to: "decks.1.key_control.reset" }
-          // Wire { from: "%surface%.browse";  to: "decks.1.key_control.fine";   enabled: module.shift }
-          Wire { from: "%surface%.browse";  to: "decks.1.key_control.coarse" }
+          Wire { from: "%surface%.browse";  to: "decks.1.key_control.coarse"  enabled: !module.shift }
+          Wire { from: "%surface%.browse";  to: "decks.1.key_control.fine";   enabled:  module.shift }
         }
 
         // Deck B
@@ -1622,7 +1625,8 @@ Module
           enabled: focusedDeckId == 2
 
           Wire { from: "%surface%.back";    to: "decks.2.key_control.reset" }
-          Wire { from: "%surface%.browse";  to: "decks.2.key_control.coarse" }
+          Wire { from: "%surface%.browse";  to: "decks.2.key_control.coarse"  enabled: !module.shift }
+          Wire { from: "%surface%.browse";  to: "decks.2.key_control.fine";   enabled:  module.shift }
         }
 
         // Deck C
@@ -1631,7 +1635,8 @@ Module
           enabled: focusedDeckId == 3
 
           Wire { from: "%surface%.back";    to: "decks.3.key_control.reset" }
-          Wire { from: "%surface%.browse";  to: "decks.3.key_control.coarse" }
+          Wire { from: "%surface%.browse";  to: "decks.3.key_control.coarse"  enabled: !module.shift }
+          Wire { from: "%surface%.browse";  to: "decks.3.key_control.fine";   enabled:  module.shift }
         }
 
         // Deck D
@@ -1640,14 +1645,15 @@ Module
           enabled: focusedDeckId == 4
 
           Wire { from: "%surface%.back";    to: "decks.4.key_control.reset" }
-          Wire { from: "%surface%.browse";  to: "decks.4.key_control.coarse" }
+          Wire { from: "%surface%.browse";  to: "decks.4.key_control.coarse"  enabled: !module.shift }
+          Wire { from: "%surface%.browse";  to: "decks.4.key_control.fine";   enabled:  module.shift }
         }
       }
 
       //------------------------------------------------------------------------------------------------------------------
       // Reset Key
       //------------------------------------------------------------------------------------------------------------------
-      
+
       WiresGroup {
         enabled: module.screenView.value == ScreenView.deck && screenOverlay.value == Overlay.none && !module.shift
 
