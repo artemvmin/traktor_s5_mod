@@ -60,8 +60,8 @@ Item {
   property int topRightState:     23                                // headerSettingTopRight.value
 
   property int bottomLeftState:   1                                 // headerSettingMidLeft.value
-  property int bottomMiddleState: hasTrackStyleHeader(deckType) ? 11 : 29 // headerSettingMidMid.value
-  property int bottomRightState:  25                                // headerSettingMidRight.value
+  property int bottomMiddleState: hasTrackStyleHeader(deckType) ? 17 : 29 // headerSettingMidMid.value
+  property int bottomRightState:  24                                // headerSettingMidRight.value
 
   height: largeHeaderHeight
   clip: false //true
@@ -106,6 +106,13 @@ Item {
   AppProperty { id: headerSettingMidLeft;       path: "app.traktor.settings.deckheader.mid.left";  }  
   AppProperty { id: headerSettingMidMid;        path: "app.traktor.settings.deckheader.mid.mid";   }  
   AppProperty { id: headerSettingMidRight;      path: "app.traktor.settings.deckheader.mid.right"; }
+
+
+
+  AppProperty { id: sequencerOn;   path: "app.traktor.decks." + (deckId + 1) + ".remix.sequencer.on" }
+  readonly property bool showStepSequencer: (deckType == DeckType.Remix) && sequencerOn.value && (screen.flavor != ScreenFlavor.S5)
+  onShowStepSequencerChanged: { updateLoopSize(); }
+
 
   //--------------------------------------------------------------------------------------------------------------------
   //  UPDATE VIEW
@@ -176,16 +183,11 @@ Item {
     radius:        3
     opacity:        0.6
 
-    /* #ifdef ENABLE_STEP_SEQUENCER
-    property string deck_name: sequencerOn ? "STEP" : "STEM"
-    AppProperty { id: sequencerOn;   path: "app.traktor.decks." + (deckId + 1) + ".remix.sequencer.on"; onValueChanged: updateLoopSize()  }
-    visible:       (deckType == DeckType.Stem) || sequencerOn.value
-    Text { x: sequencerOn.value ? 5 : 3; y:1; text: sequencerOn.value ? "STEP" : "STEM"; color: textColors[deck_Id]; font.pixelSize:fonts.miniFontSize }
-    #endif */
-    /* #ifndef ENABLE_STEP_SEQUENCER */
-    visible: deckType == DeckType.Stem
-    Text { x: 3; y:1; text:"STEM"; color: textColors[deck_Id]; font.pixelSize:fonts.miniFontSize }
-    /* #endif */
+    
+    visible:       (deckType == DeckType.Stem) || showStepSequencer
+    Text { x: showStepSequencer ? 5 : 3; y:1; text: showStepSequencer ? "STEP" : "STEM"; color: textColors[deck_Id]; font.pixelSize:fonts.miniFontSize }
+    
+    
 
     Behavior on opacity { NumberAnimation { duration: speed } }
   }
@@ -478,9 +480,9 @@ Item {
   function updateLoopSize() {
     if (  headerState == "large" && isLoaded && (hasTrackStyleHeader(deckType) || (deckType == DeckType.Remix )) && !directThru.value ) {
       loop_size.opacity = 1.0;
-      /* #ifdef ENABLE_STEP_SEQUENCER
-      loop_size.opacity = sequencerOn.value ? 0.0 : 1.0;
-      #endif */
+      
+      loop_size.opacity = showStepSequencer ? 0.0 : 1.0;
+      
       stem_text.opacity = 0.6
     } else {
       loop_size.opacity = 0.0;

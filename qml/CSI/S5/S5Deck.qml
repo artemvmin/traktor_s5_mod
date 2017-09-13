@@ -1033,7 +1033,7 @@ Module
   MappingPropertyDescriptor { id: browserIsContentList;  path: propertiesPath + ".browser.is_content_list";  type: MappingPropertyDescriptor.Boolean; value: false }
   
   // Screen
-  S5Screen    { name: "screen"; side: (decksAssignment == DecksAssignment.AC ? S5Screen.Left : S5Screen.Right); surface: S5Screen.S5; settingsPath: module.settingsPath; propertiesPath: module.propertiesPath }
+  KontrolScreen { name: "screen"; side: (decksAssignment == DecksAssignment.AC ? ScreenSide.Left : ScreenSide.Right); flavor: ScreenFlavor.S5; settingsPath: module.settingsPath; propertiesPath: module.propertiesPath }
   Wire { from: "screen.output";   to: "%surface%.display" }
   Wire { from: "screen.screen_view_state";  to: DirectPropertyAdapter { path: propertiesPath + ".screen_view";  input: false } }
   AppProperty { id: unloadPreviewPlayer;  path: "app.traktor.browser.preview_player.unload" }
@@ -1185,40 +1185,40 @@ Module
     WiresGroup
     {
       enabled: (focusedDeckId == 1)
-      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.1.stems.1.volume"; step: encoderStepsizeStemControl } enabled: stemSelectorMode1.value  }
-      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.1.stems.2.volume"; step: encoderStepsizeStemControl } enabled: stemSelectorMode2.value  }
-      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.1.stems.3.volume"; step: encoderStepsizeStemControl } enabled: stemSelectorMode3.value  }
-      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.1.stems.4.volume"; step: encoderStepsizeStemControl } enabled: stemSelectorMode4.value  }
+      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.1.stems.1.volume"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode1.value  }
+      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.1.stems.2.volume"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode2.value  }
+      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.1.stems.3.volume"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode3.value  }
+      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.1.stems.4.volume"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode4.value  }
     }
 
     //C
     WiresGroup
     {
       enabled: (focusedDeckId == 3)
-      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.3.stems.1.volume"; step: encoderStepsizeStemControl } enabled: stemSelectorMode1.value  }
-      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.3.stems.2.volume"; step: encoderStepsizeStemControl } enabled: stemSelectorMode2.value  }
-      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.3.stems.3.volume"; step: encoderStepsizeStemControl } enabled: stemSelectorMode3.value  }
-      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.3.stems.4.volume"; step: encoderStepsizeStemControl } enabled: stemSelectorMode4.value  }
+      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.3.stems.1.volume"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode1.value  }
+      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.3.stems.2.volume"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode2.value  }
+      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.3.stems.3.volume"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode3.value  }
+      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.3.stems.4.volume"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode4.value  }
     }
 
     //B
     WiresGroup
     {
       enabled: (focusedDeckId == 2)
-      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.2.stems.1.volume"; step: encoderStepsizeStemControl } enabled: stemSelectorMode1.value  }
-      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.2.stems.2.volume"; step: encoderStepsizeStemControl } enabled: stemSelectorMode2.value  }
-      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.2.stems.3.volume"; step: encoderStepsizeStemControl } enabled: stemSelectorMode3.value  }
-      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.2.stems.4.volume"; step: encoderStepsizeStemControl } enabled: stemSelectorMode4.value  }
+      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.2.stems.1.volume"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode1.value  }
+      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.2.stems.2.volume"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode2.value  }
+      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.2.stems.3.volume"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode3.value  }
+      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.2.stems.4.volume"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode4.value  }
     }
 
     //D
     WiresGroup
     {
       enabled: (focusedDeckId == 4)
-      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.4.stems.1.volume"; step: encoderStepsizeStemControl } enabled: stemSelectorMode1.value  }
-      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.4.stems.2.volume"; step: encoderStepsizeStemControl } enabled: stemSelectorMode2.value  }
-      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.4.stems.3.volume"; step: encoderStepsizeStemControl } enabled: stemSelectorMode3.value  }
-      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.4.stems.4.volume"; step: encoderStepsizeStemControl } enabled: stemSelectorMode4.value  }
+      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.4.stems.1.volume"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode1.value  }
+      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.4.stems.2.volume"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode2.value  }
+      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.4.stems.3.volume"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode3.value  }
+      Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.4.stems.4.volume"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode4.value  }
     }
   }
 
@@ -1258,7 +1258,7 @@ Module
         WiresGroup
         {
           enabled: (selectedFooterItem.value % 2) == 0  // selectedFooterItem.value goes from 1 to 4, this maps it to [1,2]
-          Wire { from: "%surface%.encoder";           to: RelativePropertyAdapter { path: "app.traktor.browser.preview_player.seek"; step: 0.01; multiply: false } }
+          Wire { from: "%surface%.encoder";           to: RelativePropertyAdapter { path: "app.traktor.browser.preview_player.seek"; step: 0.01; mode: RelativeMode.Stepped } }
           Wire { from: "%surface%.encoder.push";      to: TriggerPropertyAdapter   { path: "app.traktor.browser.preview_player.load_or_play" } }
         }
       }
@@ -1566,8 +1566,8 @@ Module
           enabled: focusedDeckId == 1
 
           Wire { from: "%surface%.back";   to: "decks.1.tempo.reset" }
-          Wire { from: "%surface%.browse"; to: "decks.1.tempo.fine";   enabled: !module.shift }
-          Wire { from: "%surface%.browse"; to: "decks.1.tempo.coarse"; enabled:  module.shift }
+          // Wire { from: "%surface%.browse"; to: "decks.1.tempo.fine";   enabled: module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.1.tempo.coarse"; enabled: module.shift }
         }
 
         // Deck B
@@ -1576,8 +1576,7 @@ Module
           enabled: focusedDeckId == 2
 
           Wire { from: "%surface%.back";   to: "decks.2.tempo.reset" }
-          Wire { from: "%surface%.browse"; to: "decks.2.tempo.fine";   enabled: !module.shift }
-          Wire { from: "%surface%.browse"; to: "decks.2.tempo.coarse"; enabled:  module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.2.tempo.coarse"; enabled: module.shift }
         }
 
         // Deck C
@@ -1586,8 +1585,7 @@ Module
           enabled: focusedDeckId == 3
 
           Wire { from: "%surface%.back";   to: "decks.3.tempo.reset" }
-          Wire { from: "%surface%.browse"; to: "decks.3.tempo.fine";   enabled: !module.shift }
-          Wire { from: "%surface%.browse"; to: "decks.3.tempo.coarse"; enabled:  module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.3.tempo.coarse"; enabled: module.shift }
         }
 
         // Deck D
@@ -1596,8 +1594,7 @@ Module
           enabled: focusedDeckId == 4
 
           Wire { from: "%surface%.back";   to: "decks.4.tempo.reset" }
-          Wire { from: "%surface%.browse"; to: "decks.4.tempo.fine";   enabled: !module.shift }
-          Wire { from: "%surface%.browse"; to: "decks.4.tempo.coarse"; enabled:  module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.4.tempo.coarse"; enabled: module.shift }
         }
       }
 
@@ -1615,8 +1612,8 @@ Module
           enabled: focusedDeckId == 1
 
           Wire { from: "%surface%.back";    to: "decks.1.key_control.reset" }
-          Wire { from: "%surface%.browse";  to: "decks.1.key_control.fine";   enabled:  module.shift }
-          Wire { from: "%surface%.browse";  to: "decks.1.key_control.coarse"; enabled: !module.shift }
+          // Wire { from: "%surface%.browse";  to: "decks.1.key_control.fine";   enabled:  module.shift }
+          Wire { from: "%surface%.browse";  to: "decks.1.key_control.coarse"; enabled: module.shift }
         }
 
         // Deck B
@@ -1625,8 +1622,7 @@ Module
           enabled: focusedDeckId == 2
 
           Wire { from: "%surface%.back";    to: "decks.2.key_control.reset" }
-          Wire { from: "%surface%.browse";  to: "decks.2.key_control.fine";   enabled:  module.shift }
-          Wire { from: "%surface%.browse";  to: "decks.2.key_control.coarse"; enabled: !module.shift }
+          Wire { from: "%surface%.browse";  to: "decks.2.key_control.coarse"; enabled: module.shift }
         }
 
         // Deck C
@@ -1635,8 +1631,7 @@ Module
           enabled: focusedDeckId == 3
 
           Wire { from: "%surface%.back";    to: "decks.3.key_control.reset" }
-          Wire { from: "%surface%.browse";  to: "decks.3.key_control.fine";   enabled:  module.shift }
-          Wire { from: "%surface%.browse";  to: "decks.3.key_control.coarse"; enabled: !module.shift }
+          Wire { from: "%surface%.browse";  to: "decks.3.key_control.coarse"; enabled: module.shift }
         }
 
         // Deck D
@@ -1645,8 +1640,7 @@ Module
           enabled: focusedDeckId == 4
 
           Wire { from: "%surface%.back";    to: "decks.4.key_control.reset" }
-          Wire { from: "%surface%.browse";  to: "decks.4.key_control.fine";   enabled:  module.shift }
-          Wire { from: "%surface%.browse";  to: "decks.4.key_control.coarse"; enabled: !module.shift }
+          Wire { from: "%surface%.browse";  to: "decks.4.key_control.coarse"; enabled: module.shift }
         }
       }
 
@@ -2787,7 +2781,7 @@ Module
       }
       
       // Deck A
-      SwitchTimer { name: "DeckA_ShowLoopSizeTouchTimer"; setTimeout: 500 }
+      SwitchTimer { name: "DeckA_ShowLoopSizeTouchTimer"; setTimeout: 0 }
 
       WiresGroup
       {
@@ -2802,8 +2796,10 @@ Module
           {
             enabled: encoderMode.value == encoderLoopMode
 
-            Wire { from: "%surface%.encoder";       to: "decks.1.loop.autoloop";     enabled: !module.shift }
-            Wire { from: "%surface%.encoder";       to: "decks.1.loop.move";         enabled:  module.shift }
+            // Wire { from: "%surface%.encoder";       to: "decks.1.loop.autoloop";     enabled: !module.shift }
+            // Wire { from: "%surface%.encoder";       to: "decks.1.loop.move";         enabled:  module.shift }
+            Wire { from: "%surface%.encoder";       to: "decks.1.loop.autoloop"; enabled: !module.shift}
+            Wire { from: "%surface%.browse.turn";   to: "decks.1.loop.move";     enabled: !module.shift}
             Wire { from: "decks.1.loop.active";     to: "%surface%.loop.led";                              }
             Wire { from: "%surface%.encoder.touch"; to: "DeckA_ShowLoopSizeTouchTimer.input"                 }
 
@@ -2871,10 +2867,10 @@ Module
         WiresGroup
         {
           enabled: encoderMode.value == encoderStemMode && screenOverlay.value == Overlay.none && screenViewProp.value == ScreenView.deck
-          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.1.stems.1.filter_value"; step: encoderStepsizeStemControl } enabled: stemSelectorMode1.value  }
-          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.1.stems.2.filter_value"; step: encoderStepsizeStemControl } enabled: stemSelectorMode2.value  }
-          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.1.stems.3.filter_value"; step: encoderStepsizeStemControl } enabled: stemSelectorMode3.value  }
-          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.1.stems.4.filter_value"; step: encoderStepsizeStemControl } enabled: stemSelectorMode4.value  }
+          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.1.stems.1.filter_value"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode1.value  }
+          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.1.stems.2.filter_value"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode2.value  }
+          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.1.stems.3.filter_value"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode3.value  }
+          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.1.stems.4.filter_value"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode4.value  }
 
           WiresGroup
           {
@@ -2939,7 +2935,7 @@ Module
       }
 
       // Deck C
-      SwitchTimer { name: "DeckC_ShowLoopSizeTouchTimer"; setTimeout: 500 }
+      SwitchTimer { name: "DeckC_ShowLoopSizeTouchTimer"; setTimeout: 0 }
 
       WiresGroup
       {
@@ -2954,8 +2950,8 @@ Module
           {
             enabled: encoderMode.value == encoderLoopMode
 
-            Wire { from: "%surface%.encoder";       to: "decks.3.loop.autoloop";     enabled: !module.shift }
-            Wire { from: "%surface%.encoder";       to: "decks.3.loop.move";         enabled:  module.shift }
+            Wire { from: "%surface%.encoder";       to: "decks.3.loop.autoloop"; enabled: !module.shift}
+            Wire { from: "%surface%.browse.turn";   to: "decks.3.loop.move";     enabled: !module.shift}
             Wire { from: "decks.3.loop.active";     to: "%surface%.loop.led";                              }
             Wire { from: "%surface%.encoder.touch"; to: "DeckC_ShowLoopSizeTouchTimer.input"                 }
 
@@ -3022,10 +3018,10 @@ Module
         WiresGroup
         {
           enabled: encoderMode.value == encoderStemMode && screenOverlay.value == Overlay.none && screenViewProp.value == ScreenView.deck
-          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.3.stems.1.filter_value"; step: encoderStepsizeStemControl } enabled: stemSelectorMode1.value  }
-          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.3.stems.2.filter_value"; step: encoderStepsizeStemControl } enabled: stemSelectorMode2.value  }
-          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.3.stems.3.filter_value"; step: encoderStepsizeStemControl } enabled: stemSelectorMode3.value  }
-          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.3.stems.4.filter_value"; step: encoderStepsizeStemControl } enabled: stemSelectorMode4.value  }
+          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.3.stems.1.filter_value"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode1.value  }
+          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.3.stems.2.filter_value"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode2.value  }
+          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.3.stems.3.filter_value"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode3.value  }
+          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.3.stems.4.filter_value"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode4.value  }
 
           WiresGroup
           {
@@ -3090,7 +3086,7 @@ Module
       }
 
       // Deck B
-      SwitchTimer { name: "DeckB_ShowLoopSizeTouchTimer"; setTimeout: 500 }
+      SwitchTimer { name: "DeckB_ShowLoopSizeTouchTimer"; setTimeout: 0 }
 
       WiresGroup
       {
@@ -3105,8 +3101,8 @@ Module
           {
             enabled: encoderMode.value == encoderLoopMode
 
-            Wire { from: "%surface%.encoder";       to: "decks.2.loop.autoloop";     enabled: !module.shift }
-            Wire { from: "%surface%.encoder";       to: "decks.2.loop.move";         enabled:  module.shift }
+            Wire { from: "%surface%.encoder";       to: "decks.2.loop.autoloop"; enabled: !module.shift}
+            Wire { from: "%surface%.browse.turn";   to: "decks.2.loop.move";     enabled: !module.shift}
             Wire { from: "decks.2.loop.active";       to: "%surface%.loop.led"                          }
             Wire { from: "%surface%.encoder.touch"; to: "DeckB_ShowLoopSizeTouchTimer.input"              }
 
@@ -3173,10 +3169,10 @@ Module
         WiresGroup
         {
           enabled: encoderMode.value == encoderStemMode && screenOverlay.value == Overlay.none && screenViewProp.value == ScreenView.deck
-          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.2.stems.1.filter_value"; step: encoderStepsizeStemControl } enabled: stemSelectorMode1.value  }
-          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.2.stems.2.filter_value"; step: encoderStepsizeStemControl } enabled: stemSelectorMode2.value  }
-          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.2.stems.3.filter_value"; step: encoderStepsizeStemControl } enabled: stemSelectorMode3.value  }
-          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.2.stems.4.filter_value"; step: encoderStepsizeStemControl } enabled: stemSelectorMode4.value  }
+          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.2.stems.1.filter_value"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode1.value  }
+          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.2.stems.2.filter_value"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode2.value  }
+          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.2.stems.3.filter_value"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode3.value  }
+          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.2.stems.4.filter_value"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode4.value  }
 
           WiresGroup
           {
@@ -3241,7 +3237,7 @@ Module
       }
 
       // Deck D
-      SwitchTimer { name: "DeckD_ShowLoopSizeTouchTimer"; setTimeout: 500 }
+      SwitchTimer { name: "DeckD_ShowLoopSizeTouchTimer"; setTimeout: 0 }
 
       WiresGroup
       {
@@ -3256,8 +3252,8 @@ Module
           {
             enabled: encoderMode.value == encoderLoopMode
 
-            Wire { from: "%surface%.encoder";       to: "decks.4.loop.autoloop";     enabled: !module.shift }
-            Wire { from: "%surface%.encoder";       to: "decks.4.loop.move";         enabled:  module.shift }
+            Wire { from: "%surface%.encoder";       to: "decks.4.loop.autoloop"; enabled: !module.shift}
+            Wire { from: "%surface%.browse.turn";   to: "decks.4.loop.move";     enabled: !module.shift}
             Wire { from: "decks.4.loop.active";      to: "%surface%.loop.led";                              }
             Wire { from: "%surface%.encoder.touch"; to: "DeckD_ShowLoopSizeTouchTimer.input"                 }
 
@@ -3324,10 +3320,10 @@ Module
         WiresGroup
         {
           enabled: encoderMode.value == encoderStemMode && screenOverlay.value == Overlay.none && screenViewProp.value == ScreenView.deck
-          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.4.stems.1.filter_value"; step: encoderStepsizeStemControl } enabled: stemSelectorMode1.value  }
-          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.4.stems.2.filter_value"; step: encoderStepsizeStemControl } enabled: stemSelectorMode2.value  }
-          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.4.stems.3.filter_value"; step: encoderStepsizeStemControl } enabled: stemSelectorMode3.value  }
-          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.4.stems.4.filter_value"; step: encoderStepsizeStemControl } enabled: stemSelectorMode4.value  }
+          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.4.stems.1.filter_value"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode1.value  }
+          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.4.stems.2.filter_value"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode2.value  }
+          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.4.stems.3.filter_value"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode3.value  }
+          Wire { from: "%surface%.encoder.turn"; to: RelativePropertyAdapter { path:"app.traktor.decks.4.stems.4.filter_value"; step: encoderStepsizeStemControl; mode: RelativeMode.Stepped } enabled: stemSelectorMode4.value  }
           
           WiresGroup
           {
@@ -3545,8 +3541,8 @@ Module
   //  Show header/footer on touch
   //------------------------------------------------------------------------------------------------------------------
 
-  SwitchTimer { name: "TopInfoOverlay";     resetTimeout: 1000 }
-  SwitchTimer { name: "BottomInfoOverlay";  resetTimeout: 1000 }
+  SwitchTimer { name: "TopInfoOverlay";     resetTimeout: 0 }
+  SwitchTimer { name: "BottomInfoOverlay";  resetTimeout: 0 }
 
   WiresGroup
   {
@@ -3774,19 +3770,11 @@ Module
 
     WiresGroup
     {
-      enabled: (!deckARunning.value && !(module.shift && hasSeek(deckAType)))
+      enabled: !(module.shift && hasSeek(deckAType))
                || (deckARunning.value && module.shift && (!hasSeek(deckAType) || scratchWithTouchstrip.value))
 
       Wire { from: "%surface%.touchstrip";        to: "decks.1.scratch"        }
       Wire { from: "%surface%.touchstrip.leds";   to: "decks.1.scratch.leds"   }
-    }
-
-    WiresGroup
-    {
-      enabled: deckARunning.value && !module.shift
-
-      Wire { from: "%surface%.touchstrip";        to: "decks.1.tempo_bend"      }
-      Wire { from: "%surface%.touchstrip.leds";   to: "decks.1.tempo_bend.leds" }
     }
   }
 
@@ -3832,19 +3820,11 @@ Module
 
     WiresGroup
     {
-      enabled: (!deckBRunning.value && !(module.shift && hasSeek(deckBType)))
+      enabled: !(module.shift && hasSeek(deckBType))
                || (deckBRunning.value && module.shift && (!hasSeek(deckBType) || scratchWithTouchstrip.value))
 
       Wire { from: "%surface%.touchstrip";       to: "decks.2.scratch"        }
       Wire { from: "%surface%.touchstrip.leds";  to: "decks.2.scratch.leds"   }
-    }
-
-    WiresGroup
-    {
-      enabled: deckBRunning.value && !module.shift
-
-      Wire { from: "%surface%.touchstrip";       to: "decks.2.tempo_bend"      }
-      Wire { from: "%surface%.touchstrip.leds";  to: "decks.2.tempo_bend.leds" }
     }
   }
 
@@ -3890,19 +3870,11 @@ Module
 
     WiresGroup
     {
-      enabled: (!deckCRunning.value && !(module.shift && hasSeek(deckCType)))
+      enabled: !(module.shift && hasSeek(deckCType))
                || (deckCRunning.value && module.shift && (!hasSeek(deckCType) || scratchWithTouchstrip.value))
 
       Wire { from: "%surface%.touchstrip";        to: "decks.3.scratch"         }
       Wire { from: "%surface%.touchstrip.leds";   to: "decks.3.scratch.leds"    }
-    }
-
-    WiresGroup
-    {
-      enabled: deckCRunning.value && !module.shift
-
-      Wire { from: "%surface%.touchstrip";        to: "decks.3.tempo_bend"       }
-      Wire { from: "%surface%.touchstrip.leds";   to: "decks.3.tempo_bend.leds"  }
     }
   }
 
@@ -3948,19 +3920,11 @@ Module
 
     WiresGroup
     {
-      enabled: (!deckDRunning.value && !(module.shift && hasSeek(deckDType)))
+      enabled: !(module.shift && hasSeek(deckDType))
                || (deckDRunning.value && module.shift && (!hasSeek(deckDType) || scratchWithTouchstrip.value))
 
       Wire { from: "%surface%.touchstrip";       to: "decks.4.scratch"         }
       Wire { from: "%surface%.touchstrip.leds";  to: "decks.4.scratch.leds"    }
-    }
-
-    WiresGroup
-    {
-      enabled: deckDRunning.value && !module.shift
-
-      Wire { from: "%surface%.touchstrip";       to: "decks.4.tempo_bend"       }
-      Wire { from: "%surface%.touchstrip.leds";  to: "decks.4.tempo_bend.leds"  }
     }
   }
 
@@ -4116,7 +4080,5 @@ Module
     }
   }
 
-  /* #ifdef DEVELOPMENT_MODE
-  Wire { from: "%surface%.back"; to: TriggerPropertyAdapter  { path:"app.traktor.debug.take_screenshot" } enabled: module.shift }
-  #endif */
+  
 }
