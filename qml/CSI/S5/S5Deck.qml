@@ -36,9 +36,9 @@ Module
         editMode.value  = editModeNone;
       }
       // idle timeout for BPM and Key overlays
-      if (keyOrBPMOverlay) {
-        overlay_countdown.restart();
-      }
+      // if (keyOrBPMOverlay) {
+      //   overlay_countdown.restart();
+      // }
     }
   }
 
@@ -50,8 +50,8 @@ Module
     path: "app.traktor.masterclock.tempo"; 
     onValueChanged: { 
       var masterDeckId = masterDeckIdProp.value + 1;
-      if( screenOverlay.value == Overlay.bpm && (isTempoSynced.value || masterDeckId == focusedDeckId) )
-        overlay_countdown.restart(); 
+      // if( screenOverlay.value == Overlay.bpm && (isTempoSynced.value || masterDeckId == focusedDeckId) )
+      //   overlay_countdown.restart(); 
     } 
   }
   
@@ -82,7 +82,7 @@ Module
 
   Timer {
     id: overlay_countdown;
-    interval: 2000;
+    interval: 0;
     onTriggered:
     {
       if (keyOrBPMOverlay) {
@@ -1566,8 +1566,8 @@ Module
           enabled: focusedDeckId == 1
 
           Wire { from: "%surface%.back";   to: "decks.1.tempo.reset" }
-          // Wire { from: "%surface%.browse"; to: "decks.1.tempo.fine";   enabled: module.shift }
-          Wire { from: "%surface%.browse"; to: "decks.1.tempo.coarse"; enabled: module.shift }
+          // Wire { from: "%surface%.browse"; to: "decks.1.tempo.fine";   enabled: module.shift } 
+          Wire { from: "%surface%.browse"; to: "decks.1.tempo.coarse" }
         }
 
         // Deck B
@@ -1576,7 +1576,7 @@ Module
           enabled: focusedDeckId == 2
 
           Wire { from: "%surface%.back";   to: "decks.2.tempo.reset" }
-          Wire { from: "%surface%.browse"; to: "decks.2.tempo.coarse"; enabled: module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.2.tempo.coarse" }
         }
 
         // Deck C
@@ -1585,7 +1585,7 @@ Module
           enabled: focusedDeckId == 3
 
           Wire { from: "%surface%.back";   to: "decks.3.tempo.reset" }
-          Wire { from: "%surface%.browse"; to: "decks.3.tempo.coarse"; enabled: module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.3.tempo.coarse" }
         }
 
         // Deck D
@@ -1594,7 +1594,7 @@ Module
           enabled: focusedDeckId == 4
 
           Wire { from: "%surface%.back";   to: "decks.4.tempo.reset" }
-          Wire { from: "%surface%.browse"; to: "decks.4.tempo.coarse"; enabled: module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.4.tempo.coarse" }
         }
       }
 
@@ -1612,8 +1612,8 @@ Module
           enabled: focusedDeckId == 1
 
           Wire { from: "%surface%.back";    to: "decks.1.key_control.reset" }
-          // Wire { from: "%surface%.browse";  to: "decks.1.key_control.fine";   enabled:  module.shift }
-          Wire { from: "%surface%.browse";  to: "decks.1.key_control.coarse"; enabled: module.shift }
+          // Wire { from: "%surface%.browse";  to: "decks.1.key_control.fine";   enabled: module.shift }
+          Wire { from: "%surface%.browse";  to: "decks.1.key_control.coarse" }
         }
 
         // Deck B
@@ -1622,7 +1622,7 @@ Module
           enabled: focusedDeckId == 2
 
           Wire { from: "%surface%.back";    to: "decks.2.key_control.reset" }
-          Wire { from: "%surface%.browse";  to: "decks.2.key_control.coarse"; enabled: module.shift }
+          Wire { from: "%surface%.browse";  to: "decks.2.key_control.coarse" }
         }
 
         // Deck C
@@ -1631,7 +1631,7 @@ Module
           enabled: focusedDeckId == 3
 
           Wire { from: "%surface%.back";    to: "decks.3.key_control.reset" }
-          Wire { from: "%surface%.browse";  to: "decks.3.key_control.coarse"; enabled: module.shift }
+          Wire { from: "%surface%.browse";  to: "decks.3.key_control.coarse" }
         }
 
         // Deck D
@@ -1640,7 +1640,43 @@ Module
           enabled: focusedDeckId == 4
 
           Wire { from: "%surface%.back";    to: "decks.4.key_control.reset" }
-          Wire { from: "%surface%.browse";  to: "decks.4.key_control.coarse"; enabled: module.shift }
+          Wire { from: "%surface%.browse";  to: "decks.4.key_control.coarse" }
+        }
+      }
+
+      //------------------------------------------------------------------------------------------------------------------
+      // Reset Key
+      //------------------------------------------------------------------------------------------------------------------
+      
+      WiresGroup {
+        enabled: module.screenView.value == ScreenView.deck && screenOverlay.value == Overlay.none && !module.shift
+
+        // Deck A
+        WiresGroup
+        {
+          enabled: focusedDeckId == 1
+          Wire { from: "%surface%.back";    to: "decks.1.key_control.reset" }
+        }
+
+        // Deck B
+        WiresGroup
+        {
+          enabled: focusedDeckId == 2
+          Wire { from: "%surface%.back";    to: "decks.2.key_control.reset" }
+        }
+
+        // Deck C
+        WiresGroup
+        {
+          enabled: focusedDeckId == 3
+          Wire { from: "%surface%.back";    to: "decks.3.key_control.reset" }
+        }
+
+        // Deck D
+        WiresGroup
+        {
+          enabled: focusedDeckId == 4
+          Wire { from: "%surface%.back";    to: "decks.4.key_control.reset" }
         }
       }
 
@@ -2794,7 +2830,7 @@ Module
 
           WiresGroup
           {
-            enabled: encoderMode.value == encoderLoopMode
+            enabled: encoderMode.value == encoderLoopMode && screenOverlay.value == Overlay.none
 
             // Wire { from: "%surface%.encoder";       to: "decks.1.loop.autoloop";     enabled: !module.shift }
             // Wire { from: "%surface%.encoder";       to: "decks.1.loop.move";         enabled:  module.shift }
@@ -2948,7 +2984,7 @@ Module
 
           WiresGroup
           {
-            enabled: encoderMode.value == encoderLoopMode
+            enabled: encoderMode.value == encoderLoopMode && screenOverlay.value == Overlay.none
 
             Wire { from: "%surface%.encoder";       to: "decks.3.loop.autoloop"; enabled: !module.shift}
             Wire { from: "%surface%.browse.turn";   to: "decks.3.loop.move";     enabled: !module.shift}
@@ -3099,7 +3135,7 @@ Module
 
           WiresGroup
           {
-            enabled: encoderMode.value == encoderLoopMode
+            enabled: encoderMode.value == encoderLoopMode && screenOverlay.value == Overlay.none
 
             Wire { from: "%surface%.encoder";       to: "decks.2.loop.autoloop"; enabled: !module.shift}
             Wire { from: "%surface%.browse.turn";   to: "decks.2.loop.move";     enabled: !module.shift}
@@ -3250,7 +3286,7 @@ Module
 
           WiresGroup
           {
-            enabled: encoderMode.value == encoderLoopMode
+            enabled: encoderMode.value == encoderLoopMode && screenOverlay.value == Overlay.none
 
             Wire { from: "%surface%.encoder";       to: "decks.4.loop.autoloop"; enabled: !module.shift}
             Wire { from: "%surface%.browse.turn";   to: "decks.4.loop.move";     enabled: !module.shift}
