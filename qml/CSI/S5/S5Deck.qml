@@ -3453,7 +3453,7 @@ Module
       // Deck A
       WiresGroup
       {
-        enabled: (focusedDeckId == 1) && isInEditMode && hasEditMode(deckAType) && !module.shift
+        enabled: (focusedDeckId == 1) && isInEditMode && hasEditMode(deckAType)
 
         Wire { from: "%surface%.display.buttons.2"; to: "DeckA_Beatgrid.lock"  }
         Wire { from: "%surface%.display.buttons.3"; to: "DeckA_Beatgrid.tick"  }
@@ -3466,16 +3466,16 @@ Module
         {
           enabled: !zoomedEditView.value && selectedFooterItem.value == 1
 
-          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_fine";   enabled: !module.shift }
-          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_coarse"; enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_fine";   enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_coarse"; enabled: !module.shift }
         }
 
         WiresGroup
         {
           enabled: zoomedEditView.value && selectedFooterItem.value == 1
 
-          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_ultrafine";   enabled: !module.shift }
-          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_fine";        enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_ultrafine";   enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_fine";        enabled: !module.shift }
         }
 
         Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.bpm_coarse"; enabled: selectedFooterItem.value == 2    }
@@ -3498,16 +3498,16 @@ Module
         {
           enabled: !zoomedEditView.value && selectedFooterItem.value == 1
 
-          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_fine";   enabled: !module.shift }
-          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_coarse"; enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_fine";   enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_coarse"; enabled: !module.shift }
         }
 
         WiresGroup
         {
           enabled: zoomedEditView.value && selectedFooterItem.value == 1
 
-          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_ultrafine";   enabled: !module.shift }
-          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_fine";        enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_ultrafine";   enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_fine";        enabled: !module.shift }
         }
 
         Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.bpm_coarse"; enabled: selectedFooterItem.value == 2    }
@@ -3530,16 +3530,16 @@ Module
         {
           enabled: !zoomedEditView.value && selectedFooterItem.value == 1
 
-          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_fine";   enabled: !module.shift }
-          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_coarse"; enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_fine";   enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_coarse"; enabled: !module.shift }
         }
 
         WiresGroup
         {
           enabled: zoomedEditView.value && selectedFooterItem.value == 1
 
-          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_ultrafine";   enabled: !module.shift }
-          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_fine";        enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_ultrafine";   enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_fine";        enabled: !module.shift }
         }
 
         Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.bpm_coarse"; enabled: selectedFooterItem.value == 2    }
@@ -3562,16 +3562,16 @@ Module
         {
           enabled: !zoomedEditView.value && selectedFooterItem.value == 1
 
-          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_fine";   enabled: !module.shift }
-          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_coarse"; enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_fine";   enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_coarse"; enabled: !module.shift }
         }
 
         WiresGroup
         {
           enabled: zoomedEditView.value && selectedFooterItem.value == 1
 
-          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_ultrafine";   enabled: !module.shift }
-          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_fine";        enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_ultrafine";   enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_fine";        enabled: !module.shift }
         }
 
         Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.bpm_coarse"; enabled: selectedFooterItem.value == 2    }
