@@ -3455,13 +3455,18 @@ Module
       {
         enabled: (focusedDeckId == 1) && isInEditMode && hasEditMode(deckAType)
 
-        Wire { from: "%surface%.display.buttons.2"; to: "DeckA_Beatgrid.lock"  }
-        Wire { from: "%surface%.display.buttons.3"; to: "DeckA_Beatgrid.tick"  }
-        Wire { from: "%surface%.display.buttons.6"; to: "DeckA_Beatgrid.tap"   }
-        Wire { from: "%surface%.display.buttons.7"; to: "DeckA_Beatgrid.reset" }
+        WiresGroup
+        {
+            enabled: !module.shift
+
+            Wire { from: "%surface%.display.buttons.2"; to: "DeckA_Beatgrid.lock"  }
+            Wire { from: "%surface%.display.buttons.3"; to: "DeckA_Beatgrid.tick"  }
+            Wire { from: "%surface%.display.buttons.6"; to: "DeckA_Beatgrid.tap"   }
+            Wire { from: "%surface%.display.buttons.7"; to: "DeckA_Beatgrid.reset" }
+        }
 
         Wire{ from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckA_Beatgrid.beats_offset"}
-        
+
         WiresGroup
         {
           enabled: !zoomedEditView.value && selectedFooterItem.value == 1
@@ -3487,13 +3492,18 @@ Module
       {
         enabled: (focusedDeckId == 2) && isInEditMode && hasEditMode(deckBType)
 
-        Wire { from: "%surface%.display.buttons.2"; to: "DeckB_Beatgrid.lock"  }
-        Wire { from: "%surface%.display.buttons.3"; to: "DeckB_Beatgrid.tick"  }
-        Wire { from: "%surface%.display.buttons.6"; to: "DeckB_Beatgrid.tap"   }
-        Wire { from: "%surface%.display.buttons.7"; to: "DeckB_Beatgrid.reset" }
+        WiresGroup
+        {
+            enabled: !module.shift
+
+            Wire { from: "%surface%.display.buttons.2"; to: "DeckB_Beatgrid.lock"  }
+            Wire { from: "%surface%.display.buttons.3"; to: "DeckB_Beatgrid.tick"  }
+            Wire { from: "%surface%.display.buttons.6"; to: "DeckB_Beatgrid.tap"   }
+            Wire { from: "%surface%.display.buttons.7"; to: "DeckB_Beatgrid.reset" }
+        }
 
         Wire{ from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckB_Beatgrid.beats_offset"}
-        
+
         WiresGroup
         {
           enabled: !zoomedEditView.value && selectedFooterItem.value == 1
@@ -3519,13 +3529,18 @@ Module
       {
         enabled: (focusedDeckId == 3) && isInEditMode && hasEditMode(deckCType)
 
-        Wire { from: "%surface%.display.buttons.2"; to: "DeckC_Beatgrid.lock"  }
-        Wire { from: "%surface%.display.buttons.3"; to: "DeckC_Beatgrid.tick"  }
-        Wire { from: "%surface%.display.buttons.6"; to: "DeckC_Beatgrid.tap"   }
-        Wire { from: "%surface%.display.buttons.7"; to: "DeckC_Beatgrid.reset" }
+        WiresGroup
+        {
+            enabled: !module.shift
+
+            Wire { from: "%surface%.display.buttons.2"; to: "DeckC_Beatgrid.lock"  }
+            Wire { from: "%surface%.display.buttons.3"; to: "DeckC_Beatgrid.tick"  }
+            Wire { from: "%surface%.display.buttons.6"; to: "DeckC_Beatgrid.tap"   }
+            Wire { from: "%surface%.display.buttons.7"; to: "DeckC_Beatgrid.reset" }
+        }
 
         Wire{ from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckC_Beatgrid.beats_offset"}
-        
+
         WiresGroup
         {
           enabled: !zoomedEditView.value && selectedFooterItem.value == 1
@@ -3551,13 +3566,18 @@ Module
       {
         enabled: (focusedDeckId == 4) && isInEditMode && hasEditMode(deckDType)
 
-        Wire { from: "%surface%.display.buttons.2"; to: "DeckD_Beatgrid.lock"  }
-        Wire { from: "%surface%.display.buttons.3"; to: "DeckD_Beatgrid.tick"  }
-        Wire { from: "%surface%.display.buttons.6"; to: "DeckD_Beatgrid.tap"   }
-        Wire { from: "%surface%.display.buttons.7"; to: "DeckD_Beatgrid.reset" }
+        WiresGroup
+        {
+            enabled: !module.shift
+
+            Wire { from: "%surface%.display.buttons.2"; to: "DeckD_Beatgrid.lock"  }
+            Wire { from: "%surface%.display.buttons.3"; to: "DeckD_Beatgrid.tick"  }
+            Wire { from: "%surface%.display.buttons.6"; to: "DeckD_Beatgrid.tap"   }
+            Wire { from: "%surface%.display.buttons.7"; to: "DeckD_Beatgrid.reset" }
+        }
 
         Wire{ from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckD_Beatgrid.beats_offset"}
-        
+
         WiresGroup
         {
           enabled: !zoomedEditView.value && selectedFooterItem.value == 1
