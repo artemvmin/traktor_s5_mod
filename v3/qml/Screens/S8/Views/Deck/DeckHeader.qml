@@ -60,8 +60,8 @@ Item {
   property int topRightState:     23                                // headerSettingTopRight.value
 
   property int bottomLeftState:   1                                 // headerSettingMidLeft.value
-  property int bottomMiddleState: hasTrackStyleHeader(deckType) ? 11 : 29 // headerSettingMidMid.value
-  property int bottomRightState:  25                                // headerSettingMidRight.value
+  property int bottomMiddleState: hasTrackStyleHeader(deckType) ? 17 : 29 // headerSettingMidMid.value
+  property int bottomRightState:  24                                // headerSettingMidRight.value
 
   height: largeHeaderHeight
   clip: false //true
@@ -72,7 +72,15 @@ Item {
   readonly property int warningTypeError:   2
 
   property bool isError:   (deckHeaderWarningType.value == warningTypeError)
-  
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //  KEY PROPERTIES
+  //--------------------------------------------------------------------------------------------------------------------
+
+  AppProperty { id: keyId;      path: "app.traktor.decks." + (deckId+1) + ".track.key.final_id" }
+  AppProperty { id: keyEnable;  path: "app.traktor.decks." + (deckId+1) + ".track.key.lock_enabled" }
+
+  property var keyColor: keyEnable.value && keyId.value >= 0 ? colors.musicalKeyColors[keyId.value] : colors.colorWhite
 
   //--------------------------------------------------------------------------------------------------------------------
   // Helper function
@@ -186,7 +194,7 @@ Item {
     Behavior on opacity { NumberAnimation { duration: speed } }
   }
 
-  // top_left_text: TITEL
+  // top_left_text: TITLE
   DeckHeaderText {
     id: top_left_text
     deckId: deck_Id
@@ -243,7 +251,7 @@ Item {
     Behavior on anchors.rightMargin { NumberAnimation { duration: speed } }
   }
 
-  // bottom_middle_text: ELAPSED TIME
+  // bottom_middle_text: DYNAMIC KEY
   DeckHeaderText {
     id: bottom_middle_text
     deckId: deck_Id
@@ -251,7 +259,7 @@ Item {
     maxTextWidth : 80
     textState:  bottomMiddleState
     font.family: "Pragmatica" // is monospaced
-    color:      darkerTextColors[deck_Id]
+    color:      keyColor
     elide:      Text.ElideRight
     opacity:    _intSetInState        // set by 'state'
     font.pixelSize: fonts.middleFontSize

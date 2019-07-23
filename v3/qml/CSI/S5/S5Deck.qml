@@ -35,10 +35,6 @@ Module
       if (value == Overlay.fx) {
         editMode.value  = editModeNone;
       }
-      // idle timeout for BPM and Key overlays
-      if (keyOrBPMOverlay) {
-        overlay_countdown.restart();
-      }
     }
   }
 
@@ -47,15 +43,6 @@ Module
 
   AppProperty { id: masterDeckIdProp; path: "app.traktor.masterclock.source_id" }
   AppProperty { id: isTempoSynced;    path: "app.traktor.decks." + (focusedDeckId) + ".sync.enabled" }
-
-  AppProperty { 
-    path: "app.traktor.masterclock.tempo"; 
-    onValueChanged: { 
-      var masterDeckId = masterDeckIdProp.value + 1;
-      if( screenOverlay.value == Overlay.bpm && (isTempoSynced.value || masterDeckId == focusedDeckId) )
-        overlay_countdown.restart(); 
-    } 
-  }
   
   //------------------------------------------------------------------------------------------------------------------
   //  Footer Selection
@@ -84,7 +71,7 @@ Module
 
   Timer {
     id: overlay_countdown;
-    interval: 2000;
+    interval: 0;
     onTriggered:
     {
       if (keyOrBPMOverlay) {
@@ -1090,9 +1077,6 @@ Module
     }
   }
 
-  SetPropertyAdapter { name: "ShowDisplayButtonArea_ButtonAdapter";    path: propertiesPath + ".show_display_button_area";  value: true }
-  EncoderScriptAdapter { name: "ShowDisplayButtonArea_EncoderAdapter";   onTick: { showDisplayButtonArea.value = true; showDisplayButtonAreaResetTimer.restart(); } }
-
   Wire
   {
     enabled: (module.screenView.value == ScreenView.deck) && hasButtonArea(focusedDeckType) && !module.shift
@@ -1568,8 +1552,8 @@ Module
           enabled: focusedDeckId == 1
 
           Wire { from: "%surface%.back";   to: "decks.1.tempo.reset" }
-          Wire { from: "%surface%.browse"; to: "decks.1.tempo.fine";   enabled: !module.shift }
-          Wire { from: "%surface%.browse"; to: "decks.1.tempo.coarse"; enabled:  module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.1.tempo.fine";   enabled:  module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.1.tempo.coarse"; enabled: !module.shift }
         }
 
         // Deck B
@@ -1578,8 +1562,8 @@ Module
           enabled: focusedDeckId == 2
 
           Wire { from: "%surface%.back";   to: "decks.2.tempo.reset" }
-          Wire { from: "%surface%.browse"; to: "decks.2.tempo.fine";   enabled: !module.shift }
-          Wire { from: "%surface%.browse"; to: "decks.2.tempo.coarse"; enabled:  module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.2.tempo.fine";   enabled:  module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.2.tempo.coarse"; enabled: !module.shift }
         }
 
         // Deck C
@@ -1588,8 +1572,8 @@ Module
           enabled: focusedDeckId == 3
 
           Wire { from: "%surface%.back";   to: "decks.3.tempo.reset" }
-          Wire { from: "%surface%.browse"; to: "decks.3.tempo.fine";   enabled: !module.shift }
-          Wire { from: "%surface%.browse"; to: "decks.3.tempo.coarse"; enabled:  module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.3.tempo.fine";   enabled:  module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.3.tempo.coarse"; enabled: !module.shift }
         }
 
         // Deck D
@@ -1598,8 +1582,8 @@ Module
           enabled: focusedDeckId == 4
 
           Wire { from: "%surface%.back";   to: "decks.4.tempo.reset" }
-          Wire { from: "%surface%.browse"; to: "decks.4.tempo.fine";   enabled: !module.shift }
-          Wire { from: "%surface%.browse"; to: "decks.4.tempo.coarse"; enabled:  module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.4.tempo.fine";   enabled:  module.shift }
+          Wire { from: "%surface%.browse"; to: "decks.4.tempo.coarse"; enabled: !module.shift }
         }
       }
 
@@ -1649,6 +1633,42 @@ Module
           Wire { from: "%surface%.back";    to: "decks.4.key_control.reset" }
           Wire { from: "%surface%.browse";  to: "decks.4.key_control.fine";   enabled:  module.shift }
           Wire { from: "%surface%.browse";  to: "decks.4.key_control.coarse"; enabled: !module.shift }
+        }
+      }
+
+      //------------------------------------------------------------------------------------------------------------------
+      // Reset Key
+      //------------------------------------------------------------------------------------------------------------------
+
+      WiresGroup {
+        enabled: module.screenView.value == ScreenView.deck && screenOverlay.value == Overlay.none && !module.shift
+
+        // Deck A
+        WiresGroup
+        {
+          enabled: focusedDeckId == 1
+          Wire { from: "%surface%.back";    to: "decks.1.key_control.reset" }
+        }
+
+        // Deck B
+        WiresGroup
+        {
+          enabled: focusedDeckId == 2
+          Wire { from: "%surface%.back";    to: "decks.2.key_control.reset" }
+        }
+
+        // Deck C
+        WiresGroup
+        {
+          enabled: focusedDeckId == 3
+          Wire { from: "%surface%.back";    to: "decks.3.key_control.reset" }
+        }
+
+        // Deck D
+        WiresGroup
+        {
+          enabled: focusedDeckId == 4
+          Wire { from: "%surface%.back";    to: "decks.4.key_control.reset" }
         }
       }
 
@@ -2789,7 +2809,7 @@ Module
       }
       
       // Deck A
-      SwitchTimer { name: "DeckA_ShowLoopSizeTouchTimer"; setTimeout: 500 }
+      SwitchTimer { name: "DeckA_ShowLoopSizeTouchTimer"; setTimeout: 0 }
 
       WiresGroup
       {
@@ -2802,10 +2822,10 @@ Module
 
           WiresGroup
           {
-            enabled: encoderMode.value == encoderLoopMode
+            enabled: encoderMode.value == encoderLoopMode && screenOverlay.value == Overlay.none
 
             Wire { from: "%surface%.encoder";       to: "decks.1.loop.autoloop";     enabled: !module.shift }
-            Wire { from: "%surface%.encoder";       to: "decks.1.loop.move";         enabled:  module.shift }
+            Wire { from: "%surface%.browse.turn";   to: "decks.1.loop.move";         enabled: !module.shift }
             Wire { from: "decks.1.loop.active";     to: "%surface%.loop.led";                              }
             Wire { from: "%surface%.encoder.touch"; to: "DeckA_ShowLoopSizeTouchTimer.input"                 }
 
@@ -2941,7 +2961,7 @@ Module
       }
 
       // Deck C
-      SwitchTimer { name: "DeckC_ShowLoopSizeTouchTimer"; setTimeout: 500 }
+      SwitchTimer { name: "DeckC_ShowLoopSizeTouchTimer"; setTimeout: 0 }
 
       WiresGroup
       {
@@ -2954,10 +2974,10 @@ Module
 
           WiresGroup
           {
-            enabled: encoderMode.value == encoderLoopMode
+            enabled: encoderMode.value == encoderLoopMode && screenOverlay.value == Overlay.none
 
             Wire { from: "%surface%.encoder";       to: "decks.3.loop.autoloop";     enabled: !module.shift }
-            Wire { from: "%surface%.encoder";       to: "decks.3.loop.move";         enabled:  module.shift }
+            Wire { from: "%surface%.browse.turn";   to: "decks.3.loop.move";         enabled: !module.shift }
             Wire { from: "decks.3.loop.active";     to: "%surface%.loop.led";                              }
             Wire { from: "%surface%.encoder.touch"; to: "DeckC_ShowLoopSizeTouchTimer.input"                 }
 
@@ -3092,7 +3112,7 @@ Module
       }
 
       // Deck B
-      SwitchTimer { name: "DeckB_ShowLoopSizeTouchTimer"; setTimeout: 500 }
+      SwitchTimer { name: "DeckB_ShowLoopSizeTouchTimer"; setTimeout: 0 }
 
       WiresGroup
       {
@@ -3105,10 +3125,10 @@ Module
 
           WiresGroup
           {
-            enabled: encoderMode.value == encoderLoopMode
+            enabled: encoderMode.value == encoderLoopMode && screenOverlay.value == Overlay.none
 
             Wire { from: "%surface%.encoder";       to: "decks.2.loop.autoloop";     enabled: !module.shift }
-            Wire { from: "%surface%.encoder";       to: "decks.2.loop.move";         enabled:  module.shift }
+            Wire { from: "%surface%.browse.turn";   to: "decks.2.loop.move";         enabled: !module.shift }
             Wire { from: "decks.2.loop.active";       to: "%surface%.loop.led"                          }
             Wire { from: "%surface%.encoder.touch"; to: "DeckB_ShowLoopSizeTouchTimer.input"              }
 
@@ -3243,7 +3263,7 @@ Module
       }
 
       // Deck D
-      SwitchTimer { name: "DeckD_ShowLoopSizeTouchTimer"; setTimeout: 500 }
+      SwitchTimer { name: "DeckD_ShowLoopSizeTouchTimer"; setTimeout: 0 }
 
       WiresGroup
       {
@@ -3256,10 +3276,10 @@ Module
 
           WiresGroup
           {
-            enabled: encoderMode.value == encoderLoopMode
+            enabled: encoderMode.value == encoderLoopMode && screenOverlay.value == Overlay.none
 
             Wire { from: "%surface%.encoder";       to: "decks.4.loop.autoloop";     enabled: !module.shift }
-            Wire { from: "%surface%.encoder";       to: "decks.4.loop.move";         enabled:  module.shift }
+            Wire { from: "%surface%.browse.turn";   to: "decks.4.loop.move";         enabled: !module.shift }
             Wire { from: "decks.4.loop.active";      to: "%surface%.loop.led";                              }
             Wire { from: "%surface%.encoder.touch"; to: "DeckD_ShowLoopSizeTouchTimer.input"                 }
 
@@ -3417,12 +3437,17 @@ Module
       // Deck A
       WiresGroup
       {
-        enabled: (focusedDeckId == 1) && isInEditMode && hasEditMode(deckAType) && !module.shift
+        enabled: (focusedDeckId == 1) && isInEditMode && hasEditMode(deckAType)
 
-        Wire { from: "%surface%.display.buttons.2"; to: "DeckA_Beatgrid.lock"  }
-        Wire { from: "%surface%.display.buttons.3"; to: "DeckA_Beatgrid.tick"  }
-        Wire { from: "%surface%.display.buttons.6"; to: "DeckA_Beatgrid.tap"   }
-        Wire { from: "%surface%.display.buttons.7"; to: "DeckA_Beatgrid.reset" }
+        WiresGroup
+        {
+          enabled: !module.shift
+
+          Wire { from: "%surface%.display.buttons.2"; to: "DeckA_Beatgrid.lock"  }
+          Wire { from: "%surface%.display.buttons.3"; to: "DeckA_Beatgrid.tick"  }
+          Wire { from: "%surface%.display.buttons.6"; to: "DeckA_Beatgrid.tap"   }
+          Wire { from: "%surface%.display.buttons.7"; to: "DeckA_Beatgrid.reset" }
+        }
 
         Wire{ from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckA_Beatgrid.beats_offset"}
         
@@ -3430,16 +3455,16 @@ Module
         {
           enabled: !zoomedEditView.value && selectedFooterItem.value == 1
 
-          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_fine";   enabled: !module.shift }
-          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_coarse"; enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_fine";   enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_coarse"; enabled: !module.shift }
         }
 
         WiresGroup
         {
           enabled: zoomedEditView.value && selectedFooterItem.value == 1
 
-          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_ultrafine";   enabled: !module.shift }
-          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_fine";        enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_ultrafine";   enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_fine";        enabled: !module.shift }
         }
 
         Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.bpm_coarse"; enabled: selectedFooterItem.value == 2    }
@@ -3451,10 +3476,15 @@ Module
       {
         enabled: (focusedDeckId == 2) && isInEditMode && hasEditMode(deckBType)
 
-        Wire { from: "%surface%.display.buttons.2"; to: "DeckB_Beatgrid.lock"  }
-        Wire { from: "%surface%.display.buttons.3"; to: "DeckB_Beatgrid.tick"  }
-        Wire { from: "%surface%.display.buttons.6"; to: "DeckB_Beatgrid.tap"   }
-        Wire { from: "%surface%.display.buttons.7"; to: "DeckB_Beatgrid.reset" }
+        WiresGroup
+        {
+          enabled: !module.shift
+
+          Wire { from: "%surface%.display.buttons.2"; to: "DeckA_Beatgrid.lock"  }
+          Wire { from: "%surface%.display.buttons.3"; to: "DeckA_Beatgrid.tick"  }
+          Wire { from: "%surface%.display.buttons.6"; to: "DeckA_Beatgrid.tap"   }
+          Wire { from: "%surface%.display.buttons.7"; to: "DeckA_Beatgrid.reset" }
+        }
 
         Wire{ from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckB_Beatgrid.beats_offset"}
         
@@ -3462,16 +3492,16 @@ Module
         {
           enabled: !zoomedEditView.value && selectedFooterItem.value == 1
 
-          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_fine";   enabled: !module.shift }
-          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_coarse"; enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_fine";   enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_coarse"; enabled: !module.shift }
         }
 
         WiresGroup
         {
           enabled: zoomedEditView.value && selectedFooterItem.value == 1
 
-          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_ultrafine";   enabled: !module.shift }
-          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_fine";        enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_ultrafine";   enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_fine";        enabled: !module.shift }
         }
 
         Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.bpm_coarse"; enabled: selectedFooterItem.value == 2    }
@@ -3483,10 +3513,15 @@ Module
       {
         enabled: (focusedDeckId == 3) && isInEditMode && hasEditMode(deckCType)
 
-        Wire { from: "%surface%.display.buttons.2"; to: "DeckC_Beatgrid.lock"  }
-        Wire { from: "%surface%.display.buttons.3"; to: "DeckC_Beatgrid.tick"  }
-        Wire { from: "%surface%.display.buttons.6"; to: "DeckC_Beatgrid.tap"   }
-        Wire { from: "%surface%.display.buttons.7"; to: "DeckC_Beatgrid.reset" }
+        WiresGroup
+        {
+          enabled: !module.shift
+
+          Wire { from: "%surface%.display.buttons.2"; to: "DeckA_Beatgrid.lock"  }
+          Wire { from: "%surface%.display.buttons.3"; to: "DeckA_Beatgrid.tick"  }
+          Wire { from: "%surface%.display.buttons.6"; to: "DeckA_Beatgrid.tap"   }
+          Wire { from: "%surface%.display.buttons.7"; to: "DeckA_Beatgrid.reset" }
+        }
 
         Wire{ from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckC_Beatgrid.beats_offset"}
         
@@ -3494,16 +3529,16 @@ Module
         {
           enabled: !zoomedEditView.value && selectedFooterItem.value == 1
 
-          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_fine";   enabled: !module.shift }
-          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_coarse"; enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_fine";   enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_coarse"; enabled: !module.shift }
         }
 
         WiresGroup
         {
           enabled: zoomedEditView.value && selectedFooterItem.value == 1
 
-          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_ultrafine";   enabled: !module.shift }
-          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_fine";        enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_ultrafine";   enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_fine";        enabled: !module.shift }
         }
 
         Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.bpm_coarse"; enabled: selectedFooterItem.value == 2    }
@@ -3515,10 +3550,15 @@ Module
       {
         enabled: (focusedDeckId == 4) && isInEditMode && hasEditMode(deckDType)
 
-        Wire { from: "%surface%.display.buttons.2"; to: "DeckD_Beatgrid.lock"  }
-        Wire { from: "%surface%.display.buttons.3"; to: "DeckD_Beatgrid.tick"  }
-        Wire { from: "%surface%.display.buttons.6"; to: "DeckD_Beatgrid.tap"   }
-        Wire { from: "%surface%.display.buttons.7"; to: "DeckD_Beatgrid.reset" }
+        WiresGroup
+        {
+          enabled: !module.shift
+
+          Wire { from: "%surface%.display.buttons.2"; to: "DeckA_Beatgrid.lock"  }
+          Wire { from: "%surface%.display.buttons.3"; to: "DeckA_Beatgrid.tick"  }
+          Wire { from: "%surface%.display.buttons.6"; to: "DeckA_Beatgrid.tap"   }
+          Wire { from: "%surface%.display.buttons.7"; to: "DeckA_Beatgrid.reset" }
+        }
 
         Wire{ from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckD_Beatgrid.beats_offset"}
         
@@ -3526,16 +3566,16 @@ Module
         {
           enabled: !zoomedEditView.value && selectedFooterItem.value == 1
 
-          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_fine";   enabled: !module.shift }
-          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_coarse"; enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_fine";   enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_coarse"; enabled: !module.shift }
         }
 
         WiresGroup
         {
           enabled: zoomedEditView.value && selectedFooterItem.value == 1
 
-          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_ultrafine";   enabled: !module.shift }
-          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_fine";        enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_ultrafine";   enabled:  module.shift }
+          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_fine";        enabled: !module.shift }
         }
 
         Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.bpm_coarse"; enabled: selectedFooterItem.value == 2    }
@@ -3547,8 +3587,8 @@ Module
   //  Show header/footer on touch
   //------------------------------------------------------------------------------------------------------------------
 
-  SwitchTimer { name: "TopInfoOverlay";     resetTimeout: 1000 }
-  SwitchTimer { name: "BottomInfoOverlay";  resetTimeout: 1000 }
+  SwitchTimer { name: "TopInfoOverlay";     resetTimeout: 0 }
+  SwitchTimer { name: "BottomInfoOverlay";  resetTimeout: 0 }
 
   WiresGroup
   {
@@ -3768,27 +3808,44 @@ Module
 
     WiresGroup
     {
-      enabled: module.shift && hasSeek(deckAType) && !(deckARunning.value  && scratchWithTouchstrip.value)
+      enabled: !deckARunning.value
 
-      Wire { from: "%surface%.touchstrip";        to: "decks.1.track_seek"      }
-      Wire { from: "%surface%.touchstrip.leds";   to: "decks.1.track_seek.leds" }
+      WiresGroup
+      {
+        enabled: !module.shift || !hasSeek(deckAType)
+
+        Wire { from: "%surface%.touchstrip";        to: "decks.1.scratch"        }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.1.scratch.leds"   }
+      }
+
+      WiresGroup
+      {
+        enabled: module.shift && hasSeek(deckAType)
+
+        Wire { from: "%surface%.touchstrip";        to: "decks.1.track_seek"      }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.1.track_seek.leds" }
+      }
     }
 
     WiresGroup
     {
-      enabled: (!deckARunning.value && !(module.shift && hasSeek(deckAType)))
-               || (deckARunning.value && module.shift && (!hasSeek(deckAType) || scratchWithTouchstrip.value))
+      enabled: deckARunning.value
 
-      Wire { from: "%surface%.touchstrip";        to: "decks.1.scratch"        }
-      Wire { from: "%surface%.touchstrip.leds";   to: "decks.1.scratch.leds"   }
-    }
+      WiresGroup
+      {
+        enabled: !module.shift
 
-    WiresGroup
-    {
-      enabled: deckARunning.value && !module.shift
+        Wire { from: "%surface%.touchstrip";        to: "decks.1.scratch"        }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.1.tempo_bend.leds" }
+      }
 
-      Wire { from: "%surface%.touchstrip";        to: "decks.1.tempo_bend"      }
-      Wire { from: "%surface%.touchstrip.leds";   to: "decks.1.tempo_bend.leds" }
+      WiresGroup
+      {
+        enabled: module.shift
+
+        Wire { from: "%surface%.touchstrip";        to: "decks.1.tempo_bend"      }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.1.tempo_bend.leds" }
+      }
     }
   }
 
@@ -3824,29 +3881,47 @@ Module
       Wire { from: "%surface%.sync"; to: "decks.2.transport.master"; enabled: (editMode.value != editModeArmed) && (editMode.value != editModeUsed) }
     }
 
+   
     WiresGroup
     {
-      enabled: module.shift && hasSeek(deckBType) && !(deckBRunning.value  && scratchWithTouchstrip.value)
+      enabled: !deckBRunning.value
 
-      Wire { from: "%surface%.touchstrip";       to: "decks.2.track_seek"      }
-      Wire { from: "%surface%.touchstrip.leds";  to: "decks.2.track_seek.leds" }
+      WiresGroup
+      {
+        enabled: !module.shift || !hasSeek(deckBType)
+
+        Wire { from: "%surface%.touchstrip";        to: "decks.2.scratch"        }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.2.scratch.leds"   }
+      }
+
+      WiresGroup
+      {
+        enabled: module.shift && hasSeek(deckBType)
+
+        Wire { from: "%surface%.touchstrip";        to: "decks.2.track_seek"      }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.2.track_seek.leds" }
+      }
     }
 
     WiresGroup
     {
-      enabled: (!deckBRunning.value && !(module.shift && hasSeek(deckBType)))
-               || (deckBRunning.value && module.shift && (!hasSeek(deckBType) || scratchWithTouchstrip.value))
+      enabled: deckBRunning.value
 
-      Wire { from: "%surface%.touchstrip";       to: "decks.2.scratch"        }
-      Wire { from: "%surface%.touchstrip.leds";  to: "decks.2.scratch.leds"   }
-    }
+      WiresGroup
+      {
+        enabled: !module.shift
 
-    WiresGroup
-    {
-      enabled: deckBRunning.value && !module.shift
+        Wire { from: "%surface%.touchstrip";        to: "decks.2.scratch"        }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.2.tempo_bend.leds" }
+      }
 
-      Wire { from: "%surface%.touchstrip";       to: "decks.2.tempo_bend"      }
-      Wire { from: "%surface%.touchstrip.leds";  to: "decks.2.tempo_bend.leds" }
+      WiresGroup
+      {
+        enabled: module.shift
+
+        Wire { from: "%surface%.touchstrip";        to: "decks.2.tempo_bend"      }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.2.tempo_bend.leds" }
+      }
     }
   }
 
@@ -3882,29 +3957,47 @@ Module
       Wire { from: "%surface%.sync"; to: "decks.3.transport.master"; enabled: (editMode.value != editModeArmed) && (editMode.value != editModeUsed) }
     }
 
+    
     WiresGroup
     {
-      enabled: module.shift && hasSeek(deckCType) && !(deckCRunning.value  && scratchWithTouchstrip.value)
+      enabled: !deckCRunning.value
 
-      Wire { from: "%surface%.touchstrip";        to: "decks.3.track_seek"       }
-      Wire { from: "%surface%.touchstrip.leds";   to: "decks.3.track_seek.leds"  }
+      WiresGroup
+      {
+        enabled: !module.shift || !hasSeek(deckCType)
+
+        Wire { from: "%surface%.touchstrip";        to: "decks.3.scratch"        }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.3.scratch.leds"   }
+      }
+
+      WiresGroup
+      {
+        enabled: module.shift && hasSeek(deckCType)
+
+        Wire { from: "%surface%.touchstrip";        to: "decks.3.track_seek"      }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.3.track_seek.leds" }
+      }
     }
 
     WiresGroup
     {
-      enabled: (!deckCRunning.value && !(module.shift && hasSeek(deckCType)))
-               || (deckCRunning.value && module.shift && (!hasSeek(deckCType) || scratchWithTouchstrip.value))
+      enabled: deckCRunning.value
 
-      Wire { from: "%surface%.touchstrip";        to: "decks.3.scratch"         }
-      Wire { from: "%surface%.touchstrip.leds";   to: "decks.3.scratch.leds"    }
-    }
+      WiresGroup
+      {
+        enabled: !module.shift
 
-    WiresGroup
-    {
-      enabled: deckCRunning.value && !module.shift
+        Wire { from: "%surface%.touchstrip";        to: "decks.3.scratch"        }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.3.tempo_bend.leds" }
+      }
 
-      Wire { from: "%surface%.touchstrip";        to: "decks.3.tempo_bend"       }
-      Wire { from: "%surface%.touchstrip.leds";   to: "decks.3.tempo_bend.leds"  }
+      WiresGroup
+      {
+        enabled: module.shift
+
+        Wire { from: "%surface%.touchstrip";        to: "decks.3.tempo_bend"      }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.3.tempo_bend.leds" }
+      }
     }
   }
 
@@ -3940,29 +4033,47 @@ Module
       Wire { from: "%surface%.sync"; to: "decks.4.transport.master"; enabled: (editMode.value != editModeArmed) && (editMode.value != editModeUsed) }
     }
 
+    
     WiresGroup
     {
-      enabled: module.shift && hasSeek(deckDType) && !(deckDRunning.value  && scratchWithTouchstrip.value)
+      enabled: !deckDRunning.value
 
-      Wire { from: "%surface%.touchstrip";       to: "decks.4.track_seek"       }
-      Wire { from: "%surface%.touchstrip.leds";  to: "decks.4.track_seek.leds"  }
+      WiresGroup
+      {
+        enabled: !module.shift || !hasSeek(deckDType)
+
+        Wire { from: "%surface%.touchstrip";        to: "decks.4.scratch"        }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.4.scratch.leds"   }
+      }
+
+      WiresGroup
+      {
+        enabled: module.shift && hasSeek(deckDType)
+
+        Wire { from: "%surface%.touchstrip";        to: "decks.4.track_seek"      }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.4.track_seek.leds" }
+      }
     }
 
     WiresGroup
     {
-      enabled: (!deckDRunning.value && !(module.shift && hasSeek(deckDType)))
-               || (deckDRunning.value && module.shift && (!hasSeek(deckDType) || scratchWithTouchstrip.value))
+      enabled: deckDRunning.value
 
-      Wire { from: "%surface%.touchstrip";       to: "decks.4.scratch"         }
-      Wire { from: "%surface%.touchstrip.leds";  to: "decks.4.scratch.leds"    }
-    }
+      WiresGroup
+      {
+        enabled: !module.shift
 
-    WiresGroup
-    {
-      enabled: deckDRunning.value && !module.shift
+        Wire { from: "%surface%.touchstrip";        to: "decks.4.scratch"        }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.4.tempo_bend.leds" }
+      }
 
-      Wire { from: "%surface%.touchstrip";       to: "decks.4.tempo_bend"       }
-      Wire { from: "%surface%.touchstrip.leds";  to: "decks.4.tempo_bend.leds"  }
+      WiresGroup
+      {
+        enabled: module.shift
+
+        Wire { from: "%surface%.touchstrip";        to: "decks.4.tempo_bend"      }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.4.tempo_bend.leds" }
+      }
     }
   }
 
