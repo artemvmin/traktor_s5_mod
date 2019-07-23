@@ -1,4 +1,4 @@
-# Traktor2 S5 Mod
+# Traktor S5 Mod
 Compatible with Traktor versions:
 - 2.11.0 23
 - 3.2.0 60
