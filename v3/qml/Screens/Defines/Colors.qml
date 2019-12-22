@@ -493,7 +493,7 @@ QtObject {
 
   function getWaveformColors(colorId)
   {
-    if(colorId <= 16) {
+    if(colorId <= 17) {
       return waveformColorsMap[colorId];
     }
 
