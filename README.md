@@ -34,6 +34,6 @@ Compatible with Traktor versions:
    or
    `Applications/Native Instruments/Traktor Pro 3`.
 3. Right click on Traktor and select `Show Package Contents`.
-4. Copy the qml folder to `Contents/Resources` and select merge (combine two folders, preserving all newer items).
+4. Copy the qml folder to `Contents/Resources` and select merge. (Note: Merge preserves newer items. Make sure to download this mod AFTER installing or updating Traktor.)
 5. Restart Traktor.
 
