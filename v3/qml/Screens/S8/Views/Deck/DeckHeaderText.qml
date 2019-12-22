@@ -57,7 +57,8 @@ Text {
   AppProperty { id: propElapsedTime;    path: "app.traktor.decks." + (deckId+1) + ".track.player.elapsed_time"; } 
   AppProperty { id: propNextCuePoint;   path: "app.traktor.decks." + (deckId+1) + ".track.player.next_cue_point"; }
 
-  AppProperty { id: propMusicalKey;       path: "app.traktor.decks." + (deckId+1) + ".track.key.resulting.precise" }
+  // AppProperty { id: propMusicalKey;       path: "app.traktor.decks." + (deckId+1) + ".track.key.resulting.precise" }
+  AppProperty { id: propMusicalKey;       path: "app.traktor.decks." + (deckId+1) + ".track.key.key_for_display" }
   AppProperty { id: propLegacyKey;        path: "app.traktor.decks." + (deckId+1) + ".content.legacy_key" }
   AppProperty { id: propPitchRange;       path: "app.traktor.decks." + (deckId+1) + ".tempo.range" }
   AppProperty { id: propTempoAbsolute;    path: "app.traktor.decks." + (deckId+1) + ".tempo.absolute" }  
