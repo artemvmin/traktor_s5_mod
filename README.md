@@ -4,7 +4,7 @@ This is my attempt to fix all the shortcomings of this near-perfect DJ controlle
 
 Please reach out to me with any bugs or feature requests.
 
-# Compatibility
+## Compatibility
 
 Traktor Pro:
 - 2.11.0
