@@ -4,7 +4,7 @@ Compatible with Traktor versions:
 - 2.11.0
 - 3.2.19
 
-## Modifications:
+## Modifications
 
 **Display:**
 
@@ -26,7 +26,7 @@ Compatible with Traktor versions:
 - Hold back (<) in deck view to reset key
 - SHIFT + FLUX for flux reverse
 
-## Installation:
+## Installation
 
 **Windows:**
 
@@ -49,3 +49,7 @@ Compatible with Traktor versions:
 4. Copy the qml folder to `Contents/Resources` and select merge. (Note: Merge preserves newer items. Make sure to download this mod AFTER installing or updating Traktor.)
 5. Restart Traktor.
 
+## Screenshots
+
+![Colored Camelot key](images/colored_key.jpg)
+![Approximate Camelot key](images/approx_key.jpg)
