@@ -1,5 +1,9 @@
 # Traktor S5 Mod
 
+This is my attempt to fix all the shortcomings of this near-perfect DJ controller.
+
+Please reach out to me with any bugs or feature requests.
+
 Compatible with Traktor versions:
 - 2.11.0
 - 3.2.19
