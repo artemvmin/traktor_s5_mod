@@ -4,8 +4,9 @@ This is my attempt to fix all the shortcomings of this near-perfect DJ controlle
 
 Please reach out to me with any bugs or feature requests.
 
-Compatible with Traktor versions:
+Compatible with Traktor Pro versions:
 - 2.11.0
+  - NOTE: This version is no longer supported and may not contain all features listed below.
 - 3.2.19
 
 ## Modifications
