@@ -51,5 +51,5 @@ Compatible with Traktor versions:
 
 ## Screenshots
 
-![Colored Camelot key](images/colored_key.jpg)
+![Colored Camelot key](images/color_key.jpg)
 ![Approximate Camelot key](images/approx_key.jpg)
