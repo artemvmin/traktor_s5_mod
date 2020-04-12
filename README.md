@@ -29,8 +29,12 @@ NOTE: Traktor Pro 2 is no longer supported and may not contain all features list
 - Default course adjustment for:
   - global and deck tempo knobs
   - beatmatch edit offset knob
-- Touchpad scratches by default
-  - hold SHIFT to nudge
+- Browser:
+  - Preview: load and seek with right deck knob
+  - SortBy:
+    - SHIFT + right deck knob TURN to change sort type
+    - SHIFT + right deck knob PUSH to invert sort
+  - preparation append button replaced with toggle
 - Hold back (<) in deck view to reset key
 - SHIFT + FLUX for flux reverse
 
