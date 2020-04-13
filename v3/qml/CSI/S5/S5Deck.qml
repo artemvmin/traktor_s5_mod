@@ -1565,7 +1565,7 @@ Module
   }
 
 //------------------------------------------------------------------------------------------------------------------
-// Reset Key
+// Reset Deck
 //------------------------------------------------------------------------------------------------------------------
 
   WiresGroup {
@@ -1575,28 +1575,40 @@ Module
     WiresGroup
     {
       enabled: focusedDeckId == 1
-      Wire { from: "%surface%.back";    to: "decks.1.key_control.reset" }
+
+      Wire { from: "%surface%.back"; to: "decks.1.key_control.reset" }
+      Wire { from: "%surface%.back"; to: "decks.1.tempo.reset" }
+      Wire { from: "%surface%.back"; to: SetPropertyAdapter { path: "app.traktor.mixer.channels.1.fx.select"; value: 0 } }
     }
 
     // Deck B
     WiresGroup
     {
       enabled: focusedDeckId == 2
-      Wire { from: "%surface%.back";    to: "decks.2.key_control.reset" }
+
+      Wire { from: "%surface%.back"; to: "decks.2.key_control.reset" }
+      Wire { from: "%surface%.back"; to: "decks.2.tempo.reset" }
+      Wire { from: "%surface%.back"; to: SetPropertyAdapter { path: "app.traktor.mixer.channels.2.fx.select"; value: 0 } }
     }
 
     // Deck C
     WiresGroup
     {
       enabled: focusedDeckId == 3
-      Wire { from: "%surface%.back";    to: "decks.3.key_control.reset" }
+
+      Wire { from: "%surface%.back"; to: "decks.3.key_control.reset" }
+      Wire { from: "%surface%.back"; to: "decks.3.tempo.reset" }
+      Wire { from: "%surface%.back"; to: SetPropertyAdapter { path: "app.traktor.mixer.channels.3.fx.select"; value: 0 } }
     }
 
     // Deck D
     WiresGroup
     {
       enabled: focusedDeckId == 4
-      Wire { from: "%surface%.back";    to: "decks.4.key_control.reset" }
+
+      Wire { from: "%surface%.back"; to: "decks.4.key_control.reset" }
+      Wire { from: "%surface%.back"; to: "decks.4.tempo.reset" }
+      Wire { from: "%surface%.back"; to: SetPropertyAdapter { path: "app.traktor.mixer.channels.4.fx.select"; value: 0 } }
     }
   }
 
