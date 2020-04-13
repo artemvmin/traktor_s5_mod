@@ -14,7 +14,7 @@ NOTE: Traktor Pro 2 is no longer supported and may not contain all features list
 
 ## Modifications
 
-**Display:**
+### Display
 
 - Spectrum colors to distinguish highs, mids, and lows
 - Deck header shows
@@ -23,18 +23,55 @@ NOTE: Traktor Pro 2 is no longer supported and may not contain all features list
 - Browser SortBy reduced to three variables: artist, bpm, and key
 - Removed overlay hide delays
 
-**Controller:**
+### Controller
 
-- Use left deck knob to skip through song (by loop size)
-- Default course adjustment for:
-  - global and deck tempo knobs
-  - beatmatch edit offset knob
-- Browser:
-  - Preview: load and seek with right deck knob
-  - SortBy:
-    - SHIFT + right deck knob TURN to change sort type
-    - SHIFT + right deck knob PUSH to invert sort
-  - preparation append button replaced with toggle
+#### Transport
+
+- TURN (right knob) to adjust loop size
+- PUSH (right knob) to loop
+- TURN (left knob) to seek (by loop size) or move the loop
+
+#### Browser
+
+- PUSH (left knob) to browse
+- Preview:
+  - PUSH (right knob) to start playing selected track in preview mode
+  - TURN (right knob) to seek through preview track
+- Sorting:
+  - SHIFT + PUSH (right knob) to invert sorting
+  - SHIFT + TURN (right knob) to change sorting type
+- Preparation [1]:
+  - PUSH □ (top right) to toggle selected track in and out of your preparation playlist
+  - PUSH □ (bottom right) to jump to preparation playlist
+
+[1] Preparation requires you to manually mark a playlist as "preparation" using the Traktor software.
+
+#### Beatgrid Edit
+
+- From any track screen:
+  - SHIFT + PUSH □ (top left) to toggle beat grid edit mode
+  - SHIFT + PUSH □ (top right) to set load marker at cursor
+  - SHIFT + PUSH □ (top right) to reset the load marker
+- From edit mode:
+  - PUSH □ (top left) to lock edit mode
+  - PUSH □ (bottom left) to enable tick [2]
+  - PUSH □ (top right) to tap the beat [3]
+  - PUSH □ (bottom right) to reset BPM
+  - PUSH [<] or [>] to halve or double the BPM
+  - PUSH (left knob) to zoom in on a single beat
+  - PUSH back (<) to switch between seek and edit mode
+  - When in edit mode (back button blinking):
+    - TURN (left knob) to adjust offset
+    - TURN (right knob) to adjust BPM
+  - When in seek mode (back button not blinking):
+    - TURN (left knob) to seek through track
+
+[2] Tick plays an audible sound on every beat. This feature requires headphones routed from the monitor channel and for the track to be CUEd.
+
+[3] Tap allows you to fix the beat grid alignment by tapping four consecutive beats while the song is playing.
+
+#### Misc
+- Global and deck tempo knobs perform coarse adjustment when SHIFT is not held
 - Hold back (<) in deck view to reset key
 - SHIFT + FLUX for flux reverse
 
