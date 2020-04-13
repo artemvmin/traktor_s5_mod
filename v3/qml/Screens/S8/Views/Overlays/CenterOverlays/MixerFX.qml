@@ -37,7 +37,7 @@ CenterOverlay {
   Text {
     anchors.top:              parent.top
     anchors.horizontalCenter: parent.horizontalCenter
-    anchors.topMargin:        55
+    anchors.topMargin:        50
     font.pixelSize:           fonts.extraLargeValueFontSize
     font.family:              "Pragmatica"
     color:                    mixerFXOn.value ? colors.mixerFXColors[mixerFX.value] : colors.colorGrey40
@@ -48,58 +48,19 @@ CenterOverlay {
   Text {
     anchors.bottom:           parent.bottom
     anchors.horizontalCenter: parent.horizontalCenter
-    anchors.bottomMargin:     24.0
+    anchors.bottomMargin:     30.0
     font.pixelSize:           fonts.smallFontSize
     color:                    colors.colorGrey72
     text:                     "Push BROWSE to set " + mixerFXNames[mixerFX.value] + " on all decks"
   }
 
-  // footline 2 "Hold "
   Text {
-  id: footline2hold
-    anchors.bottom:           parent.bottom
-    anchors.horizontalCenter: parent.horizontalCenter 
-    anchors.bottomMargin:     8.0
-    anchors.horizontalCenterOffset: -70
-
-  font.pixelSize:           fonts.smallFontSize
-    visible:                mixerFX.value != 0 ? 1 : 0	
-    color:                  colors.colorGrey72 //colors.colorGrey104
-    text:                   "Press "
-  }
-
-  // footline 2 "BACK"
-  Text {
-  id: footline2back
-    anchors.bottom:         parent.bottom
-    anchors.left:           footline2hold.right
-    anchors.bottomMargin:   8.0
-    font.pixelSize:         fonts.smallFontSize
-    visible:                mixerFX.value != 0 ? 1 : 0	
-    color:                  colors.colorOrange //colors.colorGrey104
-    text:                   "BACK "
-  }
-
-  // footline 2 "to reset to "
-  Text {
-  id: footline2reset
-    anchors.bottom:         parent.bottom
-    anchors.left:           footline2back.right
-    anchors.bottomMargin:   8.0
-    font.pixelSize:         fonts.smallFontSize
-    visible:                mixerFX.value != 0 ? 1 : 0	
-    color:                  colors.colorGrey72 //colors.colorGrey104
-    text:                   "to reset to "
-  }
-
-  // FILTER
-  Text {
-    anchors.bottom:        parent.bottom
-    anchors.left:          footline2reset.right
-    anchors.bottomMargin:  8.0
-    font.pixelSize:        fonts.smallFontSize 
-    visible:               mixerFX.value != 0 ? 1 : 0	
-    color:                 colors.colorMixerFXOrange
-    text:                  "FILTER"
+    anchors.bottom:            parent.bottom
+    anchors.horizontalCenter:  parent.horizontalCenter
+    anchors.bottomMargin:      14.0
+    font.pixelSize:            fonts.smallFontSize
+    visible:                   mixerFX.value != 0 ? 1 : 0	
+    color:                     colors.colorGrey104
+    text:                      "Press BACK to reset to Filter"
   }
 }

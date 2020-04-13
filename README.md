@@ -76,13 +76,15 @@ NOTE: Traktor Pro 2 is no longer supported and may not contain all features list
 #### Mixer FX [4]
 
 - SHIFT + FILTER_ON to open the Mixer FX menu for that deck
+  - Left Knob to browse effects
+  - PUSH Left Knob to set current effect on all decks
 - SHIFT + FX Arrows [<] or [>] to cycle though Mixer FX for that deck
-- Back (<) to reset deck Mixer FX (Filter)
 
 [4] Mixer FX allow you to change the behavior of a deck's filter knob. There are currently five effects: filter, reverb, dual delay, noise, and time gater.
 
 #### Misc
 
+- Back (<) to reset deck Mixer FX (Filter)
 - HOLD Back (<) to reset deck key and tempo
 - Global and deck tempo knobs perform coarse adjustment when SHIFT is not held
 - SHIFT + FLUX for flux reverse
