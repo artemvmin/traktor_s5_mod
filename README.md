@@ -89,6 +89,15 @@ NOTE: Traktor Pro 2 is no longer supported and may not contain all features list
 - Global and deck tempo knobs perform coarse adjustment when SHIFT is not held
 - SHIFT + FLUX for flux reverse
 
+## Credit
+
+As far as I'm aware, all inputs and ouputs for these configuration scripts are completely undocumented. That means that this process requires tedious guess and checking with no guarantee of success. There are some features I simply would not have figured out on my own and it's important to give credit where credit is due.
+
+Here is a list of pioneers and their corresponding features that I have adapted:
+
+- Traktor Supreme Edition MOD [Go support Aleix on Patreon](https://www.patreon.com/supremeedition)!
+  - MixerFX
+
 ## Installation
 
 **Windows:**
