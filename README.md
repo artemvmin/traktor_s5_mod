@@ -95,7 +95,7 @@ As far as I'm aware, all inputs and ouputs for these configuration scripts are c
 
 Here is a list of pioneers and their corresponding features that I have adapted:
 
-- Traktor Supreme Edition MOD [Go support Aleix on Patreon](https://www.patreon.com/supremeedition)!
+- Traktor Supreme Edition MOD ([Go support Aleix on Patreon](https://www.patreon.com/supremeedition)! His mod is light years ahead of mine.)
   - MixerFX
 
 ## Installation
