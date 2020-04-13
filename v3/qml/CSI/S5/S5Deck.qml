@@ -3348,6 +3348,16 @@ Module
 
   WiresGroup
   {
+    enabled: (isInEditMode || encoderMode.value == encoderLoopMode) && screenOverlay.value == Overlay.none && module.shift
+
+    // Set grid marker
+    Wire { from: "%surface%.display.buttons.6"; to: ButtonScriptAdapter { onPress: (setGrid.value = 1) } }
+    // Auto set grid marker
+    Wire { from: "%surface%.display.buttons.7"; to: ButtonScriptAdapter { onPress: (autoGrid.value = 1) } }
+  }
+
+  WiresGroup
+  {
     enabled: isInEditMode
 
     Wire { from: "%surface%.browse";   to: DirectPropertyAdapter { path: propertiesPath + ".beatgrid.scan_control" }   enabled: encoderScanMode.value  }
@@ -3359,224 +3369,116 @@ Module
   // Deck A
   WiresGroup
   {
-    enabled: (focusedDeckId == 1) && hasEditMode(deckAType)
+    enabled: (focusedDeckId == 1) && isInEditMode && hasEditMode(deckAType)
 
     WiresGroup
     {
-      enabled: module.shift
+      enabled: !module.shift
 
-      // Set grid marker
-      Wire { from: "%surface%.display.buttons.6"; to: ButtonScriptAdapter { onPress: (setGrid.value = 1) } }
-      // Auto set grid marker
-      Wire { from: "%surface%.display.buttons.7"; to: ButtonScriptAdapter { onPress: (autoGrid.value = 1) } }
+      Wire { from: "%surface%.display.buttons.2"; to: "DeckA_Beatgrid.lock"  }
+      Wire { from: "%surface%.display.buttons.3"; to: "DeckA_Beatgrid.tick"  }
+      Wire { from: "%surface%.display.buttons.6"; to: "DeckA_Beatgrid.tap"   }
+      Wire { from: "%surface%.display.buttons.7"; to: "DeckA_Beatgrid.reset" }
+      Wire { from: "%surface%.display.buttons.4"; to: ButtonScriptAdapter { onPress: (halfBPM.value = 1) } }
+      Wire { from: "%surface%.display.buttons.8"; to: ButtonScriptAdapter { onPress: (doubleBPM.value = 1) } }
     }
 
-    WiresGroup
-    {
-      enabled: isInEditMode
+    Wire { from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckA_Beatgrid.beats_offset"}
 
-      WiresGroup
-      {
-        enabled: !module.shift
+    WiresGroup {
+      enabled: !encoderScanMode.value
 
-        Wire { from: "%surface%.display.buttons.2"; to: "DeckA_Beatgrid.lock"  }
-        Wire { from: "%surface%.display.buttons.3"; to: "DeckA_Beatgrid.tick"  }
-        Wire { from: "%surface%.display.buttons.6"; to: "DeckA_Beatgrid.tap"   }
-        Wire { from: "%surface%.display.buttons.7"; to: "DeckA_Beatgrid.reset" }
-        Wire { from: "%surface%.display.buttons.4"; to: ButtonScriptAdapter { onPress: (halfBPM.value = 1) } }
-        Wire { from: "%surface%.display.buttons.8"; to: ButtonScriptAdapter { onPress: (doubleBPM.value = 1) } }
-      }
-
-      Wire { from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckA_Beatgrid.beats_offset"}
-
-      WiresGroup {
-        enabled: !encoderScanMode.value
-
-        WiresGroup {
-          enabled: !zoomedEditView.value
-
-          Wire { from: "%surface%.browse";  to: "DeckA_Beatgrid.offset_coarse"; enabled: !shift }
-          Wire { from: "%surface%.browse";  to: "DeckA_Beatgrid.offset_fine";   enabled: shift  }
-          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.bpm_coarse";    enabled: !shift }
-          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.bpm_fine";      enabled: shift  }
-        }
-        WiresGroup {
-          enabled: zoomedEditView.value
-
-          Wire { from: "%surface%.browse";  to: "DeckA_Beatgrid.offset_fine";      enabled: !shift }
-          Wire { from: "%surface%.browse";  to: "DeckA_Beatgrid.offset_ultrafine"; enabled: shift  }
-          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.bpm_fine";         enabled: !shift }
-          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.bpm_coarse";       enabled: shift  }
-        }
-      }
+      Wire { from: "%surface%.browse";  to: "DeckA_Beatgrid.offset_coarse"; enabled: !shift }
+      Wire { from: "%surface%.browse";  to: "DeckA_Beatgrid.offset_fine";   enabled: shift  }
+      Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.bpm_coarse";    enabled: !shift }
+      Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.bpm_fine";      enabled: shift  }
     }
   }
 
   // Deck B
   WiresGroup
   {
-    enabled: (focusedDeckId == 2) && hasEditMode(deckBType)
+    enabled: (focusedDeckId == 2) && isInEditMode && hasEditMode(deckBType)
 
     WiresGroup
     {
-      enabled: module.shift
+      enabled: !module.shift
 
-      // Set grid marker
-      Wire { from: "%surface%.display.buttons.6"; to: ButtonScriptAdapter { onPress: (setGrid.value = 1) } }
-      // Auto set grid marker
-      Wire { from: "%surface%.display.buttons.7"; to: ButtonScriptAdapter { onPress: (autoGrid.value = 1) } }
+      Wire { from: "%surface%.display.buttons.2"; to: "DeckB_Beatgrid.lock"  }
+      Wire { from: "%surface%.display.buttons.3"; to: "DeckB_Beatgrid.tick"  }
+      Wire { from: "%surface%.display.buttons.6"; to: "DeckB_Beatgrid.tap"   }
+      Wire { from: "%surface%.display.buttons.7"; to: "DeckB_Beatgrid.reset" }
+      Wire { from: "%surface%.display.buttons.4"; to: ButtonScriptAdapter { onPress: (halfBPM.value = 1) } }
+      Wire { from: "%surface%.display.buttons.8"; to: ButtonScriptAdapter { onPress: (doubleBPM.value = 1) } }
     }
 
-    WiresGroup
-    {
-      enabled: isInEditMode
+    Wire { from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckB_Beatgrid.beats_offset"}
 
-      WiresGroup
-      {
-        enabled: !module.shift
+    WiresGroup {
+      enabled: !encoderScanMode.value
 
-        Wire { from: "%surface%.display.buttons.2"; to: "DeckB_Beatgrid.lock"  }
-        Wire { from: "%surface%.display.buttons.3"; to: "DeckB_Beatgrid.tick"  }
-        Wire { from: "%surface%.display.buttons.6"; to: "DeckB_Beatgrid.tap"   }
-        Wire { from: "%surface%.display.buttons.7"; to: "DeckB_Beatgrid.reset" }
-        Wire { from: "%surface%.display.buttons.4"; to: ButtonScriptAdapter { onPress: (halfBPM.value = 1) } }
-        Wire { from: "%surface%.display.buttons.8"; to: ButtonScriptAdapter { onPress: (doubleBPM.value = 1) } }
-      }
-
-      Wire { from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckB_Beatgrid.beats_offset"}
-
-      WiresGroup {
-        enabled: !encoderScanMode.value
-
-        WiresGroup {
-          enabled: !zoomedEditView.value
-
-          Wire { from: "%surface%.browse";  to: "DeckB_Beatgrid.offset_coarse"; enabled: !shift }
-          Wire { from: "%surface%.browse";  to: "DeckB_Beatgrid.offset_fine";   enabled: shift  }
-          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.bpm_coarse";    enabled: !shift }
-          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.bpm_fine";      enabled: shift  }
-        }
-        WiresGroup {
-          enabled: zoomedEditView.value
-
-          Wire { from: "%surface%.browse";  to: "DeckB_Beatgrid.offset_fine";      enabled: !shift }
-          Wire { from: "%surface%.browse";  to: "DeckB_Beatgrid.offset_ultrafine"; enabled: shift  }
-          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.bpm_fine";         enabled: !shift }
-          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.bpm_coarse";       enabled: shift  }
-        }
-      }
+      Wire { from: "%surface%.browse";  to: "DeckB_Beatgrid.offset_coarse"; enabled: !shift }
+      Wire { from: "%surface%.browse";  to: "DeckB_Beatgrid.offset_fine";   enabled: shift  }
+      Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.bpm_coarse";    enabled: !shift }
+      Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.bpm_fine";      enabled: shift  }
     }
   }
 
   // Deck C
   WiresGroup
   {
-    enabled: (focusedDeckId == 3) && hasEditMode(deckCType)
+    enabled: (focusedDeckId == 3) && isInEditMode && hasEditMode(deckCType)
 
     WiresGroup
     {
-      enabled: module.shift
+      enabled: !module.shift
 
-      // Set grid marker
-      Wire { from: "%surface%.display.buttons.6"; to: ButtonScriptAdapter { onPress: (setGrid.value = 1) } }
-      // Auto set grid marker
-      Wire { from: "%surface%.display.buttons.7"; to: ButtonScriptAdapter { onPress: (autoGrid.value = 1) } }
+      Wire { from: "%surface%.display.buttons.2"; to: "DeckC_Beatgrid.lock"  }
+      Wire { from: "%surface%.display.buttons.3"; to: "DeckC_Beatgrid.tick"  }
+      Wire { from: "%surface%.display.buttons.6"; to: "DeckC_Beatgrid.tap"   }
+      Wire { from: "%surface%.display.buttons.7"; to: "DeckC_Beatgrid.reset" }
+      Wire { from: "%surface%.display.buttons.4"; to: ButtonScriptAdapter { onPress: (halfBPM.value = 1) } }
+      Wire { from: "%surface%.display.buttons.8"; to: ButtonScriptAdapter { onPress: (doubleBPM.value = 1) } }
     }
 
-    WiresGroup
-    {
-      enabled: isInEditMode
+    Wire { from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckC_Beatgrid.beats_offset"}
 
-      WiresGroup
-      {
-        enabled: !module.shift
+    WiresGroup {
+      enabled: !encoderScanMode.value
 
-        Wire { from: "%surface%.display.buttons.2"; to: "DeckC_Beatgrid.lock"  }
-        Wire { from: "%surface%.display.buttons.3"; to: "DeckC_Beatgrid.tick"  }
-        Wire { from: "%surface%.display.buttons.6"; to: "DeckC_Beatgrid.tap"   }
-        Wire { from: "%surface%.display.buttons.7"; to: "DeckC_Beatgrid.reset" }
-        Wire { from: "%surface%.display.buttons.4"; to: ButtonScriptAdapter { onPress: (halfBPM.value = 1) } }
-        Wire { from: "%surface%.display.buttons.8"; to: ButtonScriptAdapter { onPress: (doubleBPM.value = 1) } }
-      }
-
-      Wire { from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckC_Beatgrid.beats_offset"}
-
-      WiresGroup {
-        enabled: !encoderScanMode.value
-
-        WiresGroup {
-          enabled: !zoomedEditView.value
-
-          Wire { from: "%surface%.browse";  to: "DeckC_Beatgrid.offset_coarse"; enabled: !shift }
-          Wire { from: "%surface%.browse";  to: "DeckC_Beatgrid.offset_fine";   enabled: shift  }
-          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.bpm_coarse";    enabled: !shift }
-          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.bpm_fine";      enabled: shift  }
-        }
-        WiresGroup {
-          enabled: zoomedEditView.value
-
-          Wire { from: "%surface%.browse";  to: "DeckC_Beatgrid.offset_fine";      enabled: !shift }
-          Wire { from: "%surface%.browse";  to: "DeckC_Beatgrid.offset_ultrafine"; enabled: shift  }
-          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.bpm_fine";         enabled: !shift }
-          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.bpm_coarse";       enabled: shift  }
-        }
-      }
+      Wire { from: "%surface%.browse";  to: "DeckC_Beatgrid.offset_coarse"; enabled: !shift }
+      Wire { from: "%surface%.browse";  to: "DeckC_Beatgrid.offset_fine";   enabled: shift  }
+      Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.bpm_coarse";    enabled: !shift }
+      Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.bpm_fine";      enabled: shift  }
     }
   }
 
   // Deck D
   WiresGroup
   {
-    enabled: (focusedDeckId == 4) && hasEditMode(deckDType)
+    enabled: (focusedDeckId == 4) && isInEditMode && hasEditMode(deckDType)
 
     WiresGroup
     {
-      enabled: module.shift
+      enabled: !module.shift
 
-      // Set grid marker
-      Wire { from: "%surface%.display.buttons.6"; to: ButtonScriptAdapter { onPress: (setGrid.value = 1) } }
-      // Auto set grid marker
-      Wire { from: "%surface%.display.buttons.7"; to: ButtonScriptAdapter { onPress: (autoGrid.value = 1) } }
+      Wire { from: "%surface%.display.buttons.2"; to: "DeckD_Beatgrid.lock"  }
+      Wire { from: "%surface%.display.buttons.3"; to: "DeckD_Beatgrid.tick"  }
+      Wire { from: "%surface%.display.buttons.6"; to: "DeckD_Beatgrid.tap"   }
+      Wire { from: "%surface%.display.buttons.7"; to: "DeckD_Beatgrid.reset" }
+      Wire { from: "%surface%.display.buttons.4"; to: ButtonScriptAdapter { onPress: (halfBPM.value = 1) } }
+      Wire { from: "%surface%.display.buttons.8"; to: ButtonScriptAdapter { onPress: (doubleBPM.value = 1) } }
     }
 
-    WiresGroup
-    {
-      enabled: isInEditMode
+    Wire { from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckD_Beatgrid.beats_offset"}
 
-      WiresGroup
-      {
-        enabled: !module.shift
+    WiresGroup {
+      enabled: !encoderScanMode.value
 
-        Wire { from: "%surface%.display.buttons.2"; to: "DeckD_Beatgrid.lock"  }
-        Wire { from: "%surface%.display.buttons.3"; to: "DeckD_Beatgrid.tick"  }
-        Wire { from: "%surface%.display.buttons.6"; to: "DeckD_Beatgrid.tap"   }
-        Wire { from: "%surface%.display.buttons.7"; to: "DeckD_Beatgrid.reset" }
-        Wire { from: "%surface%.display.buttons.4"; to: ButtonScriptAdapter { onPress: (halfBPM.value = 1) } }
-        Wire { from: "%surface%.display.buttons.8"; to: ButtonScriptAdapter { onPress: (doubleBPM.value = 1) } }
-      }
-
-      Wire { from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckD_Beatgrid.beats_offset"}
-
-      WiresGroup {
-        enabled: !encoderScanMode.value
-
-        WiresGroup {
-          enabled: !zoomedEditView.value
-
-          Wire { from: "%surface%.browse";  to: "DeckD_Beatgrid.offset_coarse"; enabled: !shift }
-          Wire { from: "%surface%.browse";  to: "DeckD_Beatgrid.offset_fine";   enabled: shift  }
-          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.bpm_coarse";    enabled: !shift }
-          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.bpm_fine";      enabled: shift  }
-        }
-        WiresGroup {
-          enabled: zoomedEditView.value
-
-          Wire { from: "%surface%.browse";  to: "DeckD_Beatgrid.offset_fine";      enabled: !shift }
-          Wire { from: "%surface%.browse";  to: "DeckD_Beatgrid.offset_ultrafine"; enabled: shift  }
-          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.bpm_fine";         enabled: !shift }
-          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.bpm_coarse";       enabled: shift  }
-        }
-      }
+      Wire { from: "%surface%.browse";  to: "DeckD_Beatgrid.offset_coarse"; enabled: !shift }
+      Wire { from: "%surface%.browse";  to: "DeckD_Beatgrid.offset_fine";   enabled: shift  }
+      Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.bpm_coarse";    enabled: !shift }
+      Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.bpm_fine";      enabled: shift  }
     }
   }
 
