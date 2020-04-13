@@ -10,7 +10,7 @@ import '../Widgets' as Widgets
 
 Item {
   id: deck_header
-  
+
   // QML-only deck types
   readonly property int thruDeckType:  4
 
@@ -21,7 +21,7 @@ Item {
   // Here all the properties defining the content of the DeckHeader are listed. They are set in DeckView.
   property int    deck_Id:           0
   property string headerState:      "large" // this property is used to set the state of the header (large/small)
-  
+
   readonly property variant deckLetters:        ["A",                         "B",                          "C",                  "D"                 ]
   readonly property variant textColors:         [colors.colorDeckBlueBright,  colors.colorDeckBlueBright,   colors.colorGrey232,  colors.colorGrey232 ]
   readonly property variant darkerTextColors:   [colors.colorDeckBlueDark,    colors.colorDeckBlueDark,     colors.colorGrey72,   colors.colorGrey72  ]
@@ -61,7 +61,7 @@ Item {
 
   property int bottomLeftState:   1                                 // headerSettingMidLeft.value
   property int bottomMiddleState: hasTrackStyleHeader(deckType) ? 17 : 29 // headerSettingMidMid.value
-  property int bottomRightState:  24                                // headerSettingMidRight.value
+  property int bottomRightState:  24 // 31                          // headerSettingMidRight.value
 
   height: largeHeaderHeight
   clip: false //true
@@ -73,24 +73,29 @@ Item {
 
   property bool isError:   (deckHeaderWarningType.value == warningTypeError)
 
-  //--------------------------------------------------------------------------------------------------------------------
-  //  KEY PROPERTIES
-  //--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//  KEY PROPERTIES
+//--------------------------------------------------------------------------------------------------------------------
 
   AppProperty { id: keyId;      path: "app.traktor.decks." + (deckId+1) + ".track.key.final_id" }
   AppProperty { id: keyEnable;  path: "app.traktor.decks." + (deckId+1) + ".track.key.lock_enabled" }
 
   property var keyColor: keyEnable.value && keyId.value >= 0 ? colors.musicalKeyColors[keyId.value] : colors.colorWhite
 
-  //--------------------------------------------------------------------------------------------------------------------
-  // Helper function
   function toInt(val) { return parseInt(val); }
 
-  //--------------------------------------------------------------------------------------------------------------------
-  //  DECK PROPERTIES
-  //--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//  MIXERFX PROPERTIES
+//--------------------------------------------------------------------------------------------------------------------
 
+  AppProperty { id: mixerFX;   path: "app.traktor.mixer.channels." + (deckId+1) + ".fx.select" }
+  AppProperty { id: mixerFXOn; path: "app.traktor.mixer.channels." + (deckId+1) + ".fx.on" }
 
+  property var mixerFXColor: mixerFXOn.value ? colors.mixerFXColors[mixerFX.value] : colors.colorGrey72
+
+//--------------------------------------------------------------------------------------------------------------------
+//  DECK PROPERTIES
+//--------------------------------------------------------------------------------------------------------------------
 
   AppProperty { id: deckTypeProperty;           path: "app.traktor.decks." + (deck_Id+1) + ".type" }
 
@@ -99,29 +104,30 @@ Item {
   AppProperty { id: headerPropertySyncPhase;    path: "app.traktor.decks." + (deck_Id+1) + ".tempo.phase"; }
   AppProperty { id: headerPropertyLoopActive;   path: "app.traktor.decks." + (deck_Id+1) + ".loop.active"; }
   AppProperty { id: headerPropertyLoopSize;     path: "app.traktor.decks." + (deck_Id+1) + ".loop.size"; }
-  
+
   AppProperty { id: deckHeaderWarningActive;       path: "app.traktor.informer.deckheader_message." + (deck_Id+1) + ".active"; }
   AppProperty { id: deckHeaderWarningType;         path: "app.traktor.informer.deckheader_message." + (deck_Id+1) + ".type";   }
   AppProperty { id: deckHeaderWarningMessage;      path: "app.traktor.informer.deckheader_message." + (deck_Id+1) + ".long";   }
   AppProperty { id: deckHeaderWarningShortMessage; path: "app.traktor.informer.deckheader_message." + (deck_Id+1) + ".short";  }
 
-  //--------------------------------------------------------------------------------------------------------------------
-  //  STATE OF THE DECK HEADER LABELS
-  //--------------------------------------------------------------------------------------------------------------------
-  AppProperty { id: headerSettingTopLeft;       path: "app.traktor.settings.deckheader.top.left";  }  
-  AppProperty { id: headerSettingTopMid;        path: "app.traktor.settings.deckheader.top.mid";   }  
+//--------------------------------------------------------------------------------------------------------------------
+//  STATE OF THE DECK HEADER LABELS
+//--------------------------------------------------------------------------------------------------------------------
+
+  AppProperty { id: headerSettingTopLeft;       path: "app.traktor.settings.deckheader.top.left";  }
+  AppProperty { id: headerSettingTopMid;        path: "app.traktor.settings.deckheader.top.mid";   }
   AppProperty { id: headerSettingTopRight;      path: "app.traktor.settings.deckheader.top.right"; }
-  AppProperty { id: headerSettingMidLeft;       path: "app.traktor.settings.deckheader.mid.left";  }  
-  AppProperty { id: headerSettingMidMid;        path: "app.traktor.settings.deckheader.mid.mid";   }  
+  AppProperty { id: headerSettingMidLeft;       path: "app.traktor.settings.deckheader.mid.left";  }
+  AppProperty { id: headerSettingMidMid;        path: "app.traktor.settings.deckheader.mid.mid";   }
   AppProperty { id: headerSettingMidRight;      path: "app.traktor.settings.deckheader.mid.right"; }
 
   AppProperty { id: sequencerOn;   path: "app.traktor.decks." + (deckId + 1) + ".remix.sequencer.on" }
   readonly property bool showStepSequencer: (deckType == DeckType.Remix) && sequencerOn.value && (screen.flavor != ScreenFlavor.S5)
   onShowStepSequencerChanged: { updateLoopSize(); }
 
-  //--------------------------------------------------------------------------------------------------------------------
-  //  UPDATE VIEW
-  //--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//  UPDATE VIEW
+//--------------------------------------------------------------------------------------------------------------------
 
   Component.onCompleted:  { updateHeader(); }
   onHeaderStateChanged:   { updateHeader(); }
@@ -139,17 +145,17 @@ Item {
 
 
 
-  //--------------------------------------------------------------------------------------------------------------------
-  //  PHASE SYNC BLINK
-  //--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//  PHASE SYNC BLINK
+//--------------------------------------------------------------------------------------------------------------------
 
   function updatePhaseSyncBlinker() {
-    phase_sync_blink.enabled = (  headerState != "small" 
-                               && isLoaded 
+    phase_sync_blink.enabled = (  headerState != "small"
+                               && isLoaded
                                && !directThru.value
-                               && !isMaster 
-                               && deckType != DeckType.Live 
-                               && bottom_right_text.text == "SYNC" 
+                               && !isMaster
+                               && deckType != DeckType.Live
+                               && bottom_right_text.text == "SYNC"
                                && syncPhase != 0.0 ) ? 1 : 0;
   }
 
@@ -162,10 +168,10 @@ Item {
   }
 
 
-  
-  //--------------------------------------------------------------------------------------------------------------------
-  //  DECK HEADER TEXT
-  //--------------------------------------------------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------------------------------------------------
+//  DECK HEADER TEXT
+//--------------------------------------------------------------------------------------------------------------------
 
   Rectangle {
     id:top_line;
@@ -212,7 +218,7 @@ Item {
     Behavior on anchors.leftMargin { NumberAnimation { duration: speed } }
     Behavior on anchors.topMargin  { NumberAnimation { duration: speed } }
   }
-  
+
   // bottom_left_text: ARTIST
   DeckHeaderText {
     id: bottom_left_text
@@ -291,7 +297,7 @@ Item {
     Behavior on anchors.topMargin   { NumberAnimation { duration: speed } }
   }
 
-  // bottom_right_text: SYNC/MASTER
+  bottom_right_text: TEMPO BEND
   DeckHeaderText {
     id: bottom_right_text
     deckId: deck_Id
@@ -311,70 +317,90 @@ Item {
     Behavior on opacity             { NumberAnimation { duration: speed } }
   }
 
-  MappingProperty { id: showBrowserOnTouch; path: "mapping.settings.show_browser_on_touch"; onValueChanged: { updateExplicitDeckHeaderNames() } }
+  // bottom_right_text: MIXERFX
+  // DeckHeaderText {
+    // id: bottom_right_text
+    // deckId: deck_Id
+    // explicitName: ""
+    // maxTextWidth : 80
+    // textState:  bottomRightState
+    // color:      mixerFXColor
+    // elide:      Text.ElideRight
+    // opacity:    _intSetInState          // set by 'state'
+    // font.pixelSize: fonts.middleFontSize
+    // horizontalAlignment: Text.AlignRight
+    // anchors.top:          top_line.bottom
+    // anchors.right:        parent.right
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // anchors.topMargin:    20
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // anchors.rightMargin:  rightMargin_rightText_large
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // onTextChanged: {updateHeader()}
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // Behavior on opacity             { NumberAnimation { duration: speed } }
+  // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // }
 
-  function updateExplicitDeckHeaderNames()
-  {
-    if (directThru.value) {
-      top_left_text.explicitName      = "Direct Thru";
-      bottom_left_text.explicitName   = "The Mixer Channel is currently In Thru mode";
-      // Force the the following DeckHeaderText to be empty
-      top_middle_text.explicitName    = " ";
-      top_right_text.explicitName     = " ";
-      bottom_middle_text.explicitName = " ";
-      bottom_right_text.explicitName  = " ";
-    }
-    else if (deckType == DeckType.Live) {
-      top_left_text.explicitName      = "Live Input";
-      bottom_left_text.explicitName   = "Traktor Audio Passthru";
-      // Force the the following DeckHeaderText to be empty
-      top_middle_text.explicitName    = " ";
-      top_right_text.explicitName     = " ";
-      bottom_middle_text.explicitName = " ";
-      bottom_right_text.explicitName  = " ";
-    }
-    else if ((deckType == DeckType.Track)  && !isLoaded) {
-      top_left_text.explicitName      = "No Track Loaded";
-      bottom_left_text.explicitName   = showBrowserOnTouch.value ? "Touch Browse Knob" : "Push Browse Knob";
-      // Force the the following DeckHeaderText to be empty
-      top_middle_text.explicitName    = " ";
-      top_right_text.explicitName     = " ";
-      bottom_middle_text.explicitName = " ";
-      bottom_right_text.explicitName  = " ";
-    }
-    else if (deckType == DeckType.Stem && !isLoaded) {
-      top_left_text.explicitName      = "No Stem Loaded";
-      bottom_left_text.explicitName   = showBrowserOnTouch.value ? "Touch Browse Knob" : "Push Browse Knob";
-      // Force the the following DeckHeaderText to be empty
-      top_middle_text.explicitName    = " ";
-      top_right_text.explicitName     = " ";
-      bottom_middle_text.explicitName = " ";
-      bottom_right_text.explicitName  = " ";
-    }
-    else if (deckType == DeckType.Remix && !isLoaded) {
-      top_left_text.explicitName      = " ";
-      // Force the the following DeckHeaderText to be empty
-      bottom_left_text.explicitName   = " ";
-      top_middle_text.explicitName    = " ";
-      top_right_text.explicitName     = " ";
-      bottom_middle_text.explicitName = " ";
-      bottom_right_text.explicitName  = " ";
-    }
-    else {
-      // Switch off explicit naming!
-      top_left_text.explicitName      = "";
-      bottom_left_text.explicitName   = "";
-      top_middle_text.explicitName    = "";
-      top_right_text.explicitName     = "";
-      bottom_middle_text.explicitName = "";
-      bottom_right_text.explicitName  = "";
-    }
-  }
+  // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // MappingProperty { id: showBrowserOnTouch; path: "mapping.settings.show_browser_on_touch"; onValueChanged: { updateExplicitDeckHeaderNames() } }
+
+  // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // function updateExplicitDeckHeaderNames()
+  // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // {
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // if (directThru.value) {
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_left_text.explicitName      = "Direct Thru";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // bottom_left_text.explicitName   = "The Mixer Channel is currently In Thru mode";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // Force the the following DeckHeaderText to be empty
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_middle_text.explicitName    = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_right_text.explicitName     = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // bottom_middle_text.explicitName = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // bottom_right_text.explicitName  = " ";
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // }
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // else if (deckType == DeckType.Live) {
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_left_text.explicitName      = "Live Input";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // bottom_left_text.explicitName   = "Traktor Audio Passthru";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // Force the the following DeckHeaderText to be empty
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_middle_text.explicitName    = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_right_text.explicitName     = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // bottom_middle_text.explicitName = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // bottom_right_text.explicitName  = " ";
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // }
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // else if ((deckType == DeckType.Track)  && !isLoaded) {
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_left_text.explicitName      = "No Track Loaded";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // bottom_left_text.explicitName   = showBrowserOnTouch.value ? "Touch Browse Knob" : "Push Browse Knob";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // Force the the following DeckHeaderText to be empty
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_middle_text.explicitName    = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_right_text.explicitName     = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // bottom_middle_text.explicitName = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // bottom_right_text.explicitName  = " ";
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // }
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // else if (deckType == DeckType.Stem && !isLoaded) {
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_left_text.explicitName      = "No Stem Loaded";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // bottom_left_text.explicitName   = showBrowserOnTouch.value ? "Touch Browse Knob" : "Push Browse Knob";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // Force the the following DeckHeaderText to be empty
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_middle_text.explicitName    = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_right_text.explicitName     = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // bottom_middle_text.explicitName = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // bottom_right_text.explicitName  = " ";
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // }
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // else if (deckType == DeckType.Remix && !isLoaded) {
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_left_text.explicitName      = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // Force the the following DeckHeaderText to be empty
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // bottom_left_text.explicitName   = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_middle_text.explicitName    = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_right_text.explicitName     = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // bottom_middle_text.explicitName = " ";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // bottom_right_text.explicitName  = " ";
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // }
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // else {
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // Switch off explicit naming!
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_left_text.explicitName      = "";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // bottom_left_text.explicitName   = "";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_middle_text.explicitName    = "";
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // top_right_text.explicitName     = "";
+      // bottom_middle_text.explicitName = "";
+      // bottom_right_text.explicitName  = "";
+    // }
+  // }
 
 
-  //--------------------------------------------------------------------------------------------------------------------
-  //  Cover Art
-  //--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//  Cover Art
+//--------------------------------------------------------------------------------------------------------------------
 
   // Inner Border
 
@@ -475,9 +501,9 @@ Item {
 
 
 
-  //--------------------------------------------------------------------------------------------------------------------
-  //  Loop Size
-  //--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//  Loop Size
+//--------------------------------------------------------------------------------------------------------------------
 
   function updateLoopSize() {
     if (  headerState == "large" && isLoaded && (hasTrackStyleHeader(deckType) || (deckType == DeckType.Remix )) && !directThru.value ) {
@@ -520,9 +546,9 @@ Item {
     }
   }
 
-  //--------------------------------------------------------------------------------------------------------------------
-  //  Deck Letter (A, B, C or D)
-  //--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//  Deck Letter (A, B, C or D)
+//--------------------------------------------------------------------------------------------------------------------
 
   Image {
     id: deck_letter_large
@@ -561,9 +587,9 @@ Item {
     opacity:             0
   }
 
-  //--------------------------------------------------------------------------------------------------------------------
-  //  WARNING MESSAGES
-  //--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//  WARNING MESSAGES
+//--------------------------------------------------------------------------------------------------------------------
 
   Rectangle {
     id: warning_box
@@ -575,7 +601,7 @@ Item {
     height:             parent.height -1
     color:              colors.colorBlack
     visible:            deckHeaderWarningActive.value
-    
+
     Behavior on anchors.leftMargin { NumberAnimation { duration: speed } }
     Behavior on anchors.topMargin  { NumberAnimation { duration: speed } }
 
@@ -624,11 +650,9 @@ Item {
     }
   }
 
-
-
-  //--------------------------------------------------------------------------------------------------------------------
-  //  STATES FOR THE DIFFERENT HEADER SIZES
-  //--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//  STATES FOR THE DIFFERENT HEADER SIZES
+//--------------------------------------------------------------------------------------------------------------------
 
   state: headerState
 

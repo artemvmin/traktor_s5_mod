@@ -82,14 +82,11 @@ QtObject {
   property variant colorGrey16:                 rgba (16, 16, 16, 255)
   property variant colorGrey08:                 rgba (08, 08, 08, 255)
 
-
-
   property variant colorOrange:                 rgba(208, 104, 0, 255) // FX Selection; FX Faders etc
   property variant colorOrangeDimmed:           rgba(96, 48, 0, 255)  
 
   property variant colorRed:                    rgba(255, 0, 0, 255)
   property variant colorRed70:                  rgba(185, 6, 6, 255)
-
 
   // Playmarker
   property variant colorRedPlaymarker:          rgba(255, 0, 0, 255)
@@ -109,7 +106,7 @@ QtObject {
 
   property variant colorGreenGreyMix:           rgba(139, 240, 139, 82)
 
-  // font colors 
+  // Font Colors
   property variant colorFontsListBrowser:       colorGrey72
   property variant colorFontsListFx:            colorGrey56
   property variant colorFontBrowserHeader:      colorGrey88
@@ -134,7 +131,7 @@ QtObject {
 
   property variant colorCenterOverlayHeadline:  colorGrey88
 
-// blue
+  // Blue
   property variant colorDeckBlueBright:         rgba(0, 136, 184, 255) 
   property variant colorDeckBlueDark:           rgba(0, 64, 88, 255) 
   property variant colorDeckBlueBright20:       rgba(0, 174, 239, 51)
@@ -145,7 +142,6 @@ QtObject {
 
   property color footerBackgroundBlue: "#011f26"
 
-
   // fx Select overlay colors
   property variant fxSelectHeaderTextRGB:            rgba( 96,  96,  96, 255)
   property variant fxSelectHeaderNormalRGB:          rgba( 32,  32,  32, 255)
@@ -153,7 +149,7 @@ QtObject {
   property variant fxSelectHeaderHighlightRGB:       rgba( 64,  64,  48, 255)
   property variant fxSelectHeaderHighlightBorderRGB: rgba(128, 128,  48, 255)
 
-// Original Maschine 2 Display Colors
+  // Original Maschine 2 Display Colors
   // palette1-color1:                    rgb(255, 19, 15);
   // palette1-color2:                    rgb(255, 60, 20);
   // palette1-color3:                    rgb(255,120,  0);
@@ -170,7 +166,6 @@ QtObject {
   // palette1-color14:                   rgb(245,  0,200);
   // palette1-color15:                   rgb(255,  0,120);
   // palette1-color16:                   rgb(247,  7, 62); 
-
 
   // 16 Colors Palette (Bright)
   property variant color01Bright: rgba (255,  0,  0, 255)
@@ -190,8 +185,6 @@ QtObject {
   property variant color15Bright: rgba (255,   0, 120, 255)
   property variant color16Bright: rgba (248,   8,  64, 255)
 
-
-
   // 16 Colors Palette (Mid)
   property variant color01Mid: rgba (112, 8,   8, 255)
   property variant color02Mid: rgba (112, 24,  8, 255)
@@ -209,7 +202,6 @@ QtObject {
   property variant color14Mid: rgba (111, 12, 149, 255)
   property variant color15Mid: rgba (122, 0, 122, 255)
   property variant color16Mid: rgba (130, 1, 43, 255)
-
 
   // 16 Colors Palette (Dark)
   property variant color01Dark: rgba (16,  0,  0,  255)
@@ -301,13 +293,11 @@ QtObject {
         return colorBgEmpty;
     }
     return colorBgEmpty;  // default color if no palette is set
-  } 
+  }
 
-  //--------------------------------------------------------------------------------------------------------------------
-
-  //  Browser
-
-  //--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//  Browser
+//--------------------------------------------------------------------------------------------------------------------
 
   property variant browser:
   QtObject {
@@ -315,11 +305,9 @@ QtObject {
     property color prevPlayed:  rgba(32, 32, 32, 255) 
   }
 
-  //--------------------------------------------------------------------------------------------------------------------
-
-  //  Hotcues
-
-  //--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//  Hotcues
+//--------------------------------------------------------------------------------------------------------------------
 
   property variant hotcue:
   QtObject {
@@ -331,11 +319,9 @@ QtObject {
     property color temp:   "grey"
   }
 
-  //--------------------------------------------------------------------------------------------------------------------
-
-  //  Freeze & Slicer
-
-  //--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//  Freeze & Slicer
+//--------------------------------------------------------------------------------------------------------------------
 
   property variant freeze:
   QtObject {
@@ -355,11 +341,10 @@ QtObject {
     property color marker_edge:    box_active
   }
 
-  //--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//  Musical Key coloring for the browser
+//--------------------------------------------------------------------------------------------------------------------
 
-  //  Musical Key coloring for the browser
-
-  //--------------------------------------------------------------------------------------------------------------------
   property variant color01MusicalKey: rgba (255,  0,  0, 255) // not yet in use
   property variant color02MusicalKey: rgba (255,  64,  0, 255)
   property variant color03MusicalKey: rgba (255, 120,   0, 255) // not yet in use
@@ -405,11 +390,21 @@ QtObject {
     color11MusicalKey     //23  -13 bm
   ]
 
-  //--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+// Mixer FX Colors
+//--------------------------------------------------------------------------------------------------------------------
 
-  //  Waveform coloring
+  readonly property variant mixerFXColors:      [colors.colorMixerFXWhite, colors.colorMixerFXOrange, colors.colorMixerFXBlue, colors.colorMixerFXRed, colorMixerFXGreen]
 
-  //--------------------------------------------------------------------------------------------------------------------
+  property variant colorMixerFXWhite:           rgba (255, 255, 255, 255)
+  property variant colorMixerFXRed:             rgba (255,   0,   0, 255)
+  property variant colorMixerFXGreen:           rgba (  0, 255,   0, 255)
+  property variant colorMixerFXBlue:            rgba (  0,   0, 255, 255)
+  property variant colorMixerFXOrange:          rgba (255, 165,   0, 255)
+
+//--------------------------------------------------------------------------------------------------------------------
+//  Waveform coloring
+//--------------------------------------------------------------------------------------------------------------------
 
   property variant waveformColorsMap: [
     // Default

@@ -31,9 +31,9 @@ Module
     type: MappingPropertyDescriptor.Integer;
     value: Overlay.none;
     onValueChanged: {
-        keyOrBPMOverlay = screenOverlay.value == Overlay.bpm || screenOverlay.value == Overlay.key || screenOverlay.value == Overlay.quantize;
+      keyOrBPMOverlay = screenOverlay.value == Overlay.bpm || screenOverlay.value == Overlay.key || screenOverlay.value == Overlay.quantize || screenOverlay.value == Overlay.mixerfx;
       if (value == Overlay.fx) {
-        editMode.value  = false;
+        editMode.value = false;
       }
     }
   }
@@ -68,7 +68,7 @@ Module
         "%surface%.browse.push",
         "%surface%.browse.touch",
         "%surface%.browse.is_turned",
-        "%surface%.back"
+        "%surface%.back",
       ]
     }
     to: ButtonScriptAdapter{
@@ -1154,7 +1154,6 @@ Module
     {
       enabled: browserIsContentList.value
 
-      // Wire { from: "%surface%.display.buttons.6";   to: TriggerPropertyAdapter { path:"app.traktor.browser.preparation.append" } }
       Wire { from: "%surface%.display.buttons.6";   to: TriggerPropertyAdapter { path:"app.traktor.browser.preparation.toggle" } }
       Wire { from: "%surface%.display.buttons.7";   to: TriggerPropertyAdapter { path:"app.traktor.browser.preparation.jump_to_list" } }
     }
@@ -1570,7 +1569,7 @@ Module
 //------------------------------------------------------------------------------------------------------------------
 
   WiresGroup {
-    enabled: module.screenView.value == ScreenView.deck && screenOverlay.value == Overlay.none && !module.shift
+    enabled: screenViewProp.value == ScreenView.deck && screenOverlay.value == Overlay.none && !module.shift
 
     // Deck A
     WiresGroup
@@ -3348,7 +3347,7 @@ Module
 
   WiresGroup
   {
-    enabled: (isInEditMode || encoderMode.value == encoderLoopMode) && screenOverlay.value == Overlay.none && module.shift
+    enabled: (isInEditMode || screenViewProp.value == ScreenView.deck) && screenOverlay.value == Overlay.none && module.shift
 
     // Set grid marker
     Wire { from: "%surface%.display.buttons.6"; to: ButtonScriptAdapter { onPress: (setGrid.value = 1) } }
@@ -4064,5 +4063,41 @@ Module
       Wire { from: "softtakeover_knobs3.module.output"; to: "fx_units.2.knob2"   }
       Wire { from: "softtakeover_knobs4.module.output"; to: "fx_units.2.knob3"   }
     }
+  }
+
+//------------------------------------------------------------------------------------------------------------------
+// MixerFX Overlay
+//------------------------------------------------------------------------------------------------------------------
+
+  AppProperty { id: mixerFX;        path: "app.traktor.mixer.channels." + focusedDeckId + ".fx.select" }
+  AppProperty { id: mixerFXA;       path: "app.traktor.mixer.channels.1.fx.select" }
+  AppProperty { id: mixerFXB;       path: "app.traktor.mixer.channels.2.fx.select" }
+  AppProperty { id: mixerFXC;       path: "app.traktor.mixer.channels.3.fx.select" }
+  AppProperty { id: mixerFXD;       path: "app.traktor.mixer.channels.4.fx.select" }
+
+  // MixerFX Overlay
+  WiresGroup
+  {
+    enabled: module.shift
+
+    Wire { from:  "s5.mixer.channels.1.filter_on";  to: SetPropertyAdapter { path: "mapping.state.left.overlay";  value: Overlay.mixerfx} }
+    Wire { from:  "s5.mixer.channels.2.filter_on";  to: SetPropertyAdapter { path: "mapping.state.right.overlay"; value: Overlay.mixerfx} }
+    Wire { from:  "s5.mixer.channels.3.filter_on";  to: SetPropertyAdapter { path: "mapping.state.left.overlay";  value: Overlay.mixerfx} }
+    Wire { from:  "s5.mixer.channels.4.filter_on";  to: SetPropertyAdapter { path: "mapping.state.right.overlay"; value: Overlay.mixerfx} }
+  }
+
+  WiresGroup
+  {
+    enabled: screenOverlay.value == Overlay.mixerfx
+
+    Wire { from: "%surface%.back"; to: ButtonScriptAdapter { onPress: { mixerFXSelect.value = 0; } } }
+    Wire { from: "%surface%.back"; to: SetPropertyAdapter { path: "app.traktor.mixer.channels." + focusedDeckId + ".fx.select"; value: 0 } }
+    Wire { from: "%surface%.browse.turn"; to: EncoderScriptAdapter {
+      onIncrement: { mixerFX.value == 4 ? mixerFX.value = mixerFX.value - 4 : mixerFX.value = mixerFX.value + 1 }
+      onDecrement: { mixerFX.value == 0 ? mixerFX.value = mixerFX.value + 4 : mixerFX.value = mixerFX.value - 1 }
+    } }
+    Wire { from: "%surface%.browse.push";  to: ButtonScriptAdapter {
+      onPress: { mixerFXA.value = mixerFX.value; mixerFXB.value = mixerFX.value; mixerFXC.value = mixerFX.value; mixerFXD.value = mixerFX.value }
+    } }
   }
 }
