@@ -33,7 +33,7 @@ Module
     onValueChanged: {
         keyOrBPMOverlay = screenOverlay.value == Overlay.bpm || screenOverlay.value == Overlay.key || screenOverlay.value == Overlay.quantize;
       if (value == Overlay.fx) {
-        editMode.value  = editModeNone;
+        editMode.value  = false;
       }
     }
   }
@@ -43,27 +43,6 @@ Module
 
   AppProperty { id: masterDeckIdProp; path: "app.traktor.masterclock.source_id" }
   AppProperty { id: isTempoSynced;    path: "app.traktor.decks." + (focusedDeckId) + ".sync.enabled" }
-
-//------------------------------------------------------------------------------------------------------------------
-//  Footer Selection
-//------------------------------------------------------------------------------------------------------------------
-
-  MappingPropertyDescriptor {
-    id: selectedFooterItem
-    path: propertiesPath + ".selected_footer_item"
-    type: MappingPropertyDescriptor.Integer
-    value: 1
-    min: 1
-    max: 4
-  }
-
-  WiresGroup
-  {
-    enabled: isInEditMode // || isInBrowser
-
-    Wire { from: "%surface%.display.buttons.8";  to: RelativePropertyAdapter { path: propertiesPath + ".selected_footer_item"; wrap: true; mode: RelativeMode.Increment } }
-    Wire { from: "%surface%.display.buttons.4";  to: RelativePropertyAdapter { path: propertiesPath + ".selected_footer_item"; wrap: true; mode: RelativeMode.Decrement } }
-  }
 
 //------------------------------------------------------------------------------------------------------------------
 //  KEY/BPM IDLE TIMEOUT METHODS
@@ -104,7 +83,7 @@ Module
 
   MappingPropertyDescriptor { id: screenIsSingleDeck;  path: propertiesPath + ".deck_single";   type: MappingPropertyDescriptor.Boolean; value: true }
 
-  MappingPropertyDescriptor { id: deckFocusProp; path: propertiesPath + ".deck_focus"; type: MappingPropertyDescriptor.Boolean; value: false; onValueChanged: { updateFocusDependentDeckTypes(); updateFooter(); updatePads(); updateEncoder(); resetStemSelection(); if(screenViewProp.value  == ScreenView.deck) { screenOverlay.value  = Overlay.none; } editMode.value  = editModeNone; } }
+  MappingPropertyDescriptor { id: deckFocusProp; path: propertiesPath + ".deck_focus"; type: MappingPropertyDescriptor.Boolean; value: false; onValueChanged: { updateFocusDependentDeckTypes(); updateFooter(); updatePads(); updateEncoder(); resetStemSelection(); if(screenViewProp.value  == ScreenView.deck) { screenOverlay.value  = Overlay.none; } editMode.value = false; } }
 
   readonly property int focusedDeckId:   (deckFocus ? bottomDeckId : topDeckId)
   readonly property int unfocusedDeckId: (deckFocus ? topDeckId : bottomDeckId)
@@ -888,15 +867,10 @@ Module
   }
 
 //------------------------------------------------------------------------------------------------------------------
-// BEATGRID EDIT MODE
+//  BEATGRID EDIT MODE
 //------------------------------------------------------------------------------------------------------------------
 
-  readonly property int editModeNone:  0
-  readonly property int editModeArmed: 1
-  readonly property int editModeUsed:  2
-  readonly property int editModeFull:  3
-
-  MappingPropertyDescriptor { id: editMode;  path: propertiesPath + ".edit_mode";  type: MappingPropertyDescriptor.Integer; value: editModeNone; }
+  MappingPropertyDescriptor { id: editMode;  path: propertiesPath + ".edit_mode";  type: MappingPropertyDescriptor.Boolean; value: false; }
 
 //------------------------------------------------------------------------------------------------------------------
 //  EDIT MODE STATE MACHINE
@@ -904,14 +878,14 @@ Module
 
   function updateEditMode()
   {
-    //Disable editMode if we are not (anymore) in track or stem deck. Other decks don't have edit mode!
-    if (editMode != editModeNone && !hasEditMode(focusedDeckType))
+    // Disable editMode if we are not (anymore) in track or stem deck. Other decks don't have edit mode!
+    if (editMode.value && !hasEditMode(focusedDeckType))
     {
-      editMode.value = editModeNone;
+      editMode.value = false;
     }
   }
 
-  readonly property bool isInEditMode: (editMode.value == editModeFull)
+  readonly property bool isInEditMode: (editMode.value)
 
   property bool preEditIsSingleDeck: false
 
@@ -928,46 +902,29 @@ Module
       screenIsSingleDeck.value = preEditIsSingleDeck;
     }
 
-    showDisplayButtonArea.value = true;
-    showDisplayButtonAreaResetTimer.restart();
-
     updateEncoder();
   }
 
-  Wire { from: "%surface%.display.buttons.2"; to: ButtonScriptAdapter { brightness: (isInEditMode ? onBrightness : dimmedBrightness); onPress: onEditPressed(); onRelease: onEditReleased(); } enabled: hasEditMode(focusedDeckType) && module.screenView.value == ScreenView.deck && module.shift }
+  Wire { from: "%surface%.display.buttons.2"; to: ButtonScriptAdapter { brightness: (isInEditMode ? onBrightness : dimmedBrightness); onPress: onEditPressed(); } enabled: hasEditMode(focusedDeckType) && module.screenView.value == ScreenView.deck && module.shift }
 
   function onEditPressed()
   {
-    if (editMode.value == editModeNone)
-    {
-      editMode.value = editModeArmed;
-    }
-    else if (editMode.value == editModeFull)
-    {
-      editMode.value = editModeNone;
-    }
-  }
-
-  function onEditReleased()
-  {
-    if (editMode.value == editModeArmed)
+    if (!editMode.value)
     {
       zoomedEditView.value = false;
-      editMode.value = editModeFull;
+      encoderScanMode.value = false;
+      editMode.value = true;
     }
-    else if (editMode.value == editModeUsed)
+    else
     {
-      editMode.value = editModeNone;
+      editMode.value = false;
     }
   }
 
-  function onSyncPressed()
-  {
-    if (editMode.value == editModeArmed)
-    {
-      editMode.value = editModeUsed;
-    }
-  }
+  // Blink during edit mode
+  Blinker { name: "EditModeBlinker";  cycle: 300; defaultBrightness: onBrightness; blinkBrightness: dimmedBrightness }
+  Wire { from: "%surface%.back.led"; to: "EditModeBlinker" }
+  Wire { from: "EditModeBlinker.trigger"; to: ExpressionAdapter { type: ExpressionAdapter.Boolean; expression: isInEditMode && !encoderScanMode.value && !module.shift }  }
 
   /////////////////////////
 
@@ -981,14 +938,14 @@ Module
   {
     if (screenViewProp.value == ScreenView.deck)
     {
-      if (screenOverlay.value == Overlay.none && editMode.value != editModeFull)
+      if (screenOverlay.value == Overlay.none && !editMode.value)
       {
         screenIsSingleDeck.value = !screenIsSingleDeck.value;
       }
       else
       {
         screenOverlay.value = Overlay.none;
-        editMode.value      = editModeNone;
+        editMode.value      = false;
       }
     }
     else if (screenViewProp.value == ScreenView.browser)
@@ -1038,7 +995,7 @@ Module
     {
       if (screenViewProp.value != ScreenView.deck)
       {
-        editMode.value = editModeNone;
+        editMode.value = false;
         screenOverlay.value = Overlay.none;
       }
       else if (screenViewProp.value != ScreenView.browser)
@@ -1066,13 +1023,12 @@ Module
   {
     id: showDisplayButtonAreaResetTimer
     triggeredOnStart: false
-    interval: 250
+    interval: 300
     running:  false
     repeat:   false
     onTriggered:
     {
-      if (!isInEditMode)
-        showDisplayButtonArea.value = false;
+      showDisplayButtonArea.value = false;
     }
   }
 
@@ -1177,7 +1133,7 @@ Module
 
   WiresGroup
   {
-    enabled: encoderMode.value != encoderStemMode;
+    enabled: encoderMode.value != encoderStemMode && encoderMode.value != encoderBeatgridMode;
 
     Wire { from: "%surface%.browse.push"; to: SetPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.none } enabled: screenOverlay.value == Overlay.browserWarnings }
     Wire { from: "%surface%.browse.push"; to: ButtonScriptAdapter { onPress: { browserIsTemporary.value = false; module.screenView.value = ScreenView.browser; } } enabled: screenOverlay.value == Overlay.none }
@@ -3298,9 +3254,18 @@ Module
 //  BEATGRID EDIT
 //------------------------------------------------------------------------------------------------------------------
 
+  AppProperty { id: doubleBPM; path: "app.traktor.decks." + (focusedDeckId) + ".track.grid.double_bpm" }
+  AppProperty { id: halfBPM; path: "app.traktor.decks." + (focusedDeckId) + ".track.grid.half_bpm"  }
+  AppProperty { id: resetBPM; path: "app.traktor.decks." + (focusedDeckId) + ".track.grid.reset_bpm" }
+  AppProperty { id: autoGrid; path: "app.traktor.decks." + (focusedDeckId) + ".track.grid.set_autogrid" }
+  AppProperty { id: setGrid; path: "app.traktor.decks." + (focusedDeckId) + ".track.gridmarker.set" }
+  AppProperty { id: deleteGrid; path: "app.traktor.decks." + (focusedDeckId) + ".track.gridmarker.delete" }
+  AppProperty { id: lockedGrid; path: "app.traktor.decks." + (focusedDeckId) + ".track.grid.lock_bpm" }
+
   MappingPropertyDescriptor { path: propertiesPath + ".beatgrid.scan_control";      type: MappingPropertyDescriptor.Float;   value: 0.0   }
   MappingPropertyDescriptor { path: propertiesPath + ".beatgrid.scan_beats_offset"; type: MappingPropertyDescriptor.Integer; value: 0     }
-  MappingPropertyDescriptor { id: zoomedEditView; path: propertiesPath + ".beatgrid.zoomed_view";       type: MappingPropertyDescriptor.Boolean; value: false }
+  MappingPropertyDescriptor { id: zoomedEditView; path: propertiesPath + ".beatgrid.zoomed_view"; type: MappingPropertyDescriptor.Boolean; value: false }
+  MappingPropertyDescriptor { id: encoderScanMode; path: propertiesPath + ".encoder_scan_mode"; type: MappingPropertyDescriptor.Boolean; value: false }
 
   Beatgrid { name: "DeckA_Beatgrid"; channel: 1 }
   Beatgrid { name: "DeckB_Beatgrid"; channel: 2 }
@@ -3311,156 +3276,234 @@ Module
   {
     enabled: isInEditMode
 
-    Wire { from: "%surface%.encoder";   to: DirectPropertyAdapter { path: propertiesPath + ".beatgrid.scan_control" }   enabled: selectedFooterItem.value == 4  }
-    Wire { from: "%surface%.encoder.push"; to: TogglePropertyAdapter { path: propertiesPath + ".beatgrid.zoomed_view" }  }
+    Wire { from: "%surface%.browse";   to: DirectPropertyAdapter { path: propertiesPath + ".beatgrid.scan_control" }   enabled: encoderScanMode.value  }
+    Wire { from: "%surface%.browse.push"; to: TogglePropertyAdapter { path: propertiesPath + ".beatgrid.zoomed_view" }  }
+    Wire { from: "%surface%.back"; to: TogglePropertyAdapter { path: propertiesPath + ".encoder_scan_mode" } enabled: !module.shift }
+    Wire { from: propertiesPath + ".encoder_scan_mode"; to: "%surface%.loop.led" }
   }
 
   // Deck A
   WiresGroup
   {
-    enabled: (focusedDeckId == 1) && isInEditMode && hasEditMode(deckAType)
+    enabled: (focusedDeckId == 1) && hasEditMode(deckAType)
 
     WiresGroup
     {
-      enabled: !module.shift
+      enabled: module.shift
 
-      Wire { from: "%surface%.display.buttons.2"; to: "DeckA_Beatgrid.lock"  }
-      Wire { from: "%surface%.display.buttons.3"; to: "DeckA_Beatgrid.tick"  }
-      Wire { from: "%surface%.display.buttons.6"; to: "DeckA_Beatgrid.tap"   }
-      Wire { from: "%surface%.display.buttons.7"; to: "DeckA_Beatgrid.reset" }
-    }
-
-    Wire { from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckA_Beatgrid.beats_offset"}
-
-    WiresGroup
-    {
-      enabled: !zoomedEditView.value && selectedFooterItem.value == 1
-
-      Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_coarse"; enabled: !module.shift }
-      Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_fine";   enabled:  module.shift }
+      // Set grid marker
+      Wire { from: "%surface%.display.buttons.6"; to: ButtonScriptAdapter { onPress: (setGrid.value = 1) } }
+      // Auto set grid marker
+      Wire { from: "%surface%.display.buttons.7"; to: ButtonScriptAdapter { onPress: (autoGrid.value = 1) } }
     }
 
     WiresGroup
     {
-      enabled: zoomedEditView.value && selectedFooterItem.value == 1
+      enabled: isInEditMode
 
-      Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_fine";        enabled: !module.shift }
-      Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.offset_ultrafine";   enabled:  module.shift }
+      WiresGroup
+      {
+        enabled: !module.shift
+
+        Wire { from: "%surface%.display.buttons.2"; to: "DeckA_Beatgrid.lock"  }
+        Wire { from: "%surface%.display.buttons.3"; to: "DeckA_Beatgrid.tick"  }
+        Wire { from: "%surface%.display.buttons.6"; to: "DeckA_Beatgrid.tap"   }
+        Wire { from: "%surface%.display.buttons.7"; to: "DeckA_Beatgrid.reset" }
+        Wire { from: "%surface%.display.buttons.4"; to: ButtonScriptAdapter { onPress: (halfBPM.value = 1) } }
+        Wire { from: "%surface%.display.buttons.8"; to: ButtonScriptAdapter { onPress: (doubleBPM.value = 1) } }
+      }
+
+      Wire { from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckA_Beatgrid.beats_offset"}
+
+      WiresGroup {
+        enabled: !encoderScanMode.value
+
+        WiresGroup {
+          enabled: !zoomedEditView.value
+
+          Wire { from: "%surface%.browse";  to: "DeckA_Beatgrid.offset_coarse"; enabled: !shift }
+          Wire { from: "%surface%.browse";  to: "DeckA_Beatgrid.offset_fine";   enabled: shift  }
+          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.bpm_coarse";    enabled: !shift }
+          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.bpm_fine";      enabled: shift  }
+        }
+        WiresGroup {
+          enabled: zoomedEditView.value
+
+          Wire { from: "%surface%.browse";  to: "DeckA_Beatgrid.offset_fine";      enabled: !shift }
+          Wire { from: "%surface%.browse";  to: "DeckA_Beatgrid.offset_ultrafine"; enabled: shift  }
+          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.bpm_fine";         enabled: !shift }
+          Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.bpm_coarse";       enabled: shift  }
+        }
+      }
     }
-
-    Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.bpm_coarse"; enabled: selectedFooterItem.value == 2    }
-    Wire { from: "%surface%.encoder"; to: "DeckA_Beatgrid.bpm_fine";   enabled: selectedFooterItem.value == 3    }
   }
 
   // Deck B
   WiresGroup
   {
-    enabled: (focusedDeckId == 2) && isInEditMode && hasEditMode(deckBType)
+    enabled: (focusedDeckId == 2) && hasEditMode(deckBType)
 
     WiresGroup
     {
-      enabled: !module.shift
+      enabled: module.shift
 
-      Wire { from: "%surface%.display.buttons.2"; to: "DeckA_Beatgrid.lock"  }
-      Wire { from: "%surface%.display.buttons.3"; to: "DeckA_Beatgrid.tick"  }
-      Wire { from: "%surface%.display.buttons.6"; to: "DeckA_Beatgrid.tap"   }
-      Wire { from: "%surface%.display.buttons.7"; to: "DeckA_Beatgrid.reset" }
-    }
-
-    Wire { from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckB_Beatgrid.beats_offset"}
-
-    WiresGroup
-    {
-      enabled: !zoomedEditView.value && selectedFooterItem.value == 1
-
-      Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_coarse"; enabled: !module.shift }
-      Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_fine";   enabled:  module.shift }
+      // Set grid marker
+      Wire { from: "%surface%.display.buttons.6"; to: ButtonScriptAdapter { onPress: (setGrid.value = 1) } }
+      // Auto set grid marker
+      Wire { from: "%surface%.display.buttons.7"; to: ButtonScriptAdapter { onPress: (autoGrid.value = 1) } }
     }
 
     WiresGroup
     {
-      enabled: zoomedEditView.value && selectedFooterItem.value == 1
+      enabled: isInEditMode
 
-      Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_fine";        enabled: !module.shift }
-      Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.offset_ultrafine";   enabled:  module.shift }
+      WiresGroup
+      {
+        enabled: !module.shift
+
+        Wire { from: "%surface%.display.buttons.2"; to: "DeckB_Beatgrid.lock"  }
+        Wire { from: "%surface%.display.buttons.3"; to: "DeckB_Beatgrid.tick"  }
+        Wire { from: "%surface%.display.buttons.6"; to: "DeckB_Beatgrid.tap"   }
+        Wire { from: "%surface%.display.buttons.7"; to: "DeckB_Beatgrid.reset" }
+        Wire { from: "%surface%.display.buttons.4"; to: ButtonScriptAdapter { onPress: (halfBPM.value = 1) } }
+        Wire { from: "%surface%.display.buttons.8"; to: ButtonScriptAdapter { onPress: (doubleBPM.value = 1) } }
+      }
+
+      Wire { from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckB_Beatgrid.beats_offset"}
+
+      WiresGroup {
+        enabled: !encoderScanMode.value
+
+        WiresGroup {
+          enabled: !zoomedEditView.value
+
+          Wire { from: "%surface%.browse";  to: "DeckB_Beatgrid.offset_coarse"; enabled: !shift }
+          Wire { from: "%surface%.browse";  to: "DeckB_Beatgrid.offset_fine";   enabled: shift  }
+          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.bpm_coarse";    enabled: !shift }
+          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.bpm_fine";      enabled: shift  }
+        }
+        WiresGroup {
+          enabled: zoomedEditView.value
+
+          Wire { from: "%surface%.browse";  to: "DeckB_Beatgrid.offset_fine";      enabled: !shift }
+          Wire { from: "%surface%.browse";  to: "DeckB_Beatgrid.offset_ultrafine"; enabled: shift  }
+          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.bpm_fine";         enabled: !shift }
+          Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.bpm_coarse";       enabled: shift  }
+        }
+      }
     }
-
-    Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.bpm_coarse"; enabled: selectedFooterItem.value == 2    }
-    Wire { from: "%surface%.encoder"; to: "DeckB_Beatgrid.bpm_fine";   enabled: selectedFooterItem.value == 3    }
   }
 
   // Deck C
   WiresGroup
   {
-    enabled: (focusedDeckId == 3) && isInEditMode && hasEditMode(deckCType)
+    enabled: (focusedDeckId == 3) && hasEditMode(deckCType)
 
     WiresGroup
     {
-      enabled: !module.shift
+      enabled: module.shift
 
-      Wire { from: "%surface%.display.buttons.2"; to: "DeckA_Beatgrid.lock"  }
-      Wire { from: "%surface%.display.buttons.3"; to: "DeckA_Beatgrid.tick"  }
-      Wire { from: "%surface%.display.buttons.6"; to: "DeckA_Beatgrid.tap"   }
-      Wire { from: "%surface%.display.buttons.7"; to: "DeckA_Beatgrid.reset" }
-    }
-
-    Wire { from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckC_Beatgrid.beats_offset"}
-
-    WiresGroup
-    {
-      enabled: !zoomedEditView.value && selectedFooterItem.value == 1
-
-      Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_coarse"; enabled: !module.shift }
-      Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_fine";   enabled:  module.shift }
+      // Set grid marker
+      Wire { from: "%surface%.display.buttons.6"; to: ButtonScriptAdapter { onPress: (setGrid.value = 1) } }
+      // Auto set grid marker
+      Wire { from: "%surface%.display.buttons.7"; to: ButtonScriptAdapter { onPress: (autoGrid.value = 1) } }
     }
 
     WiresGroup
     {
-      enabled: zoomedEditView.value && selectedFooterItem.value == 1
+      enabled: isInEditMode
 
-      Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_fine";        enabled: !module.shift }
-      Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.offset_ultrafine";   enabled:  module.shift }
+      WiresGroup
+      {
+        enabled: !module.shift
+
+        Wire { from: "%surface%.display.buttons.2"; to: "DeckC_Beatgrid.lock"  }
+        Wire { from: "%surface%.display.buttons.3"; to: "DeckC_Beatgrid.tick"  }
+        Wire { from: "%surface%.display.buttons.6"; to: "DeckC_Beatgrid.tap"   }
+        Wire { from: "%surface%.display.buttons.7"; to: "DeckC_Beatgrid.reset" }
+        Wire { from: "%surface%.display.buttons.4"; to: ButtonScriptAdapter { onPress: (halfBPM.value = 1) } }
+        Wire { from: "%surface%.display.buttons.8"; to: ButtonScriptAdapter { onPress: (doubleBPM.value = 1) } }
+      }
+
+      Wire { from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckC_Beatgrid.beats_offset"}
+
+      WiresGroup {
+        enabled: !encoderScanMode.value
+
+        WiresGroup {
+          enabled: !zoomedEditView.value
+
+          Wire { from: "%surface%.browse";  to: "DeckC_Beatgrid.offset_coarse"; enabled: !shift }
+          Wire { from: "%surface%.browse";  to: "DeckC_Beatgrid.offset_fine";   enabled: shift  }
+          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.bpm_coarse";    enabled: !shift }
+          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.bpm_fine";      enabled: shift  }
+        }
+        WiresGroup {
+          enabled: zoomedEditView.value
+
+          Wire { from: "%surface%.browse";  to: "DeckC_Beatgrid.offset_fine";      enabled: !shift }
+          Wire { from: "%surface%.browse";  to: "DeckC_Beatgrid.offset_ultrafine"; enabled: shift  }
+          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.bpm_fine";         enabled: !shift }
+          Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.bpm_coarse";       enabled: shift  }
+        }
+      }
     }
-
-    Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.bpm_coarse"; enabled: selectedFooterItem.value == 2    }
-    Wire { from: "%surface%.encoder"; to: "DeckC_Beatgrid.bpm_fine";   enabled: selectedFooterItem.value == 3    }
   }
 
   // Deck D
   WiresGroup
   {
-    enabled: (focusedDeckId == 4) && isInEditMode && hasEditMode(deckDType)
+    enabled: (focusedDeckId == 4) && hasEditMode(deckDType)
 
     WiresGroup
     {
-      enabled: !module.shift
+      enabled: module.shift
 
-      Wire { from: "%surface%.display.buttons.2"; to: "DeckA_Beatgrid.lock"  }
-      Wire { from: "%surface%.display.buttons.3"; to: "DeckA_Beatgrid.tick"  }
-      Wire { from: "%surface%.display.buttons.6"; to: "DeckA_Beatgrid.tap"   }
-      Wire { from: "%surface%.display.buttons.7"; to: "DeckA_Beatgrid.reset" }
-    }
-
-    Wire { from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckD_Beatgrid.beats_offset"}
-
-    WiresGroup
-    {
-      enabled: !zoomedEditView.value && selectedFooterItem.value == 1
-
-      Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_coarse"; enabled: !module.shift }
-      Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_fine";   enabled:  module.shift }
+      // Set grid marker
+      Wire { from: "%surface%.display.buttons.6"; to: ButtonScriptAdapter { onPress: (setGrid.value = 1) } }
+      // Auto set grid marker
+      Wire { from: "%surface%.display.buttons.7"; to: ButtonScriptAdapter { onPress: (autoGrid.value = 1) } }
     }
 
     WiresGroup
     {
-      enabled: zoomedEditView.value && selectedFooterItem.value == 1
+      enabled: isInEditMode
 
-      Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_fine";        enabled: !module.shift }
-      Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.offset_ultrafine";   enabled:  module.shift }
+      WiresGroup
+      {
+        enabled: !module.shift
+
+        Wire { from: "%surface%.display.buttons.2"; to: "DeckD_Beatgrid.lock"  }
+        Wire { from: "%surface%.display.buttons.3"; to: "DeckD_Beatgrid.tick"  }
+        Wire { from: "%surface%.display.buttons.6"; to: "DeckD_Beatgrid.tap"   }
+        Wire { from: "%surface%.display.buttons.7"; to: "DeckD_Beatgrid.reset" }
+        Wire { from: "%surface%.display.buttons.4"; to: ButtonScriptAdapter { onPress: (halfBPM.value = 1) } }
+        Wire { from: "%surface%.display.buttons.8"; to: ButtonScriptAdapter { onPress: (doubleBPM.value = 1) } }
+      }
+
+      Wire { from: DirectPropertyAdapter{path: propertiesPath + ".beatgrid.scan_beats_offset"; input:false} to: "DeckD_Beatgrid.beats_offset"}
+
+      WiresGroup {
+        enabled: !encoderScanMode.value
+
+        WiresGroup {
+          enabled: !zoomedEditView.value
+
+          Wire { from: "%surface%.browse";  to: "DeckD_Beatgrid.offset_coarse"; enabled: !shift }
+          Wire { from: "%surface%.browse";  to: "DeckD_Beatgrid.offset_fine";   enabled: shift  }
+          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.bpm_coarse";    enabled: !shift }
+          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.bpm_fine";      enabled: shift  }
+        }
+        WiresGroup {
+          enabled: zoomedEditView.value
+
+          Wire { from: "%surface%.browse";  to: "DeckD_Beatgrid.offset_fine";      enabled: !shift }
+          Wire { from: "%surface%.browse";  to: "DeckD_Beatgrid.offset_ultrafine"; enabled: shift  }
+          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.bpm_fine";         enabled: !shift }
+          Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.bpm_coarse";       enabled: shift  }
+        }
+      }
     }
-
-    Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.bpm_coarse"; enabled: selectedFooterItem.value == 2    }
-    Wire { from: "%surface%.encoder"; to: "DeckD_Beatgrid.bpm_fine";   enabled: selectedFooterItem.value == 3    }
   }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -3675,16 +3718,16 @@ Module
 
       Wire { from: "%surface%.play"; to: "decks.1.transport.play" }
       Wire { from: "%surface%.cue";  to: "decks.1.transport.cue"  }
-      Wire { from: "%surface%.sync"; to: "decks.1.transport.sync"; enabled: (editMode.value != editModeArmed) && (editMode.value != editModeUsed) }
+      Wire { from: "%surface%.sync"; to: "decks.1.transport.sync" }
     }
 
     WiresGroup
     {
       enabled: module.shift
 
-      Wire { from: "%surface%.play"; to: "decks.1.transport.timecode"     }
+      Wire { from: "%surface%.play"; to: "decks.1.transport.timecode"       }
       Wire { from: "%surface%.cue";  to: "decks.1.transport.return_to_zero" }
-      Wire { from: "%surface%.sync"; to: "decks.1.transport.master"; enabled: (editMode.value != editModeArmed) && (editMode.value != editModeUsed) }
+      Wire { from: "%surface%.sync"; to: "decks.1.transport.master"         }
     }
 
     WiresGroup
@@ -3751,16 +3794,16 @@ Module
 
       Wire { from: "%surface%.play"; to: "decks.2.transport.play" }
       Wire { from: "%surface%.cue";  to: "decks.2.transport.cue"  }
-      Wire { from: "%surface%.sync"; to: "decks.2.transport.sync"; enabled: (editMode.value != editModeArmed) && (editMode.value != editModeUsed) }
+      Wire { from: "%surface%.sync"; to: "decks.2.transport.sync" }
     }
 
     WiresGroup
     {
       enabled: module.shift
 
-      Wire { from: "%surface%.play"; to: "decks.2.transport.timecode"     }
+      Wire { from: "%surface%.play"; to: "decks.2.transport.timecode"       }
       Wire { from: "%surface%.cue";  to: "decks.2.transport.return_to_zero" }
-      Wire { from: "%surface%.sync"; to: "decks.2.transport.master"; enabled: (editMode.value != editModeArmed) && (editMode.value != editModeUsed) }
+      Wire { from: "%surface%.sync"; to: "decks.2.transport.master"         }
     }
 
 
@@ -3828,16 +3871,16 @@ Module
 
       Wire { from: "%surface%.play"; to: "decks.3.transport.play" }
       Wire { from: "%surface%.cue";  to: "decks.3.transport.cue"  }
-      Wire { from: "%surface%.sync"; to: "decks.3.transport.sync"; enabled: (editMode.value != editModeArmed) && (editMode.value != editModeUsed) }
+      Wire { from: "%surface%.sync"; to: "decks.3.transport.sync" }
     }
 
     WiresGroup
     {
       enabled: module.shift
 
-      Wire { from: "%surface%.play"; to: "decks.3.transport.timecode"     }
+      Wire { from: "%surface%.play"; to: "decks.3.transport.timecode"       }
       Wire { from: "%surface%.cue";  to: "decks.3.transport.return_to_zero" }
-      Wire { from: "%surface%.sync"; to: "decks.3.transport.master"; enabled: (editMode.value != editModeArmed) && (editMode.value != editModeUsed) }
+      Wire { from: "%surface%.sync"; to: "decks.3.transport.master"         }
     }
 
 
@@ -3905,16 +3948,16 @@ Module
 
       Wire { from: "%surface%.play"; to: "decks.4.transport.play" }
       Wire { from: "%surface%.cue";  to: "decks.4.transport.cue"  }
-      Wire { from: "%surface%.sync"; to: "decks.4.transport.sync"; enabled: (editMode.value != editModeArmed) && (editMode.value != editModeUsed) }
+      Wire { from: "%surface%.sync"; to: "decks.4.transport.sync" }
     }
 
     WiresGroup
     {
       enabled: module.shift
 
-      Wire { from: "%surface%.play"; to: "decks.4.transport.timecode"     }
+      Wire { from: "%surface%.play"; to: "decks.4.transport.timecode"       }
       Wire { from: "%surface%.cue";  to: "decks.4.transport.return_to_zero" }
-      Wire { from: "%surface%.sync"; to: "decks.4.transport.master"; enabled: (editMode.value != editModeArmed) && (editMode.value != editModeUsed) }
+      Wire { from: "%surface%.sync"; to: "decks.4.transport.master"         }
     }
 
 
@@ -3977,72 +4020,6 @@ Module
 
     Wire { from: "decks.2.remix.page"; to: "screen.upper_remix_deck_page" }
     Wire { from: "decks.4.remix.page"; to: "screen.lower_remix_deck_page" }
-  }
-
-//------------------------------------------------------------------------------------------------------------------
-//  COPY PHASE FROM MASTER
-//------------------------------------------------------------------------------------------------------------------
-
-  CopyMasterPhase { name: "DeckA_CopyMasterPhase";  channel: 1 }
-  SwitchTimer { name: "DeckA_CopyMasterPhase_Switch"; setTimeout: 1000 }
-
-  CopyMasterPhase { name: "DeckB_CopyMasterPhase";  channel: 2 }
-  SwitchTimer { name: "DeckB_CopyMasterPhase_Switch"; setTimeout: 1000 }
-
-  CopyMasterPhase { name: "DeckC_CopyMasterPhase";  channel: 3 }
-  SwitchTimer { name: "DeckC_CopyMasterPhase_Switch"; setTimeout: 1000 }
-
-  CopyMasterPhase { name: "DeckD_CopyMasterPhase";  channel: 4 }
-  SwitchTimer { name: "DeckD_CopyMasterPhase_Switch"; setTimeout: 1000 }
-
-  Blinker { name: "CopyMasterPhase_Blinker"; cycle: 300; repetitions: 3; defaultBrightness: onBrightness; blinkBrightness: dimmedBrightness; color: Color.Green }
-
-  WiresGroup
-  {
-    enabled: (editMode.value == editModeArmed) || (editMode.value == editModeUsed)
-
-    Wire { from: "%surface%.sync.led"; to: "CopyMasterPhase_Blinker" }
-    Wire { from: "%surface%.sync.value"; to: ButtonScriptAdapter { onPress: onSyncPressed(); } }
-
-    // Deck A
-    WiresGroup
-    {
-      enabled: (focusedDeckId == 1) && hasEditMode(deckAType)
-
-      Wire { from: "%surface%.sync"; to: "DeckA_CopyMasterPhase_Switch.input" }
-      Wire { from: "DeckA_CopyMasterPhase_Switch.output"; to: "DeckA_CopyMasterPhase" }
-      Wire { from: "DeckA_CopyMasterPhase_Switch.output"; to: "CopyMasterPhase_Blinker.trigger" }
-    }
-
-    // Deck B
-    WiresGroup
-    {
-      enabled: (focusedDeckId == 2) && hasEditMode(deckBType)
-
-      Wire { from: "%surface%.sync"; to: "DeckB_CopyMasterPhase_Switch.input" }
-      Wire { from: "DeckB_CopyMasterPhase_Switch.output"; to: "DeckB_CopyMasterPhase" }
-      Wire { from: "DeckB_CopyMasterPhase_Switch.output"; to: "CopyMasterPhase_Blinker.trigger" }
-    }
-
-    // Deck C
-    WiresGroup
-    {
-      enabled: (focusedDeckId == 3) && hasEditMode(deckCType)
-
-      Wire { from: "%surface%.sync"; to: "DeckC_CopyMasterPhase_Switch.input" }
-      Wire { from: "DeckC_CopyMasterPhase_Switch.output"; to: "DeckC_CopyMasterPhase" }
-      Wire { from: "DeckC_CopyMasterPhase_Switch.output"; to: "CopyMasterPhase_Blinker.trigger" }
-    }
-
-    // Deck D
-    WiresGroup
-    {
-      enabled: (focusedDeckId == 4) && hasEditMode(deckDType)
-
-      Wire { from: "%surface%.sync"; to: "DeckD_CopyMasterPhase_Switch.input" }
-      Wire { from: "DeckD_CopyMasterPhase_Switch.output"; to: "DeckD_CopyMasterPhase" }
-      Wire { from: "DeckD_CopyMasterPhase_Switch.output"; to: "CopyMasterPhase_Blinker.trigger" }
-    }
   }
 
 //------------------------------------------------------------------------------------------------------------------
