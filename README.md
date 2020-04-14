@@ -36,12 +36,12 @@ NOTE: Traktor Pro 2 is no longer supported and may not contain all features list
 - Loading:
   - Left Knob to browse
   - PUSH Left Knob to load the selected track
-- Preview:
-  - PUSH Right Knob to start playing selected track in preview mode
-  - Right Knob to seek through preview track
 - Sorting:
-  - SHIFT + Right Knob to change sorting type
-  - SHIFT + PUSH Right Knob to invert sorting
+  - Right Knob to change sorting type
+  - PUSH Right Knob to invert sorting
+- Preview:
+  - SHIFT + PUSH Right Knob to start playing selected track in preview mode
+  - SHIFT + Right Knob to seek through preview track
 - Preparation [1]:
   - Top Right □ to toggle selected track in and out of your preparation playlist
   - Bottom Right □ to jump to preparation playlist

@@ -1162,16 +1162,16 @@ Module
     {
       enabled: !module.shift
 
-      Wire { from: "%surface%.encoder";           to: RelativePropertyAdapter { path: "app.traktor.browser.preview_player.seek"; step: 0.02; mode: RelativeMode.Stepped } }
-      Wire { from: "%surface%.encoder.push";      to: TriggerPropertyAdapter  { path: "app.traktor.browser.preview_player.load_or_play" } }
+      Wire { from: "%surface%.encoder";             to: "screen.browser_sorting"    }
+      Wire { from: "%surface%.encoder.push";        to: TriggerPropertyAdapter  { path:"app.traktor.browser.flip_sort_up_down"  } enabled: (browserSortId.value > 0) }
     }
 
     WiresGroup
     {
       enabled: module.shift
 
-      Wire { from: "%surface%.encoder";             to: "screen.browser_sorting"    }
-      Wire { from: "%surface%.encoder.push";        to: TriggerPropertyAdapter  { path:"app.traktor.browser.flip_sort_up_down"  } enabled: (browserSortId.value > 0) }
+      Wire { from: "%surface%.encoder";           to: RelativePropertyAdapter { path: "app.traktor.browser.preview_player.seek"; step: 0.02; mode: RelativeMode.Stepped } }
+      Wire { from: "%surface%.encoder.push";      to: TriggerPropertyAdapter  { path: "app.traktor.browser.preview_player.load_or_play" } }
     }
   }
 
