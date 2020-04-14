@@ -87,7 +87,9 @@ Text {
   MappingProperty { id: mixerFXAssigned4; path: "mapping.settings.mixerFXAssigned4" }
   AppProperty { id: mixerFX;   path: "app.traktor.mixer.channels." + (deckId+1) + ".fx.select" }
 
-  readonly property variant mixerFXNames: ["Filter", "Reverb", "Delay", "Noise", "Gater"]
+  // readonly property variant mxrFXNames: ["Filter", "Reverb", "Dual Delay", "Noise", "Time Gater", "Flanger", "Barber Pole", "Dual Delay", "Crush"]
+  readonly property variant mxrFXNames: ["Filter", "Reverb", "Delay", "Noise", "Gater", "Flanger", "Barber", "Delay", "Crush"]
+  property variant mixerFXNames: [mxrFXNames[0], mxrFXNames[mixerFXAssigned1.value], mxrFXNames[mixerFXAssigned2.value], mxrFXNames[mixerFXAssigned3.value], mxrFXNames[mixerFXAssigned4.value]]
 
 //--------------------------------------------------------------------------------------------------------------------
 //  MAPPING FROM TRAKTOR ENUM TO QML-STATE!

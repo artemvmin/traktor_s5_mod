@@ -19,7 +19,9 @@ CenterOverlay {
   MappingProperty { id: mixerFXAssigned3; path: "mapping.settings.mixerFXAssigned3" }
   MappingProperty { id: mixerFXAssigned4; path: "mapping.settings.mixerFXAssigned4" }
 
-  readonly property variant mixerFXNames: ["Filter", "Reverb", "Delay", "Noise", "Gater"]
+  // readonly property variant mxrFXNames: ["Filter", "Reverb", "Dual Delay", "Noise", "Time Gater", "Flanger", "Barber Pole", "Dotted Delay", "Crush"]
+  readonly property variant mxrFXNames: ["Filter", "Reverb", "Dual Delay", "Noise", "Time Gater", "Flanger", "Barber Pole", "Delay", "Crush"]
+  property variant mixerFXNames: [mxrFXNames[0], mxrFXNames[mixerFXAssigned1.value], mxrFXNames[mixerFXAssigned2.value], mxrFXNames[mixerFXAssigned3.value], mxrFXNames[mixerFXAssigned4.value]]
 
   //--------------------------------------------------------------------------------------------------------------------
 
