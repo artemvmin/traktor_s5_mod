@@ -20,7 +20,6 @@ NOTE: Traktor Pro 2 is no longer supported and may not contain all features list
 - Deck header shows
   - color-coded Camelot key (when key is LOCKED)
   - approximate Camelot key (when key is UNLOCKED)
-- Browser SortBy reduced to three variables: artist, bpm, and key
 - Removed overlay hide delays
 
 ### Controller
