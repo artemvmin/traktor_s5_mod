@@ -49,8 +49,8 @@ Rectangle {
   29 --> Color
   */
 
-  readonly property variant sortIds:          [0, 5, 28, 9, 3, 2]
-  readonly property variant sortNames:        ["Sort By", "BPM", "Key", "Genre", "Artist", "Title"]
+  readonly property variant sortIds:          [0, 5, 28, 3, 2]
+  readonly property variant sortNames:        ["Sort By", "BPM", "Key", "Artist", "Title"]
 
   property          real    preSortingKnobValue: 0.0
 
