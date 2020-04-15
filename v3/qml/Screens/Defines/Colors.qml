@@ -396,11 +396,18 @@ QtObject {
 
   readonly property variant mixerFXColors:      [colors.colorMixerFXWhite, colors.colorMixerFXOrange, colors.colorMixerFXBlue, colors.colorMixerFXRed, colorMixerFXGreen]
 
-  property variant colorMixerFXWhite:           rgba (255, 255, 255, 255)
-  property variant colorMixerFXRed:             rgba (255,   0,   0, 255)
-  property variant colorMixerFXGreen:           rgba (  0, 255,   0, 255)
-  property variant colorMixerFXBlue:            rgba (  0,   0, 255, 255)
-  property variant colorMixerFXOrange:          rgba (255, 165,   0, 255)
+  property variant colorMixerFXWhite:   rgba (255, 255, 255, 255)
+  property variant colorMixerFXRed:     rgba (255,   0,   0, 255)
+  property variant colorMixerFXGreen:   rgba (  0, 255,   0, 255)
+  property variant colorMixerFXBlue:    rgba (  0,   0, 255, 255)
+  property variant colorMixerFXOrange:  rgba (255, 165,   0, 255)
+
+//--------------------------------------------------------------------------------------------------------------------
+// Tempo Bend Colors
+//--------------------------------------------------------------------------------------------------------------------
+
+  property variant colorBendLow:        rgba ( 64,  64,  64, 255)
+  property variant colorBendHigh:       rgba (255,   0,   0, 255)
 
 //--------------------------------------------------------------------------------------------------------------------
 //  Waveform coloring

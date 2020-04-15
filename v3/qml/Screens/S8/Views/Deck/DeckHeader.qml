@@ -91,12 +91,10 @@ Item {
   function getTempoBendColor() {
     var tempo = (propMixerStableTempo.value - 1) * 100;
 
-    if (-2 < tempo && tempo < 2){
-      return colors.colorGreen;
-    } else if (-7.5 < tempo && tempo < 7.5) {
-      return colors.colorOrange;
+    if (-5 < tempo && tempo < 5){
+      return colors.colorBendLow;
     }
-    return colors.colorRed;
+    return colors.colorBendHigh;
   }
 
 //--------------------------------------------------------------------------------------------------------------------
