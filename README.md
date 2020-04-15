@@ -1,8 +1,6 @@
 # Traktor S5 Mod
 
-This is my attempt to fix all the shortcomings of this near-perfect DJ controller.
-
-Please reach out to me with any bugs or feature requests.
+My dream is to DJ without a keyboard and mouse.
 
 ## Compatibility
 
@@ -72,30 +70,44 @@ NOTE: Traktor Pro 2 is no longer supported and may not contain all features list
 
 [3] Tap allows you to fix the beat grid alignment by tapping four consecutive beats while the song is playing.
 
-#### Mixer FX [4]
+#### Mixer FX
 
-- SHIFT + FILTER ON to open the Mixer FX menu for that deck
-  - BROWSE KNOB to browse effects:
+Mixer FX allow you to change the behavior of a deck's filter knob.
+
+- BACK [<] to open the Mixer FX menu
+  - BROWSE KNOB to browse effects [5]
   - PUSH BROWSE KNOB to set current effect on all decks
-- SHIFT + FX ARROWS [<] or [>] to cycle though Mixer FX for that deck
+  - BACK [<] again to reset to filter
 
-[4] Mixer FX allow you to change the behavior of a deck's filter knob. There are currently five effects: filter, reverb, dual delay, noise, and time gater.
+[5] You can specify four effects in addition to filter. Do this by quitting Traktor, then modifying the Traktor Settings file at:
+
+```Documents/Native Instruments/Traktor 3.2.1/Traktor Settings.tsi```
+
+Find the lines beginning with:
+
+```<Entry Name="Audio.ChannelFX.<1-4>.Type" ... >```
+
+and set the Values based on the following mapping:
+
+- 0: Reverb
+- 1: Dual Delay
+- 2: Noise
+- 3: Time Gater
+- 4: Flanger
+- 5: Barber Pole
+- 6: Dual Delay
+- 7: Crush
 
 #### Misc
 
-- BACK [<] to reset deck Mixer FX (to filter)
-- HOLD BACK [<] to reset deck key and tempo
 - Global and deck tempo knobs perform coarse adjustment when SHIFT is not held
 - SHIFT + FLUX for flux reverse
 
 ## Credit
 
-As far as I'm aware, all inputs and ouputs for these configuration scripts are completely undocumented. That means that this process requires tedious guess and checking with no guarantee of success. There are some features I simply would not have figured out on my own and it's important to give credit where credit is due.
+As far as I'm aware, all inputs and ouputs for these configuration scripts are completely undocumented. That means that this process requires tedious guess and checking with no guarantee of success. There are some features I simply would not have figured out on my own. A huge thanks to the following trailblazers:
 
-Here is a list of pioneers and their corresponding features that I have adapted:
-
-- Traktor Supreme Edition MOD ([Go support Aleix on Patreon](https://www.patreon.com/supremeedition)! His mod is light years ahead of mine.)
-  - MixerFX
+- [Aleix Jiménez](https://www.patreon.com/supremeedition) makes an incredibly feature-rich Traktor mod. It's seriously light years ahead of mine and you should go support him on Patreon.
 
 ## Installation
 
@@ -116,9 +128,9 @@ Here is a list of pioneers and their corresponding features that I have adapted:
    or
    `Applications/Native Instruments/Traktor Pro 3`.
 3. Right click on Traktor and select `Show Package Contents`.
-4. Copy the qml folder to `Contents/Resources` and select merge. (Note: Merge preserves newer items. Make sure to download this mod AFTER installing or updating Traktor.)
+4. Manually copy each qml file to the appropriate folder in `Contents/Resources`. (Note: MacOS does not make this process easy because I chose to have a small file footprint. Merging will preserve newer items, but there is no guarantee that the mod files are newer than your current Traktor files.)
 
-## Screenshots
+## Screenshots (outdated)
 
 ![Colored Camelot key](images/color_key.jpg)
 ![Approximate Camelot key](images/approx_key.jpg)

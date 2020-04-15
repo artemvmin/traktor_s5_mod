@@ -1133,7 +1133,7 @@ Module
 
   WiresGroup
   {
-    enabled: encoderMode.value != encoderStemMode && encoderMode.value != encoderBeatgridMode;
+    enabled: !module.shift && encoderMode.value != encoderStemMode && encoderMode.value != encoderBeatgridMode;
 
     Wire { from: "%surface%.browse.push"; to: SetPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.none } enabled: screenOverlay.value == Overlay.browserWarnings }
     Wire { from: "%surface%.browse.push"; to: ButtonScriptAdapter { onPress: { browserIsTemporary.value = false; module.screenView.value = ScreenView.browser; } } enabled: screenOverlay.value == Overlay.none }
@@ -1561,54 +1561,6 @@ Module
       Wire { from: "%surface%.back";    to: "decks.4.key_control.reset" }
       Wire { from: "%surface%.browse";  to: "decks.4.key_control.coarse"; enabled: !module.shift }
       Wire { from: "%surface%.browse";  to: "decks.4.key_control.fine";   enabled:  module.shift }
-    }
-  }
-
-//------------------------------------------------------------------------------------------------------------------
-// Reset Deck
-//------------------------------------------------------------------------------------------------------------------
-
-  WiresGroup {
-    enabled: screenViewProp.value == ScreenView.deck && screenOverlay.value == Overlay.none && !module.shift
-
-    // Deck A
-    WiresGroup
-    {
-      enabled: focusedDeckId == 1
-
-      Wire { from: "%surface%.back"; to: "decks.1.key_control.reset" }
-      Wire { from: "%surface%.back"; to: "decks.1.tempo.reset" }
-      Wire { from: "%surface%.back"; to: SetPropertyAdapter { path: "app.traktor.mixer.channels.1.fx.select"; value: 0 } }
-    }
-
-    // Deck B
-    WiresGroup
-    {
-      enabled: focusedDeckId == 2
-
-      Wire { from: "%surface%.back"; to: "decks.2.key_control.reset" }
-      Wire { from: "%surface%.back"; to: "decks.2.tempo.reset" }
-      Wire { from: "%surface%.back"; to: SetPropertyAdapter { path: "app.traktor.mixer.channels.2.fx.select"; value: 0 } }
-    }
-
-    // Deck C
-    WiresGroup
-    {
-      enabled: focusedDeckId == 3
-
-      Wire { from: "%surface%.back"; to: "decks.3.key_control.reset" }
-      Wire { from: "%surface%.back"; to: "decks.3.tempo.reset" }
-      Wire { from: "%surface%.back"; to: SetPropertyAdapter { path: "app.traktor.mixer.channels.3.fx.select"; value: 0 } }
-    }
-
-    // Deck D
-    WiresGroup
-    {
-      enabled: focusedDeckId == 4
-
-      Wire { from: "%surface%.back"; to: "decks.4.key_control.reset" }
-      Wire { from: "%surface%.back"; to: "decks.4.tempo.reset" }
-      Wire { from: "%surface%.back"; to: SetPropertyAdapter { path: "app.traktor.mixer.channels.4.fx.select"; value: 0 } }
     }
   }
 
@@ -3359,7 +3311,7 @@ Module
 
   WiresGroup
   {
-    enabled: (isInEditMode || screenViewProp.value == ScreenView.deck) && screenOverlay.value == Overlay.none && module.shift
+    enabled: module.shift && screenViewProp.value == ScreenView.deck && screenOverlay.value == Overlay.none
 
     // Set grid marker
     Wire { from: "%surface%.display.buttons.6"; to: ButtonScriptAdapter { onPress: (setGrid.value = 1) } }
@@ -4088,15 +4040,8 @@ Module
   AppProperty { id: mixerFXD;       path: "app.traktor.mixer.channels.4.fx.select" }
 
   // MixerFX Overlay
-  WiresGroup
-  {
-    enabled: module.shift
-
-    Wire { from:  "s5.mixer.channels.1.filter_on";  to: SetPropertyAdapter { path: "mapping.state.left.overlay";  value: Overlay.mixerfx} }
-    Wire { from:  "s5.mixer.channels.2.filter_on";  to: SetPropertyAdapter { path: "mapping.state.right.overlay"; value: Overlay.mixerfx} }
-    Wire { from:  "s5.mixer.channels.3.filter_on";  to: SetPropertyAdapter { path: "mapping.state.left.overlay";  value: Overlay.mixerfx} }
-    Wire { from:  "s5.mixer.channels.4.filter_on";  to: SetPropertyAdapter { path: "mapping.state.right.overlay"; value: Overlay.mixerfx} }
-  }
+  Wire { from:  "%surface%.back";  to: TogglePropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.mixerfx }
+         enabled: !isInEditMode && screenViewProp.value == ScreenView.deck && screenOverlay.value == Overlay.none }
 
   WiresGroup
   {

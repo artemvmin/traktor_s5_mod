@@ -88,8 +88,8 @@ Text {
   AppProperty { id: mixerFX;   path: "app.traktor.mixer.channels." + (deckId+1) + ".fx.select" }
 
   // readonly property variant mxrFXNames: ["Filter", "Reverb", "Dual Delay", "Noise", "Time Gater", "Flanger", "Barber Pole", "Dual Delay", "Crush"]
-  readonly property variant mxrFXNames: ["Filter", "Reverb", "Delay", "Noise", "Gater", "Flanger", "Barber", "Delay", "Crush"]
-  property variant mixerFXNames: [mxrFXNames[0], mxrFXNames[mixerFXAssigned1.value], mxrFXNames[mixerFXAssigned2.value], mxrFXNames[mixerFXAssigned3.value], mxrFXNames[mixerFXAssigned4.value]]
+  readonly property variant mxrFXLabels: ["FTR", "RVB", "DEL", "NOS", "TMG", "FLG", "BPL", "DEL", "CRU"]
+  property variant mixerFXLabels: [mxrFXLabels[0], mxrFXLabels[mixerFXAssigned1.value], mxrFXLabels[mixerFXAssigned2.value], mxrFXLabels[mixerFXAssigned3.value], mxrFXLabels[mixerFXAssigned4.value] ] // do not change FLTR
 
 //--------------------------------------------------------------------------------------------------------------------
 //  MAPPING FROM TRAKTOR ENUM TO QML-STATE!
@@ -289,7 +289,7 @@ Text {
     State {
       name: "mixerFX";
       PropertyChanges { target: header_text; font.family: fontForNumber;
-                        text:  (!isLoaded) ? "" : mixerFXNames[mixerFX.value]; }
+                        text:  (!isLoaded) ? "" : mixerFXLabels[mixerFX.value]; }
     }
   ]
 
@@ -310,7 +310,6 @@ Text {
     return 20.0*log10(norm);
   }
 
-
   function computeBeatCounterStringFromPosition(beat) {
     var phraseLen = 4;
     var curBeat  = parseInt(beat);
@@ -328,12 +327,10 @@ Text {
     return value1.toString() + "." + value2.toString() + "." + value3.toString();
   }
 
-
   function getStableTempoString() {
     var tempo = propMixerStableTempo.value - 1;
     return   ((tempo < 0) ? "" : "+") + (tempo * 100).toFixed(1).toString() + "%";
   }
-
 
   function getSyncStatusString() {
     if ( !isLoaded )
