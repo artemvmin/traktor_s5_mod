@@ -38,12 +38,11 @@ Item {
   readonly property int smallHeaderHeight: 17
   readonly property int largeHeaderHeight: 45
 
-  readonly property int topMargin: 5
-  readonly property int topMarginSecondRow: 23
-  readonly property int titleTopMargin: 3
+  readonly property int topMargin: 2
+  readonly property int topMarginSecondRow: 20
   readonly property int sideMargin: 5
   readonly property int timeOffset: 40
-  readonly property int deckRightMargin: 15
+  readonly property int deckRightMargin: 14
 
   readonly property int rightMargin_middleText_large: 115
   readonly property int rightMargin_rightText_large:  45
@@ -238,11 +237,9 @@ Item {
 
     anchors.top:        top_line.bottom
     anchors.left:       cover_small.right
-    anchors.topMargin:  titleTopMargin
-    anchors.leftMargin: sideMargin
+    anchors.topMargin:  0
 
     Behavior on anchors.leftMargin { NumberAnimation { duration: speed } }
-    Behavior on anchors.topMargin  { NumberAnimation { duration: speed } }
     Behavior on font.pixelSize     { NumberAnimation { duration: speed } }
     Behavior on maxTextWidth       { NumberAnimation { duration: speed } }
   }
@@ -682,6 +679,7 @@ Item {
                         height: smallHeaderHeight }
 
       PropertyChanges { target: top_left_text;
+                        anchors.leftMargin: 1;
                         font.pixelSize: fonts.middleFontSize;
                         maxTextWidth: (deckType == DeckType.Stem) ? 210 - stem_text.width : 210 }
 
