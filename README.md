@@ -5,8 +5,9 @@ My dream is to DJ without a keyboard and mouse.
 ## Compatibility
 
 Traktor Pro:
+
 - 2.11.0
-- 3.2.19
+- 3.2.1 9
 
 NOTE: Traktor Pro 2 is no longer supported and may not contain all features listed below.
 
@@ -20,9 +21,7 @@ NOTE: Traktor Pro 2 is no longer supported and may not contain all features list
   - approximate Camelot key (when key is UNLOCKED)
 - Removed overlay hide delays
 
-### Controller
-
-#### Transport
+### Transport
 
 **Loop and Move:**
 
@@ -47,7 +46,7 @@ NOTE: Traktor Pro 2 is no longer supported and may not contain all features list
 
 [1] A cue point is either set manually or automatically when you trigger any hotcue.
 
-#### Browser
+### Browser
 
 - PUSH BROWSE KNOB to open the browser
 - Loading:
@@ -65,7 +64,7 @@ NOTE: Traktor Pro 2 is no longer supported and may not contain all features list
 
 [2] Preparation requires you to manually select a preparation playlist by right clicking on a playlist in the Traktor software.
 
-#### Beatgrid Edit
+### Beatgrid Edit
 
 - From any track screen:
   - SHIFT + TOP LEFT □ to toggle beat grid edit mode
@@ -89,16 +88,48 @@ NOTE: Traktor Pro 2 is no longer supported and may not contain all features list
 
 [4] Tap allows you to fix the beat grid alignment by tapping four consecutive beats while the song is playing.
 
-#### Mixer FX
+### Jump Mode
+
+Jump mode allows you to skip around the track using the pads.
+
+- FREEZE for jump mode
+- SHIFT + FREEZE for freeze mode
+
+Layout:
+
+| -2 | -1 | 1 | 2 |
+|:--:|:--:|:-:|:-:|
+| -8 | -4 | 4 | 8 |
+
+Layout (with SHIFT held):
+
+| -16 | -1 | 1 | 16 |
+|:---:|:--:|:-:|:--:|
+| -32 | -4 | 4 | 32 |
+
+### Loop Mode
+
+Loop mode allows you to initiate loops using the pads. This works really well with FLUX enabled.
+
+- REMIX for loop mode
+- SHIFT + REMIX for remix mode
+
+Layout:
+
+| 1/32 | 1/16 | 1/8 | 1/4 |
+|:----:|:----:|:---:|:---:|
+|  1/2 |   1  |  2  |  4  |
+
+### Mixer FX
 
 Mixer FX allow you to change the behavior of a deck's filter knob.
 
 - BACK [<] to open the Mixer FX menu
-  - TURN BROWSE KNOB to browse effects [6]
+  - TURN BROWSE KNOB to browse effects
   - PUSH BROWSE KNOB to set current effect on all decks
   - BACK [<] again to reset to filter
 
-[6] You can specify four effects in addition to filter. Do this by quitting Traktor, then modifying the Traktor Settings file at:
+You can specify four effects in addition to filter. To customize, quit Traktor and modify the Traktor Settings file at:
 
 ```Documents/Native Instruments/Traktor 3.2.1/Traktor Settings.tsi```
 
