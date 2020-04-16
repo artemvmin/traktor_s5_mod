@@ -31,7 +31,8 @@ Module
     type: MappingPropertyDescriptor.Integer;
     value: Overlay.none;
     onValueChanged: {
-      keyOrBPMOverlay = screenOverlay.value == Overlay.bpm || screenOverlay.value == Overlay.key || screenOverlay.value == Overlay.quantize || screenOverlay.value == Overlay.mixerfx;
+      // Add mixerfx and sorting to this list for convenience.
+      keyOrBPMOverlay = screenOverlay.value == Overlay.bpm || screenOverlay.value == Overlay.key || screenOverlay.value == Overlay.quantize || screenOverlay.value == Overlay.mixerfx || screenOverlay.value == Overlay.sorting;
       if (value == Overlay.fx) {
         editMode.value = false;
       }
@@ -68,6 +69,9 @@ Module
         "%surface%.browse.push",
         "%surface%.browse.touch",
         "%surface%.browse.is_turned",
+        "%surface%.encoder.touch",
+        "%surface%.encoder.push",
+        "%surface%.encoder.is_turned",
         "%surface%.back"
       ]
     }
@@ -1198,6 +1202,19 @@ Module
     {
       enabled: !module.shift
 
+      Wire
+      {
+        from: Or
+        {
+          inputs:
+          [
+            "%surface%.encoder.touch",
+            "%surface%.encoder.is_turned"
+          ]
+        }
+        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.sorting }
+      }
+
       Wire { from: "%surface%.encoder";             to: "screen.browser_sorting"    }
       Wire { from: "%surface%.encoder.push";        to: TriggerPropertyAdapter  { path:"app.traktor.browser.flip_sort_up_down"  } enabled: (browserSortId.value > 0) }
     }
@@ -1515,9 +1532,9 @@ Module
     {
       enabled: focusedDeckId == 1
 
-      Wire { from: "%surface%.back";   to: "decks.1.tempo.reset" }
-      Wire { from: "%surface%.browse"; to: "decks.1.tempo.coarse"; enabled: !module.shift }
-      Wire { from: "%surface%.browse"; to: "decks.1.tempo.fine";   enabled:  module.shift }
+      Wire { from: "%surface%.back";    to: "decks.1.tempo.reset"  }
+      Wire { from: "%surface%.browse";  to: "decks.1.tempo.coarse" }
+      Wire { from: "%surface%.encoder"; to: "decks.1.tempo.fine"   }
     }
 
     // Deck B
@@ -1525,9 +1542,9 @@ Module
     {
       enabled: focusedDeckId == 2
 
-      Wire { from: "%surface%.back";   to: "decks.2.tempo.reset" }
-      Wire { from: "%surface%.browse"; to: "decks.2.tempo.coarse"; enabled: !module.shift }
-      Wire { from: "%surface%.browse"; to: "decks.2.tempo.fine";   enabled:  module.shift }
+      Wire { from: "%surface%.back";    to: "decks.2.tempo.reset"  }
+      Wire { from: "%surface%.browse";  to: "decks.2.tempo.coarse" }
+      Wire { from: "%surface%.encoder"; to: "decks.2.tempo.fine"   }
     }
 
     // Deck C
@@ -1535,9 +1552,9 @@ Module
     {
       enabled: focusedDeckId == 3
 
-      Wire { from: "%surface%.back";   to: "decks.3.tempo.reset" }
-      Wire { from: "%surface%.browse"; to: "decks.3.tempo.coarse"; enabled: !module.shift }
-      Wire { from: "%surface%.browse"; to: "decks.3.tempo.fine";   enabled:  module.shift }
+      Wire { from: "%surface%.back";    to: "decks.3.tempo.reset"  }
+      Wire { from: "%surface%.browse";  to: "decks.3.tempo.coarse" }
+      Wire { from: "%surface%.encoder"; to: "decks.3.tempo.fine"   }
     }
 
     // Deck D
@@ -1545,9 +1562,9 @@ Module
     {
       enabled: focusedDeckId == 4
 
-      Wire { from: "%surface%.back";   to: "decks.4.tempo.reset" }
-      Wire { from: "%surface%.browse"; to: "decks.4.tempo.coarse"; enabled: !module.shift }
-      Wire { from: "%surface%.browse"; to: "decks.4.tempo.fine";   enabled:  module.shift }
+      Wire { from: "%surface%.back";    to: "decks.4.tempo.reset"  }
+      Wire { from: "%surface%.browse";  to: "decks.4.tempo.coarse" }
+      Wire { from: "%surface%.encoder"; to: "decks.4.tempo.fine"   }
     }
   }
 
@@ -1564,9 +1581,9 @@ Module
     {
       enabled: focusedDeckId == 1
 
-      Wire { from: "%surface%.back";    to: "decks.1.key_control.reset" }
-      Wire { from: "%surface%.browse";  to: "decks.1.key_control.coarse"; enabled: !module.shift }
-      Wire { from: "%surface%.browse";  to: "decks.1.key_control.fine";   enabled:  module.shift }
+      Wire { from: "%surface%.back";    to: "decks.1.key_control.reset"  }
+      Wire { from: "%surface%.browse";  to: "decks.1.key_control.coarse" }
+      Wire { from: "%surface%.encoder"; to: "decks.1.key_control.fine"   }
     }
 
     // Deck B
@@ -1574,9 +1591,9 @@ Module
     {
       enabled: focusedDeckId == 2
 
-      Wire { from: "%surface%.back";    to: "decks.2.key_control.reset" }
-      Wire { from: "%surface%.browse";  to: "decks.2.key_control.coarse"; enabled: !module.shift }
-      Wire { from: "%surface%.browse";  to: "decks.2.key_control.fine";   enabled:  module.shift }
+      Wire { from: "%surface%.back";    to: "decks.2.key_control.reset"  }
+      Wire { from: "%surface%.browse";  to: "decks.2.key_control.coarse" }
+      Wire { from: "%surface%.encoder"; to: "decks.2.key_control.fine"   }
     }
 
     // Deck C
@@ -1584,9 +1601,9 @@ Module
     {
       enabled: focusedDeckId == 3
 
-      Wire { from: "%surface%.back";    to: "decks.3.key_control.reset" }
-      Wire { from: "%surface%.browse";  to: "decks.3.key_control.coarse"; enabled: !module.shift }
-      Wire { from: "%surface%.browse";  to: "decks.3.key_control.fine";   enabled:  module.shift }
+      Wire { from: "%surface%.back";    to: "decks.3.key_control.reset"  }
+      Wire { from: "%surface%.browse";  to: "decks.3.key_control.coarse" }
+      Wire { from: "%surface%.encoder"; to: "decks.3.key_control.fine"   }
     }
 
     // Deck D
@@ -1594,9 +1611,9 @@ Module
     {
       enabled: focusedDeckId == 4
 
-      Wire { from: "%surface%.back";    to: "decks.4.key_control.reset" }
-      Wire { from: "%surface%.browse";  to: "decks.4.key_control.coarse"; enabled: !module.shift }
-      Wire { from: "%surface%.browse";  to: "decks.4.key_control.fine";   enabled:  module.shift }
+      Wire { from: "%surface%.back";    to: "decks.4.key_control.reset"  }
+      Wire { from: "%surface%.browse";  to: "decks.4.key_control.coarse" }
+      Wire { from: "%surface%.encoder"; to: "decks.4.key_control.fine"   }
     }
   }
 

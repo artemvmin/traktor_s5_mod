@@ -17,14 +17,15 @@ Note: I will only be actively supporting the latest version of Traktor Pro. Some
 ### Display
 
 - Spectrum colors to distinguish highs, mids, and lows
-- Deck header shows
-  - color-coded Camelot key (when key is LOCKED)
-  - approximate Camelot key (when key is UNLOCKED)
 - Removed overlay hide delays
+- Color-coded deck headers
+  - Dynamic Camelot key
+  - Tempo bend
+  - Mixer FX
 
 ### Transport
 
-**Loop and Move:**
+**Loop & Move:**
 
 - TURN LOOP KNOB to adjust loop size
 - PUSH LOOP KNOB to loop
@@ -40,10 +41,15 @@ Note: I will only be actively supporting the latest version of Traktor Pro. Some
 - SHIFT + PLAY for reverse
 - SHIFT + FLUX for flux reverse
 
-**Tempo:**
+**Global Tempo:**
 
 - TURN TEMPO KNOB for coarse adjustment
 - SHIFT + TURN TEMPO KNOB for fine adjustment
+
+**Track Tempo & Key:**
+
+- TURN BROWSE KNOB for coarse adjustment
+- TURN LOOP KNOB for fine adjustment
 
 [1] A cue point is either set manually or automatically when you trigger any hotcue.
 
@@ -121,7 +127,7 @@ Layout:
 |:----:|:----:|:---:|:---:|
 |  1/2 |   1  |  2  |  4  |
 
-[5] Random pads may initialize to white instead of the correct color. I believe this to be a Traktor software bug. It does not affect performance.
+[5] Random pads may initialize to white instead of the correct color. I believe this to be a Traktor software bug. It does not affect performance, but it does make me sad.
 
 ### Mixer FX
 
@@ -151,12 +157,6 @@ and set the Values based on the following mapping:
 - 6: Dual Delay
 - 7: Crush
 
-## Credit
-
-As far as I'm aware, all inputs and ouputs for these configuration scripts are completely undocumented. That means that this process requires tedious guess and checking with no guarantee of success. There are some features I simply would not have figured out on my own. A huge thanks to the following trailblazers:
-
-- [Aleix Jiménez](https://www.patreon.com/supremeedition) makes an incredibly feature-rich Traktor mod. It's seriously light years ahead of mine and you should go support him on Patreon.
-
 ## Installation
 
 **Windows:**
@@ -176,7 +176,15 @@ As far as I'm aware, all inputs and ouputs for these configuration scripts are c
    or
    `Applications/Native Instruments/Traktor Pro 3`.
 3. Right click on Traktor and select `Show Package Contents`.
-4. Manually copy each qml file to the appropriate folder in `Contents/Resources`. (Note: MacOS does not make this process easy because I chose to have a small file footprint. Merging will preserve newer items, but there is no guarantee that the mod files are newer than your current Traktor files.)
+4. Manually copy each qml file to the appropriate folder in `Contents/Resources`.
+
+Note: MacOS does not make this process easy because I chose to only upload files that I modified. Replacing will clobber the entire directory with my partial files. Merging will preserve newer items, but there is no guarantee that the mod files are newer than your current Traktor files.
+
+## Credits
+
+As far as I'm aware, all inputs and ouputs for these configuration scripts are completely undocumented. That means that this process requires tedious guess and checking with no guarantee of success. There are some features I simply would not have figured out on my own. A huge thanks to the following trailblazers:
+
+- [Aleix Jiménez](https://www.patreon.com/supremeedition) makes an incredibly feature-rich Traktor mod. It's seriously light years ahead of mine and you should go support him on Patreon.
 
 ## Screenshots (outdated)
 
