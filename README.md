@@ -7,9 +7,9 @@ My dream is to DJ without a keyboard and mouse.
 Traktor Pro:
 
 - 2.11.0
-- 3.2.1 9
+- 3.2.1
 
-NOTE: Traktor Pro 2 is no longer supported and may not contain all features listed below.
+Note: I will only be actively supporting the latest version of Traktor Pro. Some features may not be available on older versions.
 
 ## Modifications
 
