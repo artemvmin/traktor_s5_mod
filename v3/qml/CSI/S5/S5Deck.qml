@@ -4464,14 +4464,15 @@ Module
   {
     enabled: screenOverlay.value == Overlay.mixerfx
 
-    Wire { from: "%surface%.back"; to: ButtonScriptAdapter { onPress: { mixerFXSelect.value = 0; } } }
-    Wire { from: "%surface%.back"; to: SetPropertyAdapter { path: "app.traktor.mixer.channels." + focusedDeckId + ".fx.select"; value: 0 } }
     Wire { from: "%surface%.browse.turn"; to: EncoderScriptAdapter {
       onIncrement: { mixerFX.value == 4 ? mixerFX.value = mixerFX.value - 4 : mixerFX.value = mixerFX.value + 1 }
       onDecrement: { mixerFX.value == 0 ? mixerFX.value = mixerFX.value + 4 : mixerFX.value = mixerFX.value - 1 }
     } }
     Wire { from: "%surface%.browse.push";  to: ButtonScriptAdapter {
       onPress: { mixerFXA.value = mixerFX.value; mixerFXB.value = mixerFX.value; mixerFXC.value = mixerFX.value; mixerFXD.value = mixerFX.value }
+    } }
+    Wire { from: "%surface%.back"; to: ButtonScriptAdapter {
+      onPress: { mixerFX.value = 0 }
     } }
   }
 }
