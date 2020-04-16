@@ -3649,14 +3649,12 @@ Module
     enabled: (focusedDeckId == 1) && (hasTransport(deckAType))
 
     Wire { from: "%surface%.flux"; to: "decks.1.transport.flux" ; enabled: !module.shift }
-    Wire { from: "%surface%.flux"; to: "decks.1.transport.flux_reverse" ; enabled: module.shift }
 
     WiresGroup
     {
       enabled: !module.shift
 
       Wire { from: "%surface%.play"; to: "decks.1.transport.play" }
-      Wire { from: "%surface%.cue";  to: "decks.1.transport.cue"  }
       Wire { from: "%surface%.sync"; to: "decks.1.transport.sync" }
     }
 
@@ -3664,9 +3662,8 @@ Module
     {
       enabled: module.shift
 
-      Wire { from: "%surface%.play"; to: "decks.1.transport.timecode"       }
-      Wire { from: "%surface%.cue";  to: "decks.1.transport.return_to_zero" }
-      Wire { from: "%surface%.sync"; to: "decks.1.transport.master"         }
+      Wire { from: "%surface%.cue";  to: "decks.1.transport.cue"    }
+      Wire { from: "%surface%.sync"; to: "decks.1.transport.master" }
     }
 
     WiresGroup
@@ -3677,8 +3674,8 @@ Module
       {
         enabled: !module.shift || !hasSeek(deckAType)
 
-        Wire { from: "%surface%.touchstrip";        to: "decks.1.scratch"        }
-        Wire { from: "%surface%.touchstrip.leds";   to: "decks.1.scratch.leds"   }
+        Wire { from: "%surface%.touchstrip";        to: "decks.1.scratch"      }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.1.scratch.leds" }
       }
 
       WiresGroup
@@ -3694,20 +3691,23 @@ Module
     {
       enabled: deckARunning.value
 
+      Wire { from: "%surface%.touchstrip.leds"; to: "decks.1.tempo_bend.leds" }
+
       WiresGroup
       {
         enabled: !module.shift
 
-        Wire { from: "%surface%.touchstrip";        to: "decks.1.tempo_bend"        }
-        Wire { from: "%surface%.touchstrip.leds";   to: "decks.1.tempo_bend.leds" }
+        Wire { from: "%surface%.cue";        to: DirectPropertyAdapter { path: "app.traktor.decks.1.cup" }  }
+        Wire { from: "%surface%.touchstrip"; to: "decks.1.tempo_bend" }
       }
 
       WiresGroup
       {
         enabled: module.shift
 
-        Wire { from: "%surface%.touchstrip";        to: "decks.1.scratch"      }
-        Wire { from: "%surface%.touchstrip.leds";   to: "decks.1.scratch.leds" }
+        Wire { from: "%surface%.play";       to: DirectPropertyAdapter{ path: "app.traktor.decks.1.reverse" } }
+        Wire { from: "%surface%.flux";       to: "decks.1.transport.flux_reverse" }
+        Wire { from: "%surface%.touchstrip"; to: "decks.1.scratch";}
       }
     }
   }
@@ -3725,14 +3725,12 @@ Module
     enabled: (focusedDeckId == 2) && (hasTransport(deckBType))
 
     Wire { from: "%surface%.flux"; to: "decks.2.transport.flux" ; enabled: !module.shift }
-    Wire { from: "%surface%.flux"; to: "decks.2.transport.flux_reverse" ; enabled: module.shift }
 
     WiresGroup
     {
       enabled: !module.shift
 
       Wire { from: "%surface%.play"; to: "decks.2.transport.play" }
-      Wire { from: "%surface%.cue";  to: "decks.2.transport.cue"  }
       Wire { from: "%surface%.sync"; to: "decks.2.transport.sync" }
     }
 
@@ -3740,11 +3738,9 @@ Module
     {
       enabled: module.shift
 
-      Wire { from: "%surface%.play"; to: "decks.2.transport.timecode"       }
-      Wire { from: "%surface%.cue";  to: "decks.2.transport.return_to_zero" }
-      Wire { from: "%surface%.sync"; to: "decks.2.transport.master"         }
+      Wire { from: "%surface%.cue";  to: "decks.2.transport.cue"    }
+      Wire { from: "%surface%.sync"; to: "decks.2.transport.master" }
     }
-
 
     WiresGroup
     {
@@ -3754,8 +3750,8 @@ Module
       {
         enabled: !module.shift || !hasSeek(deckBType)
 
-        Wire { from: "%surface%.touchstrip";        to: "decks.2.scratch"        }
-        Wire { from: "%surface%.touchstrip.leds";   to: "decks.2.scratch.leds"   }
+        Wire { from: "%surface%.touchstrip";        to: "decks.2.scratch"      }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.2.scratch.leds" }
       }
 
       WiresGroup
@@ -3771,20 +3767,23 @@ Module
     {
       enabled: deckBRunning.value
 
+      Wire { from: "%surface%.touchstrip.leds"; to: "decks.2.tempo_bend.leds" }
+
       WiresGroup
       {
         enabled: !module.shift
 
-        Wire { from: "%surface%.touchstrip";        to: "decks.2.tempo_bend"        }
-        Wire { from: "%surface%.touchstrip.leds";   to: "decks.2.tempo_bend.leds" }
+        Wire { from: "%surface%.cue";        to: DirectPropertyAdapter { path: "app.traktor.decks.2.cup" }  }
+        Wire { from: "%surface%.touchstrip"; to: "decks.2.tempo_bend" }
       }
 
       WiresGroup
       {
         enabled: module.shift
 
-        Wire { from: "%surface%.touchstrip";        to: "decks.2.scratch"      }
-        Wire { from: "%surface%.touchstrip.leds";   to: "decks.2.scratch.leds" }
+        Wire { from: "%surface%.play";       to: DirectPropertyAdapter{ path: "app.traktor.decks.2.reverse" } }
+        Wire { from: "%surface%.flux";       to: "decks.2.transport.flux_reverse" }
+        Wire { from: "%surface%.touchstrip"; to: "decks.2.scratch";}
       }
     }
   }
@@ -3802,14 +3801,12 @@ Module
     enabled: (focusedDeckId == 3) && (hasTransport(deckCType))
 
     Wire { from: "%surface%.flux"; to: "decks.3.transport.flux" ; enabled: !module.shift }
-    Wire { from: "%surface%.flux"; to: "decks.3.transport.flux_reverse" ; enabled: module.shift }
 
     WiresGroup
     {
       enabled: !module.shift
 
       Wire { from: "%surface%.play"; to: "decks.3.transport.play" }
-      Wire { from: "%surface%.cue";  to: "decks.3.transport.cue"  }
       Wire { from: "%surface%.sync"; to: "decks.3.transport.sync" }
     }
 
@@ -3817,11 +3814,9 @@ Module
     {
       enabled: module.shift
 
-      Wire { from: "%surface%.play"; to: "decks.3.transport.timecode"       }
-      Wire { from: "%surface%.cue";  to: "decks.3.transport.return_to_zero" }
-      Wire { from: "%surface%.sync"; to: "decks.3.transport.master"         }
+      Wire { from: "%surface%.cue";  to: "decks.3.transport.cue"    }
+      Wire { from: "%surface%.sync"; to: "decks.3.transport.master" }
     }
-
 
     WiresGroup
     {
@@ -3831,8 +3826,8 @@ Module
       {
         enabled: !module.shift || !hasSeek(deckCType)
 
-        Wire { from: "%surface%.touchstrip";        to: "decks.3.scratch"        }
-        Wire { from: "%surface%.touchstrip.leds";   to: "decks.3.scratch.leds"   }
+        Wire { from: "%surface%.touchstrip";        to: "decks.3.scratch"      }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.3.scratch.leds" }
       }
 
       WiresGroup
@@ -3848,20 +3843,23 @@ Module
     {
       enabled: deckCRunning.value
 
+      Wire { from: "%surface%.touchstrip.leds"; to: "decks.3.tempo_bend.leds" }
+
       WiresGroup
       {
         enabled: !module.shift
 
-        Wire { from: "%surface%.touchstrip";        to: "decks.3.tempo_bend"        }
-        Wire { from: "%surface%.touchstrip.leds";   to: "decks.3.tempo_bend.leds" }
+        Wire { from: "%surface%.cue";        to: DirectPropertyAdapter { path: "app.traktor.decks.3.cup" }  }
+        Wire { from: "%surface%.touchstrip"; to: "decks.3.tempo_bend" }
       }
 
       WiresGroup
       {
         enabled: module.shift
 
-        Wire { from: "%surface%.touchstrip";        to: "decks.3.scratch"      }
-        Wire { from: "%surface%.touchstrip.leds";   to: "decks.3.scratch.leds" }
+        Wire { from: "%surface%.play";       to: DirectPropertyAdapter{ path: "app.traktor.decks.3.reverse" } }
+        Wire { from: "%surface%.flux";       to: "decks.3.transport.flux_reverse" }
+        Wire { from: "%surface%.touchstrip"; to: "decks.3.scratch";}
       }
     }
   }
@@ -3879,14 +3877,12 @@ Module
     enabled: (focusedDeckId == 4) && (hasTransport(deckDType))
 
     Wire { from: "%surface%.flux"; to: "decks.4.transport.flux" ; enabled: !module.shift }
-    Wire { from: "%surface%.flux"; to: "decks.4.transport.flux_reverse" ; enabled: module.shift }
 
     WiresGroup
     {
       enabled: !module.shift
 
       Wire { from: "%surface%.play"; to: "decks.4.transport.play" }
-      Wire { from: "%surface%.cue";  to: "decks.4.transport.cue"  }
       Wire { from: "%surface%.sync"; to: "decks.4.transport.sync" }
     }
 
@@ -3894,11 +3890,9 @@ Module
     {
       enabled: module.shift
 
-      Wire { from: "%surface%.play"; to: "decks.4.transport.timecode"       }
-      Wire { from: "%surface%.cue";  to: "decks.4.transport.return_to_zero" }
-      Wire { from: "%surface%.sync"; to: "decks.4.transport.master"         }
+      Wire { from: "%surface%.cue";  to: "decks.4.transport.cue"    }
+      Wire { from: "%surface%.sync"; to: "decks.4.transport.master" }
     }
-
 
     WiresGroup
     {
@@ -3908,8 +3902,8 @@ Module
       {
         enabled: !module.shift || !hasSeek(deckDType)
 
-        Wire { from: "%surface%.touchstrip";        to: "decks.4.scratch"        }
-        Wire { from: "%surface%.touchstrip.leds";   to: "decks.4.scratch.leds"   }
+        Wire { from: "%surface%.touchstrip";        to: "decks.4.scratch"      }
+        Wire { from: "%surface%.touchstrip.leds";   to: "decks.4.scratch.leds" }
       }
 
       WiresGroup
@@ -3925,20 +3919,23 @@ Module
     {
       enabled: deckDRunning.value
 
+      Wire { from: "%surface%.touchstrip.leds"; to: "decks.4.tempo_bend.leds" }
+
       WiresGroup
       {
         enabled: !module.shift
 
-        Wire { from: "%surface%.touchstrip";        to: "decks.4.tempo_bend"        }
-        Wire { from: "%surface%.touchstrip.leds";   to: "decks.4.tempo_bend.leds" }
+        Wire { from: "%surface%.cue";        to: DirectPropertyAdapter { path: "app.traktor.decks.4.cup" }  }
+        Wire { from: "%surface%.touchstrip"; to: "decks.4.tempo_bend" }
       }
 
       WiresGroup
       {
         enabled: module.shift
 
-        Wire { from: "%surface%.touchstrip";        to: "decks.4.scratch"      }
-        Wire { from: "%surface%.touchstrip.leds";   to: "decks.4.scratch.leds" }
+        Wire { from: "%surface%.play";       to: DirectPropertyAdapter{ path: "app.traktor.decks.4.reverse" } }
+        Wire { from: "%surface%.flux";       to: "decks.4.transport.flux_reverse" }
+        Wire { from: "%surface%.touchstrip"; to: "decks.4.scratch";}
       }
     }
   }

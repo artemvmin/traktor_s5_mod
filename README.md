@@ -24,27 +24,46 @@ NOTE: Traktor Pro 2 is no longer supported and may not contain all features list
 
 #### Transport
 
-- LOOP KNOB to adjust loop size
+**Loop and Move:**
+
+- TURN LOOP KNOB to adjust loop size
 - PUSH LOOP KNOB to loop
-- BROWSE KNOB to seek (by loop size) or move the loop
+- TURN BROWSE KNOB to seek (by loop size) or move the loop
+
+**Cue:**
+
+- SHIFT + CUE to jump to the cue point [1] or set a cue point
+- CUE to play from the cue point
+
+**Reverse:**
+
+- SHIFT + PLAY for reverse
+- SHIFT + FLUX for flux reverse
+
+**Tempo:**
+
+- TURN TEMPO KNOB for coarse adjustment
+- SHIFT + TURN TEMPO KNOB for fine adjustment
+
+[1] A cue point is either set manually or automatically when you trigger any hotcue.
 
 #### Browser
 
 - PUSH BROWSE KNOB to open the browser
 - Loading:
-  - BROWSE KNOB to browse
+  - TURN BROWSE KNOB to browse
   - PUSH BROWSE KNOB to load the selected track
 - Sorting:
-  - LOOP KNOB to change sorting type
+  - TURN LOOP KNOB to change sorting type
   - PUSH LOOP KNOB to invert sorting
 - Preview:
   - SHIFT + PUSH LOOP KNOB to start playing selected track in preview mode
-  - SHIFT + LOOP KNOB to seek through preview track
-- Preparation [1]:
+  - SHIFT + TURN LOOP KNOB to seek through preview track
+- Preparation [2]:
   - TOP RIGHT □ to toggle selected track in and out of your preparation playlist
   - BOTTOM RIGHT □ to jump to preparation playlist
 
-[1] Preparation requires you to manually select a preparation playlist by right clicking on a playlist in the Traktor software.
+[2] Preparation requires you to manually select a preparation playlist by right clicking on a playlist in the Traktor software.
 
 #### Beatgrid Edit
 
@@ -54,32 +73,32 @@ NOTE: Traktor Pro 2 is no longer supported and may not contain all features list
   - SHIFT + BOTTOM RIGHT □ to reset the load marker
 - From edit mode:
   - TOP LEFT □ to lock edit mode
-  - BOTTOM LEFT □ to enable tick [2]
-  - TOP RIGHT □ to tap the beat [3]
+  - BOTTOM LEFT □ to enable tick [3]
+  - TOP RIGHT □ to tap the beat [4]
   - BOTTOM RIGHT □ to reset BPM
   - SCREEN ARROWS [<] or [>] to halve or double the BPM
   - PUSH BROWSE KNOB to zoom in on a single beat
   - BACK [<] to switch between seek and edit mode
   - When in edit mode (back button blinking):
-    - BROWSE KNOB to adjust offset
-    - LOOP KNOB to adjust BPM
+    - TURN BROWSE KNOB to adjust offset
+    - TURN LOOP KNOB to adjust BPM
   - When in seek mode (back button not blinking):
-    - BROWSE KNOB to seek through track
+    - TURN BROWSE KNOB to seek through track
 
-[2] Tick plays an audible sound on every beat. This feature requires headphones routed from the monitor channel and for the track to be CUEd.
+[3] Tick plays an audible sound on every beat. This feature requires headphones routed from the monitor channel and for the track to be CUEd.
 
-[3] Tap allows you to fix the beat grid alignment by tapping four consecutive beats while the song is playing.
+[4] Tap allows you to fix the beat grid alignment by tapping four consecutive beats while the song is playing.
 
 #### Mixer FX
 
 Mixer FX allow you to change the behavior of a deck's filter knob.
 
 - BACK [<] to open the Mixer FX menu
-  - BROWSE KNOB to browse effects [5]
+  - TURN BROWSE KNOB to browse effects [6]
   - PUSH BROWSE KNOB to set current effect on all decks
   - BACK [<] again to reset to filter
 
-[5] You can specify four effects in addition to filter. Do this by quitting Traktor, then modifying the Traktor Settings file at:
+[6] You can specify four effects in addition to filter. Do this by quitting Traktor, then modifying the Traktor Settings file at:
 
 ```Documents/Native Instruments/Traktor 3.2.1/Traktor Settings.tsi```
 
@@ -97,11 +116,6 @@ and set the Values based on the following mapping:
 - 5: Barber Pole
 - 6: Dual Delay
 - 7: Crush
-
-#### Misc
-
-- Global and deck tempo knobs perform coarse adjustment when SHIFT is not held
-- SHIFT + FLUX for flux reverse
 
 ## Credit
 
