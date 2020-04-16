@@ -8,6 +8,7 @@ Traktor Pro:
 
 - 2.11.0
 - 3.2.1
+- 3.3.0
 
 Note: I will only be actively supporting the latest version of Traktor Pro. Some features may not be available on older versions.
 
@@ -88,7 +89,7 @@ Note: I will only be actively supporting the latest version of Traktor Pro. Some
 
 [4] Tap allows you to fix the beat grid alignment by tapping four consecutive beats while the song is playing.
 
-### Jump Mode
+### Jump Mode [5]
 
 Jump mode allows you to skip around the track using the pads.
 
@@ -107,7 +108,7 @@ Layout (with SHIFT held):
 |:---:|:--:|:-:|:--:|
 | -32 | -4 | 4 | 32 |
 
-### Loop Mode
+### Loop Mode [5]
 
 Loop mode allows you to initiate loops using the pads. This works really well with FLUX enabled.
 
@@ -119,6 +120,8 @@ Layout:
 | 1/32 | 1/16 | 1/8 | 1/4 |
 |:----:|:----:|:---:|:---:|
 |  1/2 |   1  |  2  |  4  |
+
+[5] Random pads may initialize to white instead of the correct color. I believe this to be a Traktor software bug. It does not affect performance.
 
 ### Mixer FX
 

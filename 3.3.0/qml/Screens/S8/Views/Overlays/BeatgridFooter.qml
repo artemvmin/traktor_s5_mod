@@ -8,13 +8,7 @@ Rectangle {
   property bool           isAnalyzing:        false
   readonly property int   maxHeight:          20
 
-  // readonly property int   selectedFooterId:   selectedFooterItem.value === undefined ? 0 : selectedFooterItem.value
-
-  // readonly property variant knobLabel:    ["OFFSET", "BPM", "FINE", "SCAN"]
   readonly property variant knobLabel:    ["OFFSET", "BPM"]
-  // readonly property variant align:        [Text.AlignLeft, Text.AlignLeft, Text.AlignRight, Text.AlignLeft]
-  // readonly property variant align:        [parent.left, parent.left, parent.right, parent.left]
-  // readonly property variant xPositioning: [9, 129, 324, 369] 
   readonly property variant xPositioning: [35, 405]
   // readonly property variant margin:       [19, 8, 0, 6]
 
@@ -24,7 +18,6 @@ Rectangle {
   //--------------------------------------------------------------------------------------------------------------------
 
   AppProperty { id: bpm; path: "app.traktor.decks." + (deckId+1) + ".track.grid.adjust_bpm" }
-  // MappingProperty { id: selectedFooterItem;      path: propertiesPath + ".selected_footer_item" }
 
   //--------------------------------------------------------------------------------------------------------------------  
 
@@ -53,32 +46,9 @@ Rectangle {
       width:                  footer.width/4 - 12         // 3px space left and right
       x:                      xPositioning[index]
       y:                      7
-      // color:                  (selectedFooterId - 1) == index ? "white" : colors.colorFontFxHeader
       color:                  colors.colorFontFxHeader
       font.pixelSize:         fonts.smallFontSize
       visible:                !isAnalyzing;
-
-      // x:                      index * footer.width/4 + 6  // 3px because of the space
-      // horizontalAlignment:    align[index]
-      // verticalAlignment:      Text.AlignTop
-      // anchors.verticalCenterOffset: 20
-      // anchors.horizontalCenterOffset:     margin[index]            // TODO Work in progress...
-      // anchors.horizontalCenter: align[index]
-
-
-      // Used to underline the current footer
-      // Rectangle {
-        // id: underline
-
-        // anchors.top: text.bottom
-        // anchors.topMargin: -1
-        // anchors.left: text.left
-        // width: text.paintedWidth
-
-        // color: "white"
-        // height: 1
-        // visible: { (selectedFooterId - 1) == index ? true : false }
-      // }
     }
   }
 }

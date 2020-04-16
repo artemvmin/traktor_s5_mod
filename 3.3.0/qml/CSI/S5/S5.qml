@@ -88,6 +88,19 @@ Mapping
   S5 { name: "s5" }
 
   //------------------------------------------------------------------------------------------------------------------
+  //  LED Brightness wiring
+  //------------------------------------------------------------------------------------------------------------------
+
+  MappingPropertyDescriptor { path: "mapping.settings.led_on_brightness";      type: MappingPropertyDescriptor.Integer;   value: 100; min: 50; max: 100 }
+  MappingPropertyDescriptor { path: "mapping.settings.led_dimmed_percentage";  type: MappingPropertyDescriptor.Integer;   value: 25;  min: 25; max: 50  }
+
+  DirectPropertyAdapter { name: "LEDBrightnessOn";      path: "mapping.settings.led_on_brightness";      input: false }
+  DirectPropertyAdapter { name: "LEDDimmedPercentage";  path: "mapping.settings.led_dimmed_percentage";  input: false }
+
+  Wire { from: "s5.led_on_brightness.write";      to: "LEDBrightnessOn.read"     }
+  Wire { from: "s5.led_dimmed_brightness.write";  to: "LEDDimmedPercentage.read" }
+
+  //------------------------------------------------------------------------------------------------------------------
 
   S5Deck
   {
