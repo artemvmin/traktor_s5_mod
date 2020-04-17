@@ -44,6 +44,7 @@ Module
 
   AppProperty { id: masterDeckIdProp; path: "app.traktor.masterclock.source_id" }
   AppProperty { id: isTempoSynced;    path: "app.traktor.decks." + (focusedDeckId) + ".sync.enabled" }
+  AppProperty { id: isDeckLoaded;     path: "app.traktor.decks." + (focusedDeckId) + ".is_loaded" }
 
 //------------------------------------------------------------------------------------------------------------------
 //  KEY/BPM IDLE TIMEOUT METHODS
@@ -404,31 +405,37 @@ Module
   AppProperty { path: "app.traktor.decks.3.is_loaded_signal";  onValueChanged: onDeckLoaded(3); }
   AppProperty { path: "app.traktor.decks.4.is_loaded_signal";  onValueChanged: onDeckLoaded(4); }
 
-  function onDeckLoaded(deckId)
-  {
-    if (deckId == topDeckId || deckId == bottomDeckId)
-    {
-      if (screenViewProp.value == ScreenView.browser)
-      {
+  AppProperty { id: deck1Synced; path: "app.traktor.decks.1.sync.enabled" }
+  AppProperty { id: deck2Synced; path: "app.traktor.decks.2.sync.enabled" }
+  AppProperty { id: deck3Synced; path: "app.traktor.decks.3.sync.enabled" }
+  AppProperty { id: deck4Synced; path: "app.traktor.decks.4.sync.enabled" }
+
+  function anyDeckSynced() {
+    return deck1Synced.value || deck2Synced.value || deck3Synced.value || deck4Synced.value
+  }
+
+  function onDeckLoaded(deckId) {
+    if (deckId == topDeckId || deckId == bottomDeckId) {
+      if (screenViewProp.value == ScreenView.browser) {
         screenViewProp.value = ScreenView.deck;
       }
     }
 
-    if (stemResetOnLoad && s5mapping.running && hasStemMode((deckId == focusedDeckId) ? focusedDeckType : unfocusedDeckType))
-    {
+    if (stemResetOnLoad && s5mapping.running && hasStemMode((deckId == focusedDeckId) ? focusedDeckType : unfocusedDeckType)) {
       resetFocusedStemDeckVolumeAndFilter(deckId);
     }
 
 
-    if (deckId == topDeckId)
-    {
+    if (deckId == topDeckId) {
       updateDeckPadsMode(topDeckType, topDeckPadsMode);
       validateDeckPadsMode(bottomDeckType, topDeckType, bottomDeckPadsMode);
-    }
-    else
-    {
+    } else {
       updateDeckPadsMode(bottomDeckType, bottomDeckPadsMode);
       validateDeckPadsMode(topDeckType, bottomDeckType, topDeckPadsMode);
+    }
+
+    if (isDeckLoaded.value && anyDeckSynced()) {
+      isTempoSynced.value = true
     }
   }
 

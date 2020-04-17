@@ -58,18 +58,22 @@ Note: I will only be actively supporting the latest version of Traktor Pro. Some
 - PUSH BROWSE KNOB to open the browser
 - Loading:
   - TURN BROWSE KNOB to browse
-  - PUSH BROWSE KNOB to load the selected track
+  - PUSH BROWSE KNOB to load the selected track [2]
 - Sorting:
   - TURN LOOP KNOB to change sorting type
   - PUSH LOOP KNOB to invert sorting
 - Preview:
   - SHIFT + PUSH LOOP KNOB to start playing selected track in preview mode
   - SHIFT + TURN LOOP KNOB to seek through preview track
-- Preparation [2]:
+- Preparation [3]:
   - TOP RIGHT □ to toggle selected track in and out of your preparation playlist
   - BOTTOM RIGHT □ to jump to preparation playlist
 
-[2] Preparation requires you to manually select a preparation playlist by right clicking on a playlist in the Traktor software.
+[2] Decks will be synced every time a new track is loaded, as long as at least one other deck is synced. For the optimal sync experience, set the master tempo to AUTO (by pushing the global tempo knob) and sync the first track as it is running. This will match the master tempo to the tempo of the running track.
+
+This caveat makes AUTO sync behave better, since doing the initial sync on a running track causes the master to inherit the tempo of the running track.
+
+[3] Preparation requires you to manually select a preparation playlist by right clicking on a playlist in the Traktor software.
 
 ### Beatgrid Edit
 
@@ -79,8 +83,8 @@ Note: I will only be actively supporting the latest version of Traktor Pro. Some
   - SHIFT + BOTTOM RIGHT □ to reset the load marker
 - From edit mode:
   - TOP LEFT □ to lock edit mode
-  - BOTTOM LEFT □ to enable tick [3]
-  - TOP RIGHT □ to tap the beat [4]
+  - BOTTOM LEFT □ to enable tick [4]
+  - TOP RIGHT □ to tap the beat [5]
   - BOTTOM RIGHT □ to reset BPM
   - SCREEN ARROWS [<] or [>] to halve or double the BPM
   - PUSH BROWSE KNOB to zoom in on a single beat
@@ -91,9 +95,9 @@ Note: I will only be actively supporting the latest version of Traktor Pro. Some
   - When in seek mode (back button not blinking):
     - TURN BROWSE KNOB to seek through track
 
-[3] Tick plays an audible sound on every beat. This feature requires headphones routed from the monitor channel and for the track to be CUEd.
+[4] Tick plays an audible sound on every beat. This feature requires headphones routed from the monitor channel and for the track to be CUEd.
 
-[4] Tap allows you to fix the beat grid alignment by tapping four consecutive beats while the song is playing.
+[5] Tap allows you to fix the beat grid alignment by tapping four consecutive beats while the song is playing.
 
 ### Jump Mode
 
