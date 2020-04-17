@@ -127,8 +127,6 @@ Layout:
 |:----:|:---:|:---:|:---:|
 |  1   |  2  |  4  |  8  |
 
-[5] Random pads may initialize to white instead of the correct color. I believe this to be a Traktor software bug. It does not affect performance, but it does make me sad.
-
 ### Mixer FX
 
 Mixer FX allow you to change the behavior of a deck's filter knob.
