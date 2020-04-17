@@ -284,6 +284,7 @@ Item {
 
     Behavior on anchors.rightMargin { NumberAnimation { duration: speed } }
     Behavior on font.pixelSize      { NumberAnimation { duration: speed } }
+    Behavior on opacity { NumberAnimation { duration: speed } }
   }
 
   // bottom_middle_text: DYNAMIC KEY
@@ -461,7 +462,6 @@ Item {
 //--------------------------------------------------------------------------------------------------------------------
 
   // Inner Border
-
   function updateCoverArt() {
     if (headerState == "small" || deckType == DeckType.Live || directThru.value) {
       cover_small.opacity       = 0;
@@ -470,9 +470,9 @@ Item {
       cover_innerBorder.opacity = 0;
     } else {
       cover_small.opacity       = 1;
-      cover_small.width         = 42;
-      cover_small.height        = 42;
-      cover_innerBorder.opacity = (!isLoaded || (headerPropertyCover.value == "")) ? 0 :1;
+      cover_small.width         = (!isLoaded ? 0 : 36);
+      cover_small.height        = 36;
+      cover_innerBorder.opacity = (!isLoaded || (headerPropertyCover.value == "")) ? 0 : 1;
     }
   }
 
@@ -513,25 +513,6 @@ Item {
     Behavior on opacity { NumberAnimation { duration: speed } }
     Behavior on width { NumberAnimation { duration: speed } }
     Behavior on height { NumberAnimation { duration: speed } }
-
-    Rectangle {
-      id: circleEmptyCover
-      height: 18
-      width: height
-      radius: height * 0.5
-      anchors.centerIn: parent
-      visible:!isLoaded
-      color: circleEmptyColors[deck_Id]
-    }
-
-    Rectangle {
-      id: dotEmptyCover
-      height: 2
-      width: height
-      anchors.centerIn: parent
-      visible: !isLoaded
-      color:   colors.colorGrey08
-    }
 
     Image {
       id: coverImage
@@ -688,7 +669,8 @@ Item {
 
       PropertyChanges { target: top_middle_text;
                         font.pixelSize: fonts.middleFontSize;
-                        anchors.rightMargin: rightMargin_middleText_large + timeOffset }
+                        anchors.rightMargin: rightMargin_middleText_large + timeOffset;
+                        opacity: (deckType == DeckType.Stem) ? 0 : 1 }
 
       PropertyChanges { target: top_right_text;      opacity: 0; }
       PropertyChanges { target: deck_letter;         opacity: 0; }
@@ -715,7 +697,8 @@ Item {
 
       PropertyChanges { target: top_middle_text;
                         font.pixelSize: fonts.largeFontSize;
-                        anchors.rightMargin: rightMargin_middleText_large }
+                        anchors.rightMargin: rightMargin_middleText_large;
+                        opacity: 1 }
 
       PropertyChanges { target: top_right_text;      opacity: 1; }
       PropertyChanges { target: deck_letter;         opacity: 1; }
