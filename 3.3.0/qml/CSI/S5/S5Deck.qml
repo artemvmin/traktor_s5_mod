@@ -418,6 +418,18 @@ Module
     {
       resetFocusedStemDeckVolumeAndFilter(deckId);
     }
+
+
+    if (deckId == topDeckId)
+    {
+      updateDeckPadsMode(topDeckType, topDeckPadsMode);
+      validateDeckPadsMode(bottomDeckType, topDeckType, bottomDeckPadsMode);
+    }
+    else
+    {
+      updateDeckPadsMode(bottomDeckType, bottomDeckPadsMode);
+      validateDeckPadsMode(topDeckType, bottomDeckType, topDeckPadsMode);
+    }
   }
 
   AppProperty { id: topStemVolume1;   path: "app.traktor.decks."+ topDeckId + ".stems.1.volume" }
@@ -2143,7 +2155,7 @@ Module
       Wire { from: "%surface%.pads.7";     to: "loop_pads.button7" }
       Wire { from: "%surface%.pads.7";     to: ButtonScriptAdapter { color: Color.Blue        } }
       Wire { from: "%surface%.pads.8";     to: "loop_pads.button8" }
-      Wire { from: "%surface%.pads.8";     to: ButtonScriptAdapter { color: Color.Violet      } }
+      Wire { from: "%surface%.pads.8";     to: ButtonScriptAdapter { color: Color.Purple      } }
 
       Wire { from: "loop_pads.value";      to: "decks.1.loop.autoloop_size"   }
       Wire { from: "loop_pads.active";     to: "decks.1.loop.autoloop_active" }
@@ -2406,7 +2418,7 @@ Module
       Wire { from: "%surface%.pads.7";     to: "loop_pads.button7" }
       Wire { from: "%surface%.pads.7";     to: ButtonScriptAdapter { color: Color.Blue        } }
       Wire { from: "%surface%.pads.8";     to: "loop_pads.button8" }
-      Wire { from: "%surface%.pads.8";     to: ButtonScriptAdapter { color: Color.Violet      } }
+      Wire { from: "%surface%.pads.8";     to: ButtonScriptAdapter { color: Color.Purple      } }
 
       Wire { from: "loop_pads.value";      to: "decks.3.loop.autoloop_size"   }
       Wire { from: "loop_pads.active";     to: "decks.3.loop.autoloop_active" }
@@ -2669,7 +2681,7 @@ Module
       Wire { from: "%surface%.pads.7";     to: "loop_pads.button7" }
       Wire { from: "%surface%.pads.7";     to: ButtonScriptAdapter { color: Color.Blue        } }
       Wire { from: "%surface%.pads.8";     to: "loop_pads.button8" }
-      Wire { from: "%surface%.pads.8";     to: ButtonScriptAdapter { color: Color.Violet      } }
+      Wire { from: "%surface%.pads.8";     to: ButtonScriptAdapter { color: Color.Purple      } }
 
       Wire { from: "loop_pads.value";      to: "decks.2.loop.autoloop_size"   }
       Wire { from: "loop_pads.active";     to: "decks.2.loop.autoloop_active" }
@@ -2932,7 +2944,7 @@ Module
       Wire { from: "%surface%.pads.7";     to: "loop_pads.button7" }
       Wire { from: "%surface%.pads.7";     to: ButtonScriptAdapter { color: Color.Blue        } }
       Wire { from: "%surface%.pads.8";     to: "loop_pads.button8" }
-      Wire { from: "%surface%.pads.8";     to: ButtonScriptAdapter { color: Color.Violet      } }
+      Wire { from: "%surface%.pads.8";     to: ButtonScriptAdapter { color: Color.Purple      } }
 
       Wire { from: "loop_pads.value";      to: "decks.4.loop.autoloop_size"   }
       Wire { from: "loop_pads.active";     to: "decks.4.loop.autoloop_active" }
