@@ -669,8 +669,8 @@ Item {
 
       PropertyChanges { target: top_middle_text;
                         font.pixelSize: fonts.middleFontSize;
-                        anchors.rightMargin: rightMargin_middleText_large + timeOffset;
-                        opacity: (deckType == DeckType.Stem) ? 0 : 1 }
+                        anchors.rightMargin: (deckType == DeckType.Track) ? rightMargin_middleText_large + timeOffset : rightMargin_middleText_large;
+                        opacity: (deckType == DeckType.Track) ? 1 : 0 }
 
       PropertyChanges { target: top_right_text;      opacity: 0; }
       PropertyChanges { target: deck_letter;         opacity: 0; }
