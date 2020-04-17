@@ -97,7 +97,7 @@ Note: I will only be actively supporting the latest version of Traktor Pro. Some
 
 ### Jump Mode
 
-Jump mode allows you to skip around the track using the pads. It also provides fine-tuned looping, allowing you to set the beginning and end of a loop. This means you can create loops of any beat size. If a loop is active, the jumping pads move the loop.
+Jump mode allows you to skip around the track using the pads. It also provides fine-tuned looping, allowing you to set the beginning and end of a loop. This means you can create loops of any beat size. If a loop is active, the jumping pads move the loop. Press "loop out" to exit the loop.
 
 - FREEZE for jump mode
 - SHIFT + FREEZE for freeze mode
