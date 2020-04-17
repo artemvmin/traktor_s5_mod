@@ -2385,10 +2385,6 @@ Module
       }
     }
 
-    // Jump
-    WiresGroup {
-    }
-
     // Loop
     WiresGroup {
       enabled: padsMode.value == loopMode
@@ -2599,10 +2595,6 @@ Module
       }
     }
 
-    // Jump
-    WiresGroup {
-    }
-
     // Loop
     WiresGroup {
       enabled: padsMode.value == loopMode
@@ -2811,10 +2803,6 @@ Module
         Wire { from: "%surface%.pads.7";    to: "decks.4.hotcues.7.delete" }
         Wire { from: "%surface%.pads.8";    to: "decks.4.hotcues.8.delete" }
       }
-    }
-
-    // Jump
-    WiresGroup {
     }
 
     // Loop
