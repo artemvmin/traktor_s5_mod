@@ -95,26 +95,26 @@ Note: I will only be actively supporting the latest version of Traktor Pro. Some
 
 [4] Tap allows you to fix the beat grid alignment by tapping four consecutive beats while the song is playing.
 
-### Jump Mode [5]
+### Jump Mode
 
-Jump mode allows you to skip around the track using the pads.
+Jump mode allows you to skip around the track using the pads. It also provides fine-tuned looping, allowing you to set the beginning and end of a loop. This means you can create loops of any beat size. If a loop is active, the jumping pads move the loop.
 
 - FREEZE for jump mode
 - SHIFT + FREEZE for freeze mode
 
 Layout:
 
-| -2 | -1 | 1 | 2 |
-|:--:|:--:|:-:|:-:|
-| -8 | -4 | 4 | 8 |
+| -8 | loop in | loop out | 8 |
+|:--:|:-------:|:--------:|:-:|
+| -4 |    -1   |     1    | 4 |
 
 Layout (with SHIFT held):
 
-| -16 | -1 | 1 | 16 |
-|:---:|:--:|:-:|:--:|
-| -32 | -4 | 4 | 32 |
+| -32 | loop in | loop out | 32 |
+|:---:|:-------:|:--------:|:--:|
+| -16 |    -1   |     1    | 16 |
 
-### Loop Mode [5]
+### Loop Mode
 
 Loop mode allows you to initiate loops using the pads. This works really well with FLUX enabled.
 
@@ -123,9 +123,9 @@ Loop mode allows you to initiate loops using the pads. This works really well wi
 
 Layout:
 
-| 1/32 | 1/16 | 1/8 | 1/4 |
-|:----:|:----:|:---:|:---:|
-|  1/2 |   1  |  2  |  4  |
+| 1/16 | 1/8 | 1/4 | 1/2 |
+|:----:|:---:|:---:|:---:|
+|  1   |  2  |  4  |  8  |
 
 [5] Random pads may initialize to white instead of the correct color. I believe this to be a Traktor software bug. It does not affect performance, but it does make me sad.
 
