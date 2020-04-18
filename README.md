@@ -24,6 +24,10 @@ Note: I will only be actively supporting the latest version of Traktor Pro. Some
   - Tempo bend
   - Mixer FX
 
+![Single deck view](images/single_deck.jpg)
+![Deck with key/tempo/fx set](images/deck_key_tempo_fx.jpg)
+![Split view](images/split_view.jpg)
+
 ### Transport
 
 **Loop & Move:**
@@ -104,6 +108,8 @@ This caveat makes AUTO sync behave better, since doing the initial sync on a run
 
 [5] Tap allows you to fix the beat grid alignment by tapping four consecutive beats while the song is playing.
 
+![Beatgrid edit mode](images/edit_mode.jpg)
+
 ### Jump Mode
 
 Jump mode allows you to skip around the track using the pads. It also provides fine-tuned looping, allowing you to set the beginning and end of a loop. This means you can create loops of any beat size. If a loop is active, the jumping pads move the loop. Press "loop out" to exit the loop.
@@ -117,11 +123,15 @@ Layout:
 |:--:|:-------:|:--------:|:-:|
 | -4 |    -1   |     1    | 4 |
 
+![Jump mode](images/jump_mode.jpg)
+
 Layout (with SHIFT held):
 
 | -32 | loop in | loop out | 32 |
 |:---:|:-------:|:--------:|:--:|
 | -16 |    -1   |     1    | 16 |
+
+![Jump mode with shift](images/jump_mode_shift.jpg)
 
 ### Loop Mode
 
@@ -134,6 +144,8 @@ Layout:
 | 1/16 | 1/8 | 1/4 | 1/2 |
 |:----:|:---:|:---:|:---:|
 |  1   |  2  |  4  |  8  |
+
+![Loop mode](images/loop_mode.jpg)
 
 ### Remix Mode
 
@@ -154,6 +166,8 @@ If a remix deck already exists on that side, either focused or unfocused, remix 
 [7] This will record the selected capture source by its loop size. This is easier to think about in a split view where the track deck is focused and the remix deck's pads are open.
 
 [8] Make sure the remix deck is playing.
+
+![Remix capture source](images/remix_capture_source.jpg)
 
 ### Mixer FX
 
@@ -183,6 +197,8 @@ and set the Values based on the following mapping:
 - 6: Dual Delay
 - 7: Crush
 
+![Mixer FX](images/mixer_fx.jpg)
+
 ## Installation
 
 **Windows:**
@@ -211,8 +227,3 @@ Note: MacOS does not make this process easy because I chose to only upload files
 As far as I'm aware, all inputs and ouputs for these configuration scripts are completely undocumented. That means that this process requires tedious guess and checking with no guarantee of success. There are some features I simply would not have figured out on my own. A huge thanks to the following trailblazers:
 
 - [Aleix Jiménez](https://www.patreon.com/supremeedition) makes an incredibly feature-rich Traktor mod. It's seriously light years ahead of mine and you should go support him on Patreon.
-
-## Screenshots (outdated)
-
-![Colored Camelot key](images/color_key.jpg)
-![Approximate Camelot key](images/approx_key.jpg)
