@@ -672,22 +672,26 @@ Module
         break;
 
       case remixMode:
-        if (focusedDeckType == DeckType.Remix)
-        {
-          padsMode.value = remixMode;
-          padsFocus.value = deckFocus;
+        if (focusedDeckType != DeckType.Remix) {
+          if (unfocusedDeckType == DeckType.Remix) {
+            padsMode.value = remixMode
+            padsFocus.value = !deckFocus
+            break
+          }
+          // Create a remix deck.
+          if (focusedDeckId == 1) {
+            deckADeckType.value = DeckType.Remix
+          } else if (focusedDeckId == 2) {
+            deckBDeckType.value = DeckType.Remix
+          } else if (focusedDeckId == 3) {
+            deckCDeckType.value = DeckType.Remix
+          } else if (focusedDeckId == 4) {
+            deckDDeckType.value = DeckType.Remix
+          }
         }
-        else if (unfocusedDeckType == DeckType.Remix)
-        {
-          padsMode.value = remixMode;
-          padsFocus.value = !deckFocus;
-        }
-        else
-        {
-          padsMode.value = disabledMode;
-          padsFocus.value = false;
-        }
-        break;
+        padsMode.value = remixMode
+        padsFocus.value = deckFocus
+        break
 
       case stemMode:
         if ( hasStemMode(focusedDeckType) )
@@ -1651,6 +1655,20 @@ Module
   }
 
 //------------------------------------------------------------------------------------------------------------------
+// Capture Overlay
+//------------------------------------------------------------------------------------------------------------------
+
+  WiresGroup
+  {
+    enabled: screenOverlay.value == Overlay.capture
+
+    Wire { from: "%surface%.encoder"; to: "decks.1.remix.capture_source"; enabled: focusedDeckId == 1 }
+    Wire { from: "%surface%.encoder"; to: "decks.2.remix.capture_source"; enabled: focusedDeckId == 2 }
+    Wire { from: "%surface%.encoder"; to: "decks.3.remix.capture_source"; enabled: focusedDeckId == 3 }
+    Wire { from: "%surface%.encoder"; to: "decks.4.remix.capture_source"; enabled: focusedDeckId == 4 }
+  }
+
+//------------------------------------------------------------------------------------------------------------------
 // Effects Overlay
 //------------------------------------------------------------------------------------------------------------------
 
@@ -1694,24 +1712,6 @@ Module
       Wire { from: "%surface%.fx.buttons.3"; to: SetPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.none; output: false } enabled: fxButtonSelection.value == FxOverlay.upper_button_3; }
       Wire { from: "%surface%.fx.buttons.4"; to: SetPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.none; output: false } enabled: fxButtonSelection.value == FxOverlay.upper_button_4; }
     }
-  }
-
-//------------------------------------------------------------------------------------------------------------------
-// Capture Overlay
-//------------------------------------------------------------------------------------------------------------------
-
-  Wire
-  {
-    enabled: (encoderMode.value == encoderCaptureMode) && ((topDeckType == DeckType.Remix) || (bottomDeckType == DeckType.Remix))
-    from: Or
-    {
-      inputs:
-      [
-        "%surface%.encoder.touch",
-        "%surface%.encoder.is_turned"
-      ]
-    }
-    to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
   }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -1767,7 +1767,7 @@ Module
       enabled: module.shift
 
       Wire { from: "%surface%.freeze";  to: ButtonScriptAdapter { brightness: ((topDeckPadsMode.value == freezeMode) ? onBrightness : dimmedBrightness); color: Color.Blue; onPress: { deckAExitFreeze = onFreezeButtonPress(topDeckPadsMode, deckAIsLoaded.value);  } onRelease: { onFreezeButtonRelease(topDeckPadsMode, deckAExitFreeze, deckAType); } } enabled: hasFreezeMode(deckAType) }
-      Wire { from: "%surface%.remix";   to: SetPropertyAdapter { path: propertiesPath + ".top.pads_mode"; value: remixMode;   color: (hasRemixMode(deckAType) ? Color.Blue : Color.White) } enabled: !hasStemMode(deckAType) && (hasRemixMode(deckAType) || hasRemixMode(deckCType))  }
+      Wire { from: "%surface%.remix";   to: SetPropertyAdapter { path: propertiesPath + ".top.pads_mode"; value: remixMode;   color: (hasRemixMode(deckAType) || !hasRemixMode(deckCType) ? Color.Blue : Color.White) } enabled: !hasStemMode(deckAType) }
       Wire { from: "%surface%.remix";   to: SetPropertyAdapter { path: propertiesPath + ".top.pads_mode"; value: stemMode;    color: Color.Blue } enabled: hasStemMode(deckAType) }
       }
   }
@@ -1792,7 +1792,7 @@ Module
       enabled: module.shift
 
       Wire { from: "%surface%.freeze";  to: ButtonScriptAdapter  { brightness: ((bottomDeckPadsMode.value == freezeMode) ? onBrightness : dimmedBrightness); color: Color.White; onPress: { deckCExitFreeze = onFreezeButtonPress(bottomDeckPadsMode, deckCIsLoaded.value);  } onRelease: { onFreezeButtonRelease(bottomDeckPadsMode, deckCExitFreeze, deckCType); } } enabled: hasFreezeMode(deckCType) }
-      Wire { from: "%surface%.remix";   to: SetPropertyAdapter { path: propertiesPath + ".bottom.pads_mode"; value: remixMode;   color: (hasRemixMode(deckCType) ? Color.White : Color.Blue) } enabled: !hasStemMode(deckCType) && (hasRemixMode(deckAType) || hasRemixMode(deckCType )) }
+      Wire { from: "%surface%.remix";   to: SetPropertyAdapter { path: propertiesPath + ".bottom.pads_mode"; value: remixMode;   color: (hasRemixMode(deckCType) || !hasRemixMode(deckAType) ? Color.White : Color.Blue) } enabled: !hasStemMode(deckCType) }
       Wire { from: "%surface%.remix";   to: SetPropertyAdapter { path: propertiesPath + ".bottom.pads_mode"; value: stemMode;    color: Color.White } enabled:  hasStemMode(deckCType) }
     }
   }
@@ -1817,7 +1817,7 @@ Module
       enabled: module.shift
 
       Wire { from: "%surface%.freeze"; to: ButtonScriptAdapter  { brightness: ((topDeckPadsMode.value == freezeMode) ? onBrightness : dimmedBrightness); color: Color.Blue; onPress: { deckBExitFreeze = onFreezeButtonPress(topDeckPadsMode, deckBIsLoaded.value);  } onRelease: { onFreezeButtonRelease(topDeckPadsMode, deckBExitFreeze, deckBType); } } enabled: hasFreezeMode(deckBType) }
-      Wire { from: "%surface%.remix";  to: SetPropertyAdapter { path: propertiesPath + ".top.pads_mode"; value: remixMode;   color: (hasRemixMode(deckBType)? Color.Blue : Color.White) } enabled: !hasStemMode(deckBType) && (hasRemixMode(deckBType) || hasRemixMode(deckDType)) }
+      Wire { from: "%surface%.remix";  to: SetPropertyAdapter { path: propertiesPath + ".top.pads_mode"; value: remixMode;   color: (hasRemixMode(deckBType) || !hasRemixMode(deckDType) ? Color.Blue : Color.White) } enabled: !hasStemMode(deckBType) }
       Wire { from: "%surface%.remix";  to: SetPropertyAdapter { path: propertiesPath + ".top.pads_mode"; value: stemMode;    color: Color.Blue } enabled:  hasStemMode(deckBType) }
     }
   }
@@ -1842,7 +1842,7 @@ Module
       enabled: module.shift
 
       Wire { from: "%surface%.freeze"; to: ButtonScriptAdapter  { brightness: ((bottomDeckPadsMode.value == freezeMode) ? onBrightness : dimmedBrightness); color: Color.White; onPress: { deckDExitFreeze = onFreezeButtonPress(bottomDeckPadsMode, deckDIsLoaded.value);  } onRelease: { onFreezeButtonRelease(bottomDeckPadsMode, deckDExitFreeze, deckDType); } } enabled: hasFreezeMode(deckDType) }
-      Wire { from: "%surface%.remix";  to: SetPropertyAdapter { path: propertiesPath + ".bottom.pads_mode"; value: remixMode;   color: (hasRemixMode(deckDType)? Color.White : Color.Blue) } enabled: !hasStemMode(deckDType) && (hasRemixMode(deckBType) || hasRemixMode(deckDType)) }
+      Wire { from: "%surface%.remix";  to: SetPropertyAdapter { path: propertiesPath + ".bottom.pads_mode"; value: remixMode;   color: (hasRemixMode(deckDType) || !hasRemixMode(deckBType) ? Color.White : Color.Blue) } enabled: !hasStemMode(deckDType) }
       Wire { from: "%surface%.remix";  to: SetPropertyAdapter { path: propertiesPath + ".bottom.pads_mode"; value: stemMode;    color: Color.White } enabled:  hasStemMode(deckDType) }
     }
   }
@@ -3020,7 +3020,7 @@ Module
     // Loop and Freeze modes
     WiresGroup
     {
-      enabled: hasLoopMode(deckAType)
+      enabled: !module.shift && hasLoopMode(deckAType)
 
       WiresGroup
       {
@@ -3033,7 +3033,6 @@ Module
 
         Wire
         {
-          enabled: !module.shift
           from: Or
           {
             inputs:
@@ -3072,23 +3071,31 @@ Module
       }
     }
 
-    // Remix pages scrolling
-    WiresGroup
-    {
-      enabled: (deckAType == DeckType.Remix) && (encoderMode.value == encoderRemixMode)
+    // Remix
+    WiresGroup {
+      enabled: module.shift && deckAType == DeckType.Remix
 
-      Wire { from: "%surface%.encoder";         to: "decks.1.remix.page" }
-      Wire { from: "%surface%.encoder";         to: "ShowDisplayButtonArea_EncoderAdapter"; enabled: !deckFocus }
       Wire { from: "loop_encoder_blinker_blue"; to: "%surface%.loop.led" }
-    }
-
-    // Remix capture source
-    WiresGroup
-    {
-      enabled: (encoderMode.value == encoderCaptureMode)
-
-      Wire { from: "%surface%.encoder.turn"; to: "decks.1.remix.capture_source" }
-      Wire { from: "loop_encoder_blinker_blue"; to: "%surface%.loop.led" }
+      Wire {
+        from: Or {
+          inputs:
+          [
+            "%surface%.browse.touch",
+            "%surface%.browse.is_turned"
+          ]
+        }
+        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.quantize }
+      }
+      Wire {
+        from: Or {
+          inputs:
+          [
+            "%surface%.encoder.touch",
+            "%surface%.encoder.is_turned"
+          ]
+        }
+        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
+      }
     }
 
     // Stem filter control
@@ -3172,7 +3179,7 @@ Module
     // Loop and Freeze modes
     WiresGroup
     {
-      enabled: hasLoopMode(deckCType)
+      enabled: !module.shift && hasLoopMode(deckCType)
 
       WiresGroup
       {
@@ -3223,23 +3230,31 @@ Module
       }
     }
 
-    // Remix pages scrolling
-    WiresGroup
-    {
-      enabled: (deckCType == DeckType.Remix) && (encoderMode.value == encoderRemixMode)
+    // Remix
+    WiresGroup {
+      enabled: module.shift && deckCType == DeckType.Remix
 
-      Wire { from: "%surface%.encoder";         to: "decks.3.remix.page" }
-      Wire { from: "%surface%.encoder";         to: "ShowDisplayButtonArea_EncoderAdapter"; enabled: deckFocus }
       Wire { from: "loop_encoder_blinker_white"; to: "%surface%.loop.led" }
-    }
-
-    // Remix capture source
-    WiresGroup
-    {
-      enabled:  encoderMode.value == encoderCaptureMode
-
-      Wire { from: "%surface%.encoder.turn"; to: "decks.3.remix.capture_source" }
-      Wire { from: "loop_encoder_blinker_white"; to: "%surface%.loop.led" }
+      Wire {
+        from: Or {
+          inputs:
+          [
+            "%surface%.browse.touch",
+            "%surface%.browse.is_turned"
+          ]
+        }
+        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.quantize }
+      }
+      Wire {
+        from: Or {
+          inputs:
+          [
+            "%surface%.encoder.touch",
+            "%surface%.encoder.is_turned"
+          ]
+        }
+        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
+      }
     }
 
     // Stem filter control
@@ -3323,7 +3338,7 @@ Module
     // Loop and Freeze modes
     WiresGroup
     {
-      enabled: hasLoopMode(deckBType)
+      enabled: !module.shift && hasLoopMode(deckBType)
 
       WiresGroup
       {
@@ -3374,23 +3389,31 @@ Module
       }
     }
 
-    // Remix pages scrolling
-    WiresGroup
-    {
-      enabled: (deckBType == DeckType.Remix) && (encoderMode.value == encoderRemixMode)
+    // Remix
+    WiresGroup {
+      enabled: module.shift && deckBType == DeckType.Remix
 
-      Wire { from: "%surface%.encoder";         to: "decks.2.remix.page" }
-      Wire { from: "%surface%.encoder";         to: "ShowDisplayButtonArea_EncoderAdapter"; enabled: !deckFocus }
       Wire { from: "loop_encoder_blinker_blue"; to: "%surface%.loop.led" }
-    }
-
-    // Remix capture source
-    WiresGroup
-    {
-      enabled:  encoderMode.value == encoderCaptureMode
-
-      Wire { from: "%surface%.encoder.turn"; to: "decks.2.remix.capture_source" }
-      Wire { from: "loop_encoder_blinker_blue"; to: "%surface%.loop.led" }
+      Wire {
+        from: Or {
+          inputs:
+          [
+            "%surface%.browse.touch",
+            "%surface%.browse.is_turned"
+          ]
+        }
+        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.quantize }
+      }
+      Wire {
+        from: Or {
+          inputs:
+          [
+            "%surface%.encoder.touch",
+            "%surface%.encoder.is_turned"
+          ]
+        }
+        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
+      }
     }
 
     // Stem filter control
@@ -3474,7 +3497,7 @@ Module
     // Loop and Freeze modes
     WiresGroup
     {
-      enabled: hasLoopMode(deckDType)
+      enabled: !module.shift && hasLoopMode(deckDType)
 
       WiresGroup
       {
@@ -3525,23 +3548,31 @@ Module
       }
     }
 
-    // Remix pages scrolling
-    WiresGroup
-    {
-      enabled:  (deckDType == DeckType.Remix) && (encoderMode.value == encoderRemixMode)
+    // Remix
+    WiresGroup {
+      enabled: module.shift && deckDType == DeckType.Remix
 
-      Wire { from: "%surface%.encoder";         to: "decks.4.remix.page" }
-      Wire { from: "%surface%.encoder";        to: "ShowDisplayButtonArea_EncoderAdapter"; enabled: deckFocus }
       Wire { from: "loop_encoder_blinker_white"; to: "%surface%.loop.led" }
-    }
-
-    // Remix capture source
-    WiresGroup
-    {
-      enabled: encoderMode.value == encoderCaptureMode
-
-      Wire { from: "%surface%.encoder.turn";   to: "decks.4.remix.capture_source" }
-      Wire { from: "loop_encoder_blinker_white"; to: "%surface%.loop.led" }
+      Wire {
+        from: Or {
+          inputs:
+          [
+            "%surface%.browse.touch",
+            "%surface%.browse.is_turned"
+          ]
+        }
+        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.quantize }
+      }
+      Wire {
+        from: Or {
+          inputs:
+          [
+            "%surface%.encoder.touch",
+            "%surface%.encoder.is_turned"
+          ]
+        }
+        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
+      }
     }
 
     // Stem filter control
