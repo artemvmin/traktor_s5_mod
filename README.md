@@ -142,6 +142,8 @@ If a remix deck already exists on that side, either focused or unfocused, remix 
 - PRESS an empty PAD to record [7]
 - PRESS a recorded PAD to play [8]
 - SHIFT + PRESS a playing pad to stop it at the end of its loop
+- BOTTOM LEFT □ to change quantize value
+- RIGHT □s to page up and down
 
 [6] This is the track deck you will be capturing. The loop indicator light will blink the color of the remix deck you are modifying.
 
