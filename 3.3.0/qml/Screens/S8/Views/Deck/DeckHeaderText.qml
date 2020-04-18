@@ -78,6 +78,33 @@ Text {
   //property string propRemixQuantize: "1/4"
 
 //--------------------------------------------------------------------------------------------------------------------
+//  KEY PROPERTIES
+//--------------------------------------------------------------------------------------------------------------------
+
+  AppProperty { id: keyId;      path: "app.traktor.decks." + (deckId+1) + ".track.key.final_id" }
+  AppProperty { id: keyEnable;  path: "app.traktor.decks." + (deckId+1) + ".track.key.lock_enabled" }
+
+  property var keyColor: keyEnable.value && keyId.value >= 0 ? colors.musicalKeyColors[keyId.value] : colors.colorWhite
+
+//--------------------------------------------------------------------------------------------------------------------
+//  TEMPO PROPERTIES
+//--------------------------------------------------------------------------------------------------------------------
+
+  function getStableTempoString() {
+    var tempo = propMixerStableTempo.value - 1
+    return ((tempo < 0) ? "" : "+") + (tempo * 100).toFixed(1).toString() + "%"
+  }
+
+  function getTempoBendColor() {
+    var tempo = (propMixerStableTempo.value - 1) * 100
+
+    if (-5 < tempo && tempo < 5){
+      return colors.colorBendLow
+    }
+    return colors.colorBendHigh
+  }
+
+//--------------------------------------------------------------------------------------------------------------------
 //  MIXERFX PROPERTIES
 //--------------------------------------------------------------------------------------------------------------------
 
@@ -86,10 +113,28 @@ Text {
   MappingProperty { id: mixerFXAssigned3; path: "mapping.settings.mixerFXAssigned3" }
   MappingProperty { id: mixerFXAssigned4; path: "mapping.settings.mixerFXAssigned4" }
   AppProperty { id: mixerFX;   path: "app.traktor.mixer.channels." + (deckId+1) + ".fx.select" }
+  AppProperty { id: mixerFXOn; path: "app.traktor.mixer.channels." + (deckId+1) + ".fx.on" }
+
+  property var mixerFXColor: mixerFXOn.value ? colors.mixerFXColors[mixerFX.value] : colors.colorGrey72
 
   // readonly property variant mxrFXNames: ["Filter", "Reverb", "Dual Delay", "Noise", "Time Gater", "Flanger", "Barber Pole", "Dual Delay", "Crush"]
   readonly property variant mxrFXLabels: ["FTR", "RVB", "DEL", "NOS", "TMG", "FLG", "BPL", "DEL", "CRU"]
-  property variant mixerFXLabels: [mxrFXLabels[0], mxrFXLabels[mixerFXAssigned1.value], mxrFXLabels[mixerFXAssigned2.value], mxrFXLabels[mixerFXAssigned3.value], mxrFXLabels[mixerFXAssigned4.value] ] // do not change FLTR
+  property variant mixerFXLabels: [mxrFXLabels[0], mxrFXLabels[mixerFXAssigned1.value], mxrFXLabels[mixerFXAssigned2.value], mxrFXLabels[mixerFXAssigned3.value], mxrFXLabels[mixerFXAssigned4.value] ]
+
+//--------------------------------------------------------------------------------------------------------------------
+//  CAPTURE SOURCE PROPERTIES
+//--------------------------------------------------------------------------------------------------------------------
+
+  AppProperty { id: captureSrc; path: "app.traktor.decks." + (deckId+1) + ".capture_source" }
+
+  function captureSourceColor() {
+    var src = captureSrc.description
+
+    if (src == "Deck A" || src == "Deck B") {
+      return colors.colorDeckBlueBright
+    }
+    return colors.colorWhite
+  }
 
 //--------------------------------------------------------------------------------------------------------------------
 //  MAPPING FROM TRAKTOR ENUM TO QML-STATE!
@@ -99,7 +144,7 @@ Text {
                                             "trackLength", "bitrate", "bpmTrack", "gain", "elapsedTime", "remainingTime",
                                             "beats", "beatsToCue", "bpm", "tempo", "key", "keyText", "comment", "comment2",
                                             "remixer", "pitchRange", "bpmStable", "tempoStable", "sync", "off", "off", "bpmTrack",
-                                            "remixBeats", "remixQuantize", "mixerFX"]
+                                            "remixBeats", "remixQuantize", "mixerFX", "captureSource"]
 
 /*
   readonly property variant stateMapping:  [0:  "title",          1: "artist",       2:  "release",
@@ -112,7 +157,7 @@ Text {
                                             21: "remixer",       22: "pitchRange",  23: "bpmStable",
                                             24: "tempoStable",   25: "sync",        26: "off",
                                             27: "off",           28: "bpmTrack"     29: "remixBeats"
-                                            30: "remixQuantize", 31: "mixerFX"]
+                                            30: "remixQuantize", 31: "mixerFX",     32: "captureSource"]
 */
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -207,7 +252,8 @@ Text {
     State {
       name: "key";
       PropertyChanges { target: header_text; font.family: fontForNumber;
-                        text:   (!isLoaded)?"":propMusicalKey.value.toString(); }
+                        text:   (!isLoaded)?"":propMusicalKey.value.toString();
+                        color:  keyColor }
     },
     State {
       name: "keyText";
@@ -242,7 +288,8 @@ Text {
     State {
       name: "tempoStable";
       PropertyChanges { target: header_text; font.family: fontForNumber;
-                        text:   getStableTempoString(); }
+                        text:   getStableTempoString();
+                        color:  getTempoBendColor() }
     },
     State {
       name: "gain";
@@ -276,12 +323,14 @@ Text {
     State {
       name: "remixBeats";
       PropertyChanges { target: header_text; font.family: fontForNumber;
-                        text:  (!isLoaded)?"":computeBeatCounterStringFromPosition(propRemixBeatPos.value); }
+                        text:  (!isLoaded)?"":computeBeatCounterStringFromPosition(propRemixBeatPos.value);
+                        color:  colors.White }
     },
     State {
       name: "remixQuantize";
       PropertyChanges { target: header_text; font.family: fontForNumber;
-                        text:  (!isLoaded) ? "" : ((propRemixIsQuantize.value)? "Q " + propRemixQuantize.description : "Off"); }
+                        text:   (!isLoaded) ? "" : ((propRemixIsQuantize.value)? "Q " + propRemixQuantize.description : "Off");
+                        color:  colors.White }
     },
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -289,7 +338,15 @@ Text {
     State {
       name: "mixerFX";
       PropertyChanges { target: header_text; font.family: fontForNumber;
-                        text:  (!isLoaded) ? "" : mixerFXLabels[mixerFX.value]; }
+                        text:   (!isLoaded) ? "" : mixerFXLabels[mixerFX.value];
+                        color:  mixerFXColor }
+    },
+
+    State {
+      name: "captureSource";
+      PropertyChanges { target: header_text; font.family: fontForNumber;
+                        text:   (!isLoaded) ? "" : captureSrc.description;
+                        color:  captureSourceColor() }
     }
   ]
 
@@ -325,11 +382,6 @@ Text {
       return "- " + value1.toString() + "." + value2.toString() + "." + value3.toString();
 
     return value1.toString() + "." + value2.toString() + "." + value3.toString();
-  }
-
-  function getStableTempoString() {
-    var tempo = propMixerStableTempo.value - 1;
-    return   ((tempo < 0) ? "" : "+") + (tempo * 100).toFixed(1).toString() + "%";
   }
 
   function getSyncStatusString() {
