@@ -52,6 +52,10 @@ Note: I will only be actively supporting the latest version of Traktor Pro. Some
 - TURN BROWSE KNOB for coarse adjustment
 - TURN LOOP KNOB for fine adjustment
 
+**Reset:**
+
+- SHIFT + BACK [<] on the left panel to unsync and unload all decks.
+
 [1] A cue point is either set manually or automatically when you trigger any hotcue.
 
 ### Browser

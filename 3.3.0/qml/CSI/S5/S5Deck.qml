@@ -135,7 +135,6 @@ Module
 
   onFocusedDeckTypeChanged:
   {
-    showDisplayButtonArea.value = true;
     screenOverlay.value = Overlay.none;
     resetStemSelection();
   }
@@ -4431,7 +4430,7 @@ Module
 
   // MixerFX Overlay
   Wire { from:  "%surface%.back";  to: TogglePropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.mixerfx }
-         enabled: !isInEditMode && screenViewProp.value == ScreenView.deck && screenOverlay.value == Overlay.none }
+         enabled: !module.shift && !isInEditMode && screenViewProp.value == ScreenView.deck && screenOverlay.value == Overlay.none }
 
   WiresGroup
   {
@@ -4447,5 +4446,34 @@ Module
     Wire { from: "%surface%.back"; to: ButtonScriptAdapter {
       onPress: { mixerFX.value = 0 }
     } }
+  }
+
+//------------------------------------------------------------------------------------------------------------------
+// Big Reset
+//------------------------------------------------------------------------------------------------------------------
+
+  Wire { from: "%surface%.back"; to: ButtonScriptAdapter { onPress: bigReset() } enabled: module.shift }
+  AppProperty { id: deckASynced; path: "app.traktor.decks.1.sync.enabled" }
+  AppProperty { id: deckBSynced; path: "app.traktor.decks.2.sync.enabled" }
+  AppProperty { id: deckCSynced; path: "app.traktor.decks.3.sync.enabled" }
+  AppProperty { id: deckDSynced; path: "app.traktor.decks.4.sync.enabled" }
+  AppProperty { id: deckAUnload; path: "app.traktor.decks.1.unload" }
+  AppProperty { id: deckBUnload; path: "app.traktor.decks.2.unload" }
+  AppProperty { id: deckCUnload; path: "app.traktor.decks.3.unload" }
+  AppProperty { id: deckDUnload; path: "app.traktor.decks.4.unload" }
+
+  function bigReset() {
+    deckADeckType.value = DeckType.Track
+    deckBDeckType.value = DeckType.Track
+    deckCDeckType.value = DeckType.Track
+    deckDDeckType.value = DeckType.Track
+    deckASynced.value = false
+    deckBSynced.value = false
+    deckCSynced.value = false
+    deckDSynced.value = false
+    deckAUnload.value = true
+    deckBUnload.value = true
+    deckCUnload.value = true
+    deckDUnload.value = true
   }
 }
