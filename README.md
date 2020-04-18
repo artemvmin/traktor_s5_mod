@@ -135,21 +135,19 @@ Layout:
 
 Remix mode allows you to capture multiple loops from a playing track deck and remix them.
 
-- SHIFT + REMIX for remix mode
-
 If a remix deck already exists on that side, either focused or unfocused, remix mode will open its pads. If a remix deck does not exist, it will be created in the currently focused deck.
 
-If a remix deck is focused:
-
-- TURN LOOP KNOB to select capture size
-- SHIFT + TURN LOOP KNOB to select capture source
-- SHIFT + TURN BROWSE KNOB to change quantize value
-
-If a remix deck is focused or its remix pads are open while it is unfocused:
-
-- PRESS an empty PAD to record (the selected capture source by the selected capture size)
-- PRESS a recorded PAD to play it (make sure the remix deck is playing)
+- SHIFT + REMIX for remix mode
+- SHIFT + TURN LOOP KNOB to select the capture source [6]
+- PRESS an empty PAD to record [7]
+- PRESS a recorded PAD to play [8]
 - SHIFT + PRESS a playing pad to stop it at the end of its loop
+
+[6] This is the track deck you will be capturing. The loop indicator light will blink the color of the remix deck you are modifying.
+
+[7] This will record the selected capture source by its loop size. This is easier to think about in a split view where the track deck is focused and the remix deck's pads are open.
+
+[8] Make sure the remix deck is playing.
 
 ### Mixer FX
 

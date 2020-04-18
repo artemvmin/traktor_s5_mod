@@ -1655,20 +1655,6 @@ Module
   }
 
 //------------------------------------------------------------------------------------------------------------------
-// Capture Overlay
-//------------------------------------------------------------------------------------------------------------------
-
-  WiresGroup
-  {
-    enabled: screenOverlay.value == Overlay.capture
-
-    Wire { from: "%surface%.encoder"; to: "decks.1.remix.capture_source"; enabled: focusedDeckId == 1 }
-    Wire { from: "%surface%.encoder"; to: "decks.2.remix.capture_source"; enabled: focusedDeckId == 2 }
-    Wire { from: "%surface%.encoder"; to: "decks.3.remix.capture_source"; enabled: focusedDeckId == 3 }
-    Wire { from: "%surface%.encoder"; to: "decks.4.remix.capture_source"; enabled: focusedDeckId == 4 }
-  }
-
-//------------------------------------------------------------------------------------------------------------------
 // Effects Overlay
 //------------------------------------------------------------------------------------------------------------------
 
@@ -3073,28 +3059,40 @@ Module
 
     // Remix
     WiresGroup {
-      enabled: module.shift && deckAType == DeckType.Remix
+      enabled: module.shift
 
-      Wire { from: "loop_encoder_blinker_blue"; to: "%surface%.loop.led" }
-      Wire {
-        from: Or {
-          inputs:
-          [
-            "%surface%.browse.touch",
-            "%surface%.browse.is_turned"
-          ]
+      WiresGroup {
+        enabled: deckAType == DeckType.Remix
+
+        Wire { from: "loop_encoder_blinker_blue"; to: "%surface%.loop.led" }
+        Wire { from: "%surface%.encoder"; to: "decks.1.remix.capture_source"; enabled: screenOverlay.value == Overlay.capture }
+        Wire {
+          from: Or {
+            inputs:
+            [
+              "%surface%.encoder.touch",
+              "%surface%.encoder.is_turned"
+            ]
+          }
+          to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
         }
-        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.quantize }
       }
-      Wire {
-        from: Or {
-          inputs:
-          [
-            "%surface%.encoder.touch",
-            "%surface%.encoder.is_turned"
-          ]
+
+      WiresGroup {
+        enabled: deckAType != DeckType.Remix && deckCType == DeckType.Remix
+
+        Wire { from: "loop_encoder_blinker_white"; to: "%surface%.loop.led" }
+        Wire { from: "%surface%.encoder"; to: "decks.3.remix.capture_source"; enabled: screenOverlay.value == Overlay.capture }
+        Wire {
+          from: Or {
+            inputs:
+            [
+              "%surface%.encoder.touch",
+              "%surface%.encoder.is_turned"
+            ]
+          }
+          to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
         }
-        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
       }
     }
 
@@ -3232,28 +3230,40 @@ Module
 
     // Remix
     WiresGroup {
-      enabled: module.shift && deckCType == DeckType.Remix
+      enabled: module.shift
 
-      Wire { from: "loop_encoder_blinker_white"; to: "%surface%.loop.led" }
-      Wire {
-        from: Or {
-          inputs:
-          [
-            "%surface%.browse.touch",
-            "%surface%.browse.is_turned"
-          ]
+      WiresGroup {
+        enabled: deckCType == DeckType.Remix
+
+        Wire { from: "loop_encoder_blinker_white"; to: "%surface%.loop.led" }
+        Wire { from: "%surface%.encoder"; to: "decks.3.remix.capture_source"; enabled: screenOverlay.value == Overlay.capture }
+        Wire {
+          from: Or {
+            inputs:
+            [
+              "%surface%.encoder.touch",
+              "%surface%.encoder.is_turned"
+            ]
+          }
+          to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
         }
-        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.quantize }
       }
-      Wire {
-        from: Or {
-          inputs:
-          [
-            "%surface%.encoder.touch",
-            "%surface%.encoder.is_turned"
-          ]
+
+      WiresGroup {
+        enabled: deckCType != DeckType.Remix && deckAType == DeckType.Remix
+
+        Wire { from: "loop_encoder_blinker_blue"; to: "%surface%.loop.led" }
+        Wire { from: "%surface%.encoder"; to: "decks.1.remix.capture_source"; enabled: screenOverlay.value == Overlay.capture }
+        Wire {
+          from: Or {
+            inputs:
+            [
+              "%surface%.encoder.touch",
+              "%surface%.encoder.is_turned"
+            ]
+          }
+          to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
         }
-        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
       }
     }
 
@@ -3391,28 +3401,40 @@ Module
 
     // Remix
     WiresGroup {
-      enabled: module.shift && deckBType == DeckType.Remix
+      enabled: module.shift
 
-      Wire { from: "loop_encoder_blinker_blue"; to: "%surface%.loop.led" }
-      Wire {
-        from: Or {
-          inputs:
-          [
-            "%surface%.browse.touch",
-            "%surface%.browse.is_turned"
-          ]
+      WiresGroup {
+        enabled: deckBType == DeckType.Remix
+
+        Wire { from: "loop_encoder_blinker_blue"; to: "%surface%.loop.led" }
+        Wire { from: "%surface%.encoder"; to: "decks.2.remix.capture_source"; enabled: screenOverlay.value == Overlay.capture }
+        Wire {
+          from: Or {
+            inputs:
+            [
+              "%surface%.encoder.touch",
+              "%surface%.encoder.is_turned"
+            ]
+          }
+          to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
         }
-        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.quantize }
       }
-      Wire {
-        from: Or {
-          inputs:
-          [
-            "%surface%.encoder.touch",
-            "%surface%.encoder.is_turned"
-          ]
+
+      WiresGroup {
+        enabled: deckBType != DeckType.Remix && deckDType == DeckType.Remix
+
+        Wire { from: "loop_encoder_blinker_white"; to: "%surface%.loop.led" }
+        Wire { from: "%surface%.encoder"; to: "decks.4.remix.capture_source"; enabled: screenOverlay.value == Overlay.capture }
+        Wire {
+          from: Or {
+            inputs:
+            [
+              "%surface%.encoder.touch",
+              "%surface%.encoder.is_turned"
+            ]
+          }
+          to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
         }
-        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
       }
     }
 
@@ -3550,28 +3572,40 @@ Module
 
     // Remix
     WiresGroup {
-      enabled: module.shift && deckDType == DeckType.Remix
+      enabled: module.shift
 
-      Wire { from: "loop_encoder_blinker_white"; to: "%surface%.loop.led" }
-      Wire {
-        from: Or {
-          inputs:
-          [
-            "%surface%.browse.touch",
-            "%surface%.browse.is_turned"
-          ]
+      WiresGroup {
+        enabled: deckDType == DeckType.Remix
+
+        Wire { from: "loop_encoder_blinker_white"; to: "%surface%.loop.led" }
+        Wire { from: "%surface%.encoder"; to: "decks.4.remix.capture_source"; enabled: screenOverlay.value == Overlay.capture }
+        Wire {
+          from: Or {
+            inputs:
+            [
+              "%surface%.encoder.touch",
+              "%surface%.encoder.is_turned"
+            ]
+          }
+          to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
         }
-        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.quantize }
       }
-      Wire {
-        from: Or {
-          inputs:
-          [
-            "%surface%.encoder.touch",
-            "%surface%.encoder.is_turned"
-          ]
+
+      WiresGroup {
+        enabled: deckDType != DeckType.Remix && deckBType == DeckType.Remix
+
+        Wire { from: "loop_encoder_blinker_blue"; to: "%surface%.loop.led" }
+        Wire { from: "%surface%.encoder"; to: "decks.2.remix.capture_source"; enabled: screenOverlay.value == Overlay.capture }
+        Wire {
+          from: Or {
+            inputs:
+            [
+              "%surface%.encoder.touch",
+              "%surface%.encoder.is_turned"
+            ]
+          }
+          to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
         }
-        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.capture }
       }
     }
 
