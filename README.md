@@ -17,7 +17,7 @@ Note: I will only be actively supporting the latest version of Traktor Pro. Some
 ### Display
 
 - Spectrum colors to distinguish highs, mids, and lows
-- Downbeat markers (every 4 beats) and phrase markers (every 16 beats)
+- Downbeat and phrase markers (every 4 and 16 beats)
 - Removed overlay hide delays
 - Color-coded deck headers
   - Dynamic Camelot key
