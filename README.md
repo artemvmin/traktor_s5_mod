@@ -84,6 +84,8 @@ This caveat makes AUTO sync behave better, since doing the initial sync on a run
 
 [3] Preparation requires you to manually select a preparation playlist by right clicking on a playlist in the Traktor software.
 
+![Browser](images/browser.jpg)
+
 ### Beatgrid Edit
 
 - From any track screen:
@@ -108,7 +110,7 @@ This caveat makes AUTO sync behave better, since doing the initial sync on a run
 
 [5] Tap allows you to fix the beat grid alignment by tapping four consecutive beats while the song is playing.
 
-![Beatgrid edit mode](images/edit_mode.jpg)
+![Beatgrid edit mode](images/beatgrid_edit.jpg)
 
 ### Jump Mode
 
