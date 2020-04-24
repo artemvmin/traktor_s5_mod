@@ -21,6 +21,8 @@ Module
 
     updateDeckPadsMode(topDeckType, topDeckPadsMode);
     updateDeckPadsMode(bottomDeckType, bottomDeckPadsMode);
+
+    screenIsSingleDeck.value = false;
   }
 
   property bool keyOrBPMOverlay: false;
@@ -4428,24 +4430,31 @@ Module
   AppProperty { id: mixerFXC;       path: "app.traktor.mixer.channels.3.fx.select" }
   AppProperty { id: mixerFXD;       path: "app.traktor.mixer.channels.4.fx.select" }
 
-  // MixerFX Overlay
+  // Overlay
   Wire { from:  "%surface%.back";  to: TogglePropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.mixerfx }
          enabled: !module.shift && !isInEditMode && screenViewProp.value == ScreenView.deck && screenOverlay.value == Overlay.none }
 
-  WiresGroup
-  {
+  // Reset
+  WiresGroup {
+    enabled: module.shift
+
+    Wire { from:  "s5.mixer.channels.1.filter_on";  to: SetPropertyAdapter { path: "app.traktor.mixer.channels.1.fx.select"; value: 0 } }
+    Wire { from:  "s5.mixer.channels.2.filter_on";  to: SetPropertyAdapter { path: "app.traktor.mixer.channels.2.fx.select"; value: 0 } }
+    Wire { from:  "s5.mixer.channels.3.filter_on";  to: SetPropertyAdapter { path: "app.traktor.mixer.channels.3.fx.select"; value: 0 } }
+    Wire { from:  "s5.mixer.channels.4.filter_on";  to: SetPropertyAdapter { path: "app.traktor.mixer.channels.4.fx.select"; value: 0 } }
+  }
+
+  WiresGroup {
     enabled: screenOverlay.value == Overlay.mixerfx
 
     Wire { from: "%surface%.browse.turn"; to: EncoderScriptAdapter {
       onIncrement: { mixerFX.value == 4 ? mixerFX.value = mixerFX.value - 4 : mixerFX.value = mixerFX.value + 1 }
       onDecrement: { mixerFX.value == 0 ? mixerFX.value = mixerFX.value + 4 : mixerFX.value = mixerFX.value - 1 }
-    } }
+    }}
     Wire { from: "%surface%.browse.push";  to: ButtonScriptAdapter {
       onPress: { mixerFXA.value = mixerFX.value; mixerFXB.value = mixerFX.value; mixerFXC.value = mixerFX.value; mixerFXD.value = mixerFX.value }
-    } }
-    Wire { from: "%surface%.back"; to: ButtonScriptAdapter {
-      onPress: { mixerFX.value = 0 }
-    } }
+    }}
+    Wire { from: "%surface%.back";  to: SetPropertyAdapter { path: "app.traktor.mixer.channels." + focusedDeckId + ".fx.select"; value: 0 } }
   }
 
 //------------------------------------------------------------------------------------------------------------------

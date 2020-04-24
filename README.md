@@ -19,6 +19,7 @@ Note: I will only be actively supporting the latest version of Traktor Pro. Some
 - Spectrum colors to distinguish highs, mids, and lows
 - Downbeat and phrase markers (every 4 and 16 beats)
 - Removed overlay hide delays
+- Split-deck view on launch
 - Color-coded deck headers
   - Dynamic Camelot key
   - Tempo bend
@@ -178,7 +179,8 @@ Mixer FX allow you to change the behavior of a deck's filter knob.
 - BACK [<] to open the Mixer FX menu
   - TURN BROWSE KNOB to browse effects
   - PUSH BROWSE KNOB to set current effect on all decks
-  - BACK [<] again to reset to filter
+  - BACK [<] again to reset deck to filter
+- SHIFT + FILTER ON to reset deck to filter
 
 You can specify four effects in addition to filter. To customize, quit Traktor and modify the Traktor Settings file at:
 
