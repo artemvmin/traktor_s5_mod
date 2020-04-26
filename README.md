@@ -40,7 +40,7 @@ Note: I will only be actively supporting the latest version of Traktor Pro. Some
 **Cue:**
 
 - SHIFT + CUE to jump to the cue point [1] or set a cue point
-- CUE to play from the cue point
+- CUE to play from the cue point (on release)
 
 **Reverse:**
 
