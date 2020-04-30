@@ -39,8 +39,13 @@ Note: I will only be actively supporting the latest version of Traktor Pro. Some
 
 **Cue:**
 
-- SHIFT + CUE to jump to the cue point [1] or set a cue point
-- CUE to play from the cue point (on release)
+- Track stopped:
+  - CUE to set a cue point [1]
+  - HOLD CUE to play from cue point (press PLAY to continue playing after release)
+  - SHIFT + CUE to set a cue point and play on release
+- Track playing:
+  - CUE to jump to cue point
+  - SHIFT + CUE to jump to cue point and play on release
 
 **Reverse:**
 

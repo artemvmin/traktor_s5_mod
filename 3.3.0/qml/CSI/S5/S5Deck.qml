@@ -4048,7 +4048,7 @@ Module
     {
       enabled: !module.shift
 
-      Wire { from: "%surface%.cue";  to: DirectPropertyAdapter { path: "app.traktor.decks.1.cup" } }
+      Wire { from: "%surface%.cue";  to: "decks.1.transport.cue"    }
       Wire { from: "%surface%.play"; to: "decks.1.transport.play" }
       Wire { from: "%surface%.sync"; to: "decks.1.transport.sync" }
     }
@@ -4057,7 +4057,7 @@ Module
     {
       enabled: module.shift
 
-      Wire { from: "%surface%.cue";  to: "decks.1.transport.cue"    }
+      Wire { from: "%surface%.cue";  to: DirectPropertyAdapter { path: "app.traktor.decks.1.cup" } }
       Wire { from: "%surface%.sync"; to: "decks.1.transport.master" }
     }
 
@@ -4124,7 +4124,7 @@ Module
     {
       enabled: !module.shift
 
-      Wire { from: "%surface%.cue";  to: DirectPropertyAdapter { path: "app.traktor.decks.2.cup" } }
+      Wire { from: "%surface%.cue";  to: "decks.2.transport.cue"    }
       Wire { from: "%surface%.play"; to: "decks.2.transport.play" }
       Wire { from: "%surface%.sync"; to: "decks.2.transport.sync" }
     }
@@ -4133,7 +4133,7 @@ Module
     {
       enabled: module.shift
 
-      Wire { from: "%surface%.cue";  to: "decks.2.transport.cue"    }
+      Wire { from: "%surface%.cue";  to: DirectPropertyAdapter { path: "app.traktor.decks.2.cup" } }
       Wire { from: "%surface%.sync"; to: "decks.2.transport.master" }
     }
 
@@ -4200,7 +4200,7 @@ Module
     {
       enabled: !module.shift
 
-      Wire { from: "%surface%.cue";  to: DirectPropertyAdapter { path: "app.traktor.decks.3.cup" } }
+      Wire { from: "%surface%.cue";  to: "decks.3.transport.cue"    }
       Wire { from: "%surface%.play"; to: "decks.3.transport.play" }
       Wire { from: "%surface%.sync"; to: "decks.3.transport.sync" }
     }
@@ -4209,7 +4209,7 @@ Module
     {
       enabled: module.shift
 
-      Wire { from: "%surface%.cue";  to: "decks.3.transport.cue"    }
+      Wire { from: "%surface%.cue";  to: DirectPropertyAdapter { path: "app.traktor.decks.3.cup" } }
       Wire { from: "%surface%.sync"; to: "decks.3.transport.master" }
     }
 
@@ -4276,7 +4276,7 @@ Module
     {
       enabled: !module.shift
 
-      Wire { from: "%surface%.cue";  to: DirectPropertyAdapter { path: "app.traktor.decks.4.cup" } }
+      Wire { from: "%surface%.cue";  to: "decks.4.transport.cue"    }
       Wire { from: "%surface%.play"; to: "decks.4.transport.play" }
       Wire { from: "%surface%.sync"; to: "decks.4.transport.sync" }
     }
@@ -4285,7 +4285,7 @@ Module
     {
       enabled: module.shift
 
-      Wire { from: "%surface%.cue";  to: "decks.4.transport.cue"    }
+      Wire { from: "%surface%.cue";  to: DirectPropertyAdapter { path: "app.traktor.decks.4.cup" } }
       Wire { from: "%surface%.sync"; to: "decks.4.transport.master" }
     }
 
