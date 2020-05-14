@@ -4454,7 +4454,9 @@ Module
     Wire { from: "%surface%.browse.push";  to: ButtonScriptAdapter {
       onPress: { mixerFXA.value = mixerFX.value; mixerFXB.value = mixerFX.value; mixerFXC.value = mixerFX.value; mixerFXD.value = mixerFX.value }
     }}
-    Wire { from: "%surface%.back";  to: SetPropertyAdapter { path: "app.traktor.mixer.channels." + focusedDeckId + ".fx.select"; value: 0 } }
+    Wire { from: "%surface%.back";  to: ButtonScriptAdapter {
+      onPress: { mixerFX.value = 0 }
+    }}
   }
 
 //------------------------------------------------------------------------------------------------------------------
