@@ -1226,19 +1226,6 @@ Module
     {
       enabled: !module.shift
 
-      Wire
-      {
-        from: Or
-        {
-          inputs:
-          [
-            "%surface%.encoder.touch",
-            "%surface%.encoder.is_turned"
-          ]
-        }
-        to: HoldPropertyAdapter { path: propertiesPath + ".overlay"; value: Overlay.sorting }
-      }
-
       Wire { from: "%surface%.encoder";             to: "screen.browser_sorting"    }
       Wire { from: "%surface%.encoder.push";        to: TriggerPropertyAdapter  { path:"app.traktor.browser.flip_sort_up_down"  } enabled: (browserSortId.value > 0) }
     }

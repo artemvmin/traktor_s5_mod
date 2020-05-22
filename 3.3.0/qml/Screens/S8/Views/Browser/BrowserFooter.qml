@@ -60,9 +60,7 @@ Rectangle {
   AppProperty { id: previewTrackLenght;  path : "app.traktor.browser.preview_content.track_length" }
   AppProperty { id: previewTrackElapsed; path : "app.traktor.browser.preview_player.elapsed_time" }
 
-  MappingProperty { id: overlayState;      path: propertiesPath + ".overlay" }
   MappingProperty { id: isContentListProp; path: propertiesPath + ".browser.is_content_list" }
-  MappingProperty { id: selectedFooterItem;      path: propertiesPath + ".selected_footer_item" }
 
 //--------------------------------------------------------------------------------------------------------------------
 // Behavior on Sorting Changes (show/hide sorting widget, select next allowed sorting)
@@ -74,26 +72,15 @@ Rectangle {
   }
 
   onSortingKnobValueChanged: {
-    if (!footer.isContentList)
-    return;
-
-    overlayState.value = Overlay.sorting;
-    sortingOverlayTimer.restart();
-
-    var val = clamp(footer.sortingKnobValue - footer.preSortingKnobValue, -1, 1);
-    val     = parseInt(val);
-    if (val != 0) {
-      qmlBrowser.sortingId   = getSortingIdWithDelta( val );
-      footer.preSortingKnobValue = footer.sortingKnobValue;
+    if (!footer.isContentList) {
+      return
     }
-  }
 
-  Timer {
-    id: sortingOverlayTimer
-    interval: 800  // duration of the scrollbar opacity
-    repeat:   false
-
-    onTriggered: overlayState.value = Overlay.none;
+    var delta = parseInt(clamp(footer.sortingKnobValue - footer.preSortingKnobValue, -1, 1))
+    if (delta != 0) {
+      qmlBrowser.sortingId   = getSortingIdWithDelta(delta)
+      footer.preSortingKnobValue = footer.sortingKnobValue
+    }
   }
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -231,15 +218,10 @@ Rectangle {
 // Necessary Functions
 //--------------------------------------------------------------------------------------------------------------------
 
-  function getSortingIdWithDelta( delta ) {
-    var curPos = getPosForSortId( qmlBrowser.sortingId );
-    var pos    = curPos + delta;
-    var count  = sortIds.length;
-
-    pos = (pos < 0)      ? count-1 : pos;
-    pos = (pos >= count) ? 0       : pos;
-
-    return sortIds[pos];
+  function getSortingIdWithDelta(delta) {
+    var curPos = getPosForSortId(qmlBrowser.sortingId)
+    var newPos = (curPos + delta + sortIds.length) % sortIds.length
+    return sortIds[newPos]
   }
 
   function getPosForSortId(id) {
