@@ -187,26 +187,7 @@ Mixer FX allow you to change the behavior of a deck's filter knob.
   - BACK [<] again to reset deck to filter
 - SHIFT + FILTER ON to reset deck to filter
 
-You can specify four effects in addition to filter. To customize, quit Traktor and modify the Traktor Settings file at:
-
-```Documents/Native Instruments/Traktor 3.2.1/Traktor Settings.tsi```
-
-Find the lines beginning with:
-
-```<Entry Name="Audio.ChannelFX.<1-4>.Type" ... >```
-
-and set the Values based on the following mapping:
-
-- 0: Reverb
-- 1: Dual Delay
-- 2: Noise
-- 3: Time Gater
-- 4: Flanger
-- 5: Barber Pole
-- 6: Dual Delay
-- 7: Crush
-
-![Mixer FX](images/mixer_fx.jpg)
+The four effects can be customized by going to [Settings] > [Mixer] > [Mixer FX]. Traktor must be restarted for the effect names to update.
 
 ## Installation
 
