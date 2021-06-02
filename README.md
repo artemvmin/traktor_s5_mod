@@ -127,17 +127,17 @@ Jump mode allows you to skip around the track using the pads. It also provides f
 
 Layout:
 
-| -8 | loop in | loop out | 8 |
-|:--:|:-------:|:--------:|:-:|
-| -4 |    -1   |     1    | 4 |
+| -32 | loop in | loop out | 32 |
+|:---:|:-------:|:--------:|:--:|
+| -16 |    -1   |     1    | 16 |
 
 ![Jump mode](images/jump_mode.jpg)
 
 Layout (with SHIFT held):
 
-| -32 | loop in | loop out | 32 |
-|:---:|:-------:|:--------:|:--:|
-| -16 |    -1   |     1    | 16 |
+| -8 | loop in | loop out | 8 |
+|:--:|:-------:|:--------:|:-:|
+| -4 |    -2   |     2    | 4 |
 
 ![Jump mode with shift](images/jump_mode_shift.jpg)
 
