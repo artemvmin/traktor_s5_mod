@@ -2006,9 +2006,11 @@ Module
   AppProperty { id: setLoopIn;        path: "app.traktor.decks." + (focusedDeckId) + ".loop.set.in"            }
   AppProperty { id: setLoopOut;       path: "app.traktor.decks." + (focusedDeckId) + ".loop.set.out"           }
   AppProperty { id: deckInActiveLoop; path: "app.traktor.decks." + (focusedDeckId) + ".loop.is_in_active_loop" }
+  AppProperty { id: deckFluxEnabled;  path: "app.traktor.decks." + (focusedDeckId) + ".flux.enabled" }
   property int jumpLight: 0
 
   function updateMoveMode() {
+    deckFluxEnabled.value = false
     if (deckInActiveLoop.value) {
       deckMoveMode.value = 1
     } else {
