@@ -8,7 +8,9 @@ Traktor Pro:
 
 - 2.11.0
 - 3.2.1
-- 3.3.0
+- 3.3.0\*
+
+\* Verified up to version 3.4.2
 
 Note: I will only be actively supporting the latest version of Traktor Pro. Some features may not be available on older versions.
 
