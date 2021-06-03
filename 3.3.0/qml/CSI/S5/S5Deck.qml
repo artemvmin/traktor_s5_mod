@@ -745,7 +745,9 @@ Module
       switch (deckType)
       {
         case DeckType.Track:
-          deckPadsMode.value = hotcueMode;
+          if (deckPadsMode.value != jumpMode && deckPadsMode.value != loopMode && deckPadsMode.value != hotcueMode) {
+            deckPadsMode.value = hotcueMode;
+          }
           break;
 
         case DeckType.Stem:
