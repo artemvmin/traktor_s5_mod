@@ -46,11 +46,7 @@ Note: I will only be actively supporting the latest version of Traktor Pro. Some
 - Track playing:
   - CUE to jump to cue point
   - SHIFT + CUE to jump to cue point and play on release
-
-**Reverse:**
-
-- SHIFT + PLAY for reverse
-- SHIFT + FLUX for flux reverse
+  - SHIFT + FLUX for flux reverse
 
 **Global Tempo:**
 
