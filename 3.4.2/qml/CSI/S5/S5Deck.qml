@@ -1862,7 +1862,7 @@ Module
 //------------------------------------------------------------------------------------------------------------------
 
   // Loop mode
-  ButtonSection { name: "loop_pads";  buttons: 8; color: Color.Green; stateHandling: ButtonSection.External }
+  ButtonSection { name: "loop_pads";  buttons: 10; color: Color.Green; stateHandling: ButtonSection.External }
 
   MappingPropertyDescriptor { id: loop_1_16; path: propertiesPath + ".loopSize_1_16"; type: MappingPropertyDescriptor.Integer; value: LoopSize.loop_1_16 }
   MappingPropertyDescriptor { id: loop_1_8;  path: propertiesPath + ".loopSize_1_8" ; type: MappingPropertyDescriptor.Integer; value: LoopSize.loop_1_8  }
@@ -1872,6 +1872,8 @@ Module
   MappingPropertyDescriptor { id: loop_2;    path: propertiesPath + ".loopSize_2"   ; type: MappingPropertyDescriptor.Integer; value: LoopSize.loop_2    }
   MappingPropertyDescriptor { id: loop_4;    path: propertiesPath + ".loopSize_4"   ; type: MappingPropertyDescriptor.Integer; value: LoopSize.loop_4    }
   MappingPropertyDescriptor { id: loop_8;    path: propertiesPath + ".loopSize_8"   ; type: MappingPropertyDescriptor.Integer; value: LoopSize.loop_8    }
+  MappingPropertyDescriptor { id: loop_16;   path: propertiesPath + ".loopSize_16"  ; type: MappingPropertyDescriptor.Integer; value: LoopSize.loop_16   }
+  MappingPropertyDescriptor { id: loop_32;   path: propertiesPath + ".loopSize_32"  ; type: MappingPropertyDescriptor.Integer; value: LoopSize.loop_32   }
 
   Wire { from: DirectPropertyAdapter { path: propertiesPath + ".loopSize_1_16"; input: false } to: "loop_pads.button1.value" }
   Wire { from: DirectPropertyAdapter { path: propertiesPath + ".loopSize_1_8" ; input: false } to: "loop_pads.button2.value" }
@@ -1881,6 +1883,29 @@ Module
   Wire { from: DirectPropertyAdapter { path: propertiesPath + ".loopSize_2"   ; input: false } to: "loop_pads.button6.value" }
   Wire { from: DirectPropertyAdapter { path: propertiesPath + ".loopSize_4"   ; input: false } to: "loop_pads.button7.value" }
   Wire { from: DirectPropertyAdapter { path: propertiesPath + ".loopSize_8"   ; input: false } to: "loop_pads.button8.value" }
+  Wire { from: DirectPropertyAdapter { path: propertiesPath + ".loopSize_16"  ; input: false } to: "loop_pads.button9.value" }
+  Wire { from: DirectPropertyAdapter { path: propertiesPath + ".loopSize_32"  ; input: false } to: "loop_pads.button10.value" }
+
+  WiresGroup {
+    enabled: padsMode.value == loopMode
+
+    Wire { from: "%surface%.pads.1";     to: "loop_pads.button1" }
+    Wire { from: "%surface%.pads.2";     to: "loop_pads.button2" }
+    Wire { from: "%surface%.pads.3";     to: "loop_pads.button3" }
+    Wire { from: "%surface%.pads.4";     to: "loop_pads.button4" }
+    Wire { from: "%surface%.pads.5";     to: "loop_pads.button5" }
+    Wire { from: "%surface%.pads.6";     to: "loop_pads.button6" }
+    Wire { from: "%surface%.pads.7"; to: ButtonScriptAdapter {
+      brightness: deckInActiveLoop.value ? onBrightness : dimmedBrightness;
+      color: Color.Blue;
+      onPress: { setLoopIn.value = 1 }
+    }}
+    Wire { from: "%surface%.pads.8"; to: ButtonScriptAdapter {
+      brightness: deckInActiveLoop.value ? onBrightness : dimmedBrightness;
+      color: Color.Red;
+      onPress: { setLoopOut.value = 1 }
+    }}
+  }
 
   readonly property int stem_selector_color : (padsFocusedDeckId == 1) || (padsFocusedDeckId == 2) ? Color.Blue : Color.White
 
@@ -2024,19 +2049,22 @@ Module
   WiresGroup {
     enabled: padsMode.value == jumpMode
 
-    Wire { from: "%surface%.pads.2"; to: ButtonScriptAdapter {
-      brightness: deckInActiveLoop.value ? onBrightness : dimmedBrightness;
-      color: Color.Green;
-      onPress: { setLoopIn.value = 1 }
-    }}
-    Wire { from: "%surface%.pads.3"; to: ButtonScriptAdapter {
-      brightness: deckInActiveLoop.value ? onBrightness : dimmedBrightness;
-      color: Color.Green;
-      onPress: { setLoopOut.value = 1 }
-    }}
+    // Wire { from: "%surface%.pads.2"; to: ButtonScriptAdapter {
+      // brightness: deckInActiveLoop.value ? onBrightness : dimmedBrightness;
+      // color: Color.Green;
+      // onPress: { setLoopIn.value = 1 }
+    // }}
+    // Wire { from: "%surface%.pads.3"; to: ButtonScriptAdapter {
+      // brightness: deckInActiveLoop.value ? onBrightness : dimmedBrightness;
+      // color: Color.Green;
+      // onPress: { setLoopOut.value = 1 }
+    // }}
 
     WiresGroup {
       enabled: !module.shift
+
+      Wire { from: "%surface%.pads.2"; to: "loop_pads.button9"  }
+      Wire { from: "%surface%.pads.3"; to: "loop_pads.button10" }
 
       Wire { from: "%surface%.pads.1"; to: ButtonScriptAdapter {
         brightness: jumpLight == 1 ? onBrightness : dimmedBrightness;
@@ -2078,6 +2106,9 @@ Module
 
     WiresGroup {
       enabled: module.shift
+
+      Wire { from: "%surface%.pads.2"; to: "loop_pads.button7"  }
+      Wire { from: "%surface%.pads.3"; to: "loop_pads.button8" }
 
       Wire { from: "%surface%.pads.1"; to: ButtonScriptAdapter {
         brightness: jumpLight == 1 ? onBrightness : dimmedBrightness;
@@ -2171,19 +2202,9 @@ Module
       }
     }
 
-
-    // Loop
+    // Jump
     WiresGroup {
-      enabled: padsMode.value == loopMode
-
-      Wire { from: "%surface%.pads.1";     to: "loop_pads.button1" }
-      Wire { from: "%surface%.pads.2";     to: "loop_pads.button2" }
-      Wire { from: "%surface%.pads.3";     to: "loop_pads.button3" }
-      Wire { from: "%surface%.pads.4";     to: "loop_pads.button4" }
-      Wire { from: "%surface%.pads.5";     to: "loop_pads.button5" }
-      Wire { from: "%surface%.pads.6";     to: "loop_pads.button6" }
-      Wire { from: "%surface%.pads.7";     to: "loop_pads.button7" }
-      Wire { from: "%surface%.pads.8";     to: "loop_pads.button8" }
+      enabled: padsMode.value == loopMode || padsMode.value == jumpMode
 
       Wire { from: "loop_pads.value";      to: "decks.1.loop.autoloop_size"   }
       Wire { from: "loop_pads.active";     to: "decks.1.loop.autoloop_active" }
@@ -2384,16 +2405,7 @@ Module
 
     // Loop
     WiresGroup {
-      enabled: padsMode.value == loopMode
-
-      Wire { from: "%surface%.pads.1";     to: "loop_pads.button1" }
-      Wire { from: "%surface%.pads.2";     to: "loop_pads.button2" }
-      Wire { from: "%surface%.pads.3";     to: "loop_pads.button3" }
-      Wire { from: "%surface%.pads.4";     to: "loop_pads.button4" }
-      Wire { from: "%surface%.pads.5";     to: "loop_pads.button5" }
-      Wire { from: "%surface%.pads.6";     to: "loop_pads.button6" }
-      Wire { from: "%surface%.pads.7";     to: "loop_pads.button7" }
-      Wire { from: "%surface%.pads.8";     to: "loop_pads.button8" }
+      enabled: padsMode.value == loopMode || padsMode.value == jumpMode
 
       Wire { from: "loop_pads.value";      to: "decks.3.loop.autoloop_size"   }
       Wire { from: "loop_pads.active";     to: "decks.3.loop.autoloop_active" }
@@ -2594,16 +2606,7 @@ Module
 
     // Loop
     WiresGroup {
-      enabled: padsMode.value == loopMode
-
-      Wire { from: "%surface%.pads.1";     to: "loop_pads.button1" }
-      Wire { from: "%surface%.pads.2";     to: "loop_pads.button2" }
-      Wire { from: "%surface%.pads.3";     to: "loop_pads.button3" }
-      Wire { from: "%surface%.pads.4";     to: "loop_pads.button4" }
-      Wire { from: "%surface%.pads.5";     to: "loop_pads.button5" }
-      Wire { from: "%surface%.pads.6";     to: "loop_pads.button6" }
-      Wire { from: "%surface%.pads.7";     to: "loop_pads.button7" }
-      Wire { from: "%surface%.pads.8";     to: "loop_pads.button8" }
+      enabled: padsMode.value == loopMode || padsMode.value == jumpMode
 
       Wire { from: "loop_pads.value";      to: "decks.2.loop.autoloop_size"   }
       Wire { from: "loop_pads.active";     to: "decks.2.loop.autoloop_active" }
@@ -2804,16 +2807,7 @@ Module
 
     // Loop
     WiresGroup {
-      enabled: padsMode.value == loopMode
-
-      Wire { from: "%surface%.pads.1";     to: "loop_pads.button1" }
-      Wire { from: "%surface%.pads.2";     to: "loop_pads.button2" }
-      Wire { from: "%surface%.pads.3";     to: "loop_pads.button3" }
-      Wire { from: "%surface%.pads.4";     to: "loop_pads.button4" }
-      Wire { from: "%surface%.pads.5";     to: "loop_pads.button5" }
-      Wire { from: "%surface%.pads.6";     to: "loop_pads.button6" }
-      Wire { from: "%surface%.pads.7";     to: "loop_pads.button7" }
-      Wire { from: "%surface%.pads.8";     to: "loop_pads.button8" }
+      enabled: padsMode.value == loopMode || padsMode.value == jumpMode
 
       Wire { from: "loop_pads.value";      to: "decks.4.loop.autoloop_size"   }
       Wire { from: "loop_pads.active";     to: "decks.4.loop.autoloop_active" }

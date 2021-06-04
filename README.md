@@ -116,38 +116,40 @@ This caveat makes AUTO sync behave better, since doing the initial sync on a run
 
 ### Jump Mode
 
-Jump mode allows you to skip around the track using the pads. It also provides fine-tuned looping, allowing you to set the beginning and end of a loop. This means you can create loops of any beat size. If a loop is active, the jumping pads move the loop. Press "loop out" to exit the loop.
+Jump mode allows you to skip around the track and initiate long loops using the pads. Jumping with a loop enabled moves the entire loop.
 
 - FREEZE for jump mode
 - SHIFT + FREEZE for freeze mode
 
 Layout:
 
-| -32 | loop in | loop out | 32 |
-|:---:|:-------:|:--------:|:--:|
-| -16 |    -1   |     1    | 16 |
+| -32 | loop 16 | loop 32 | 32 |
+|:---:|:-------:|:-------:|:--:|
+| -16 |    -1   |    1    | 16 |
 
 ![Jump mode](images/jump_mode.jpg)
 
 Layout (with SHIFT held):
 
-| -8 | loop in | loop out | 8 |
-|:--:|:-------:|:--------:|:-:|
-| -4 |    -2   |     2    | 4 |
+| -8 | loop 4 | loop 8 | 8 |
+|:--:|:------:|:------:|:-:|
+| -4 |   -2   |    2   | 4 |
 
 ![Jump mode with shift](images/jump_mode_shift.jpg)
 
 ### Loop Mode
 
-Loop mode allows you to initiate loops using the pads. This works really well with FLUX enabled.
+Loop mode allows you to initiate short and custom loops using the pads. I recommend experimenting by enabling FLUX and/or disabling SNAP.
+
+Mark the start of a loop with [loop in] and initiate the loop with [loop out]. Press either button, or the loop knob, to exit the loop.
 
 - REMIX for loop mode
 
 Layout:
 
-| 1/16 | 1/8 | 1/4 | 1/2 |
-|:----:|:---:|:---:|:---:|
-|  1   |  2  |  4  |  8  |
+| 1/16 | 1/8 |   1/4   |    1/2   |
+|:----:|:---:|:-------:|:--------:|
+|  1   |  2  | loop in | loop out |
 
 ![Loop mode](images/loop_mode.jpg)
 
