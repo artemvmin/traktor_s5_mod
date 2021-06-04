@@ -394,7 +394,7 @@ QtObject {
 // Mixer FX Colors
 //--------------------------------------------------------------------------------------------------------------------
 
-  readonly property variant mixerFXColors:      [colors.colorMixerFXWhite, colors.colorMixerFXOrange, colors.colorMixerFXBlue, colors.colorMixerFXRed, colorMixerFXGreen]
+  readonly property variant mixerFXColors: [colors.colorMixerFXWhite, colors.colorMixerFXRed, colorMixerFXGreen, colors.colorMixerFXBlue, colors.colorMixerFXOrange]
 
   property variant colorMixerFXWhite:   rgba (255, 255, 255, 255)
   property variant colorMixerFXRed:     rgba (255,   0,   0, 255)

@@ -118,7 +118,7 @@ Text {
   property var mixerFXColor: mixerFXOn.value ? colors.mixerFXColors[mixerFX.value] : colors.colorGrey72
 
   // readonly property variant mxrFXNames: ["Filter", "Reverb", "Dual Delay", "Noise", "Time Gater", "Flanger", "Barber Pole", "Dual Delay", "Crush"]
-  readonly property variant mxrFXLabels: ["FTR", "RVB", "DEL", "NOS", "TMG", "FLG", "BPL", "DEL", "CRU"]
+  readonly property variant mxrFXLabels: ["FTR", "RVB", "DEL", "NOS", "TMG", "FLG", "FLG", "DEL", "CRU"]
   property variant mixerFXLabels: [mxrFXLabels[0], mxrFXLabels[mixerFXAssigned1.value], mxrFXLabels[mixerFXAssigned2.value], mxrFXLabels[mixerFXAssigned3.value], mxrFXLabels[mixerFXAssigned4.value] ]
 
 //--------------------------------------------------------------------------------------------------------------------
